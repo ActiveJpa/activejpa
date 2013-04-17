@@ -13,7 +13,6 @@ import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.CtNewMethod;
-import javassist.Modifier;
 import javassist.NotFoundException;
 
 import javax.persistence.Entity;
@@ -35,8 +34,8 @@ public class DomainClassEnhancer {
 	
     private static final Logger logger = LoggerFactory.getLogger(DomainClassEnhancer.class);
     
-    public DomainClassEnhancer() {
-    	classPool = ClassPool.getDefault();
+    public DomainClassEnhancer(ClassPool classPool) {
+    	this.classPool = classPool;
 		try {
 			modelClass = classPool.get(Model.class.getName());
 		} catch (Exception e) {
@@ -44,6 +43,10 @@ public class DomainClassEnhancer {
 			logger.error("Class " + Model.class.getName() + " is not found", e);
 			throw new IllegalStateException("Class " + Model.class.getName() + " is not found");
 		}
+	}
+    
+    public DomainClassEnhancer() {
+    	this(ClassPool.getDefault());
 	}
     
 	public byte[] enhance(ClassLoader loader, String className) {
@@ -86,7 +89,7 @@ public class DomainClassEnhancer {
 		createMethod(ctClass, "count", "long");
 		createMethod(ctClass, "deleteAll", "void");
 		createMethod(ctClass, "exists", "boolean", "java.io.Serializable id");
-		createMethod(ctClass, "where", "java.util.List", "Object... paramValues");
+		createMethod(ctClass, "where", "java.util.List", "Object[] paramValues");
 		createMethod(ctClass, "where", "java.util.List", Filter.class.getName() + " filter");
 		createMethod(ctClass, "one", Model.class.getName(), "Object[] paramValues");
 		createMethod(ctClass, "first", Model.class.getName(), "Object[] paramValues");
@@ -96,18 +99,11 @@ public class DomainClassEnhancer {
 		logger.info("Creating the method - " + methodName + " under the class - " + ctClass.getName());
 		StringWriter writer = new StringWriter();
 		writer.append("public static ").append(returnType).append(" ").append(methodName).append("(");
-		boolean varargs = false;
 		if (arguments != null && arguments.length > 0) {
 			for (int i = 0; i < arguments.length - 1; i++) {
-				if (arguments[i].contains("...")) {
-					varargs = true;
-				}
-				writer.append(arguments[i].replace("...", "[]")).append(", ");
+				writer.append(arguments[i]).append(", ");
 			}
-			if (arguments[arguments.length - 1].contains("...")) {
-				varargs = true;
-			}
-			writer.append(arguments[arguments.length - 1].replace("...", "[]"));
+			writer.append(arguments[arguments.length - 1]);
 		}
 		writer.append(") {");
 		if (! returnType.equals("void")) {
@@ -134,9 +130,6 @@ public class DomainClassEnhancer {
 		logger.debug("Method src - " + writer.toString());
 		
 		method = CtNewMethod.make(writer.toString(), ctClass);
-		if (varargs) {
-			method.setModifiers(method.getModifiers() | Modifier.VARARGS);
-		}
         ctClass.addMethod(method);
 	}
 	
@@ -144,7 +137,7 @@ public class DomainClassEnhancer {
 		List<CtClass> paramTypes = new ArrayList<CtClass>();
 		if (arguments != null) {
 			for (String argument : arguments) {
-				paramTypes.add(classPool.get(argument.replace("...", "[]").split(" ")[0]));
+				paramTypes.add(classPool.get(argument.split(" ")[0]));
 			}
 		}
 		return ctClass.getDeclaredMethod(methodName, paramTypes.toArray(new CtClass[0]));

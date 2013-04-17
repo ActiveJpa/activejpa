@@ -20,8 +20,12 @@ public class DomainClassFileTransformer implements ClassFileTransformer {
 	
     private static final Logger logger = LoggerFactory.getLogger(DomainClassFileTransformer.class);
     
+    public DomainClassFileTransformer(DomainClassEnhancer enhancer) {
+    	this.enhancer = enhancer;
+	}
+    
     public DomainClassFileTransformer() {
-    	enhancer = new DomainClassEnhancer();
+    	this(new DomainClassEnhancer());
 	}
     
 	@Override
