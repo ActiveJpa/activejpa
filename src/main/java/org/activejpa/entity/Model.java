@@ -8,9 +8,11 @@ import java.io.StringWriter;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
 import javax.persistence.TypedQuery;
 
 import org.activejpa.jpa.JPA;
+import org.activejpa.jpa.JPAContext;
 
 
 
@@ -71,6 +73,11 @@ public abstract class Model {
 		return createQuery(clazz, paramValues).getSingleResult();
 	}
 	
+	public static EntityTransaction beginTxn() {
+		JPA.instance.getDefaultConfig().getContext().beginTxn();
+		return getEntityManager().getTransaction();
+	}
+	
 	protected static <T extends Model> T first(Class<T> clazz, Object... paramValues) {
 		List<T> list = where(clazz, paramValues);
 		if (list != null && ! list.isEmpty()) {
@@ -108,11 +115,11 @@ public abstract class Model {
 	}
 	
 	protected static EntityManager getEntityManager() {
-		return JPA.getDefaultConfig().getContext().getEntityManager();
+		return JPA.instance.getDefaultConfig().getContext().getEntityManager();
 	}
 	
-	protected static <T extends Model> long count(Class<T> clazz) {
-		return getEntityManager().createQuery("select count(1) from " + clazz.getSimpleName()).getFirstResult();
+	protected static <T extends Model> long count(final Class<T> clazz) {
+		return getEntityManager().createQuery("select count(*) from " + clazz.getSimpleName(), Long.class).getSingleResult();
 	}
 	
 	protected static <T extends Model> List<T> all(Class<T> clazz) {
@@ -127,23 +134,64 @@ public abstract class Model {
 		return findById(clazz, id) != null;
 	}
 	
-	public boolean exists() {
-		return exists(getId());
-	}
-	
 	public void persist() {
-		getEntityManager().persist(this);
+		execute(new Executor<Void>() {
+			@Override
+			public Void execute(EntityManager manager) {
+				manager.persist(Model.this);
+				return null;
+			}
+		}, false);
 	}
 	
 	public void delete() {
-		getEntityManager().remove(this);
+		execute(new Executor<Void>() {
+			@Override
+			public Void execute(EntityManager manager) {
+				manager.remove(Model.this);
+				return null;
+			}
+		}, false);
 	}
 	
 	public void merge() {
-		getEntityManager().merge(this);
+		execute(new Executor<Void>() {
+			@Override
+			public Void execute(EntityManager manager) {
+				manager.merge(Model.this);
+				return null;
+			}
+		}, false);
 	}
 	
 	public void refresh() {
-		getEntityManager().refresh(this);
+		execute(new Executor<Void>() {
+			@Override
+			public Void execute(EntityManager manager) {
+				manager.refresh(Model.this);
+				return null;
+			}
+		}, true);
+	}
+	
+	protected static <T> T execute(Executor<T> executor, boolean readOnly) {
+		JPAContext context = JPA.instance.getDefaultConfig().getContext();
+		boolean beganTxn = false;
+		if (! context.isTxnOpen()) {
+			context.beginTxn();
+			beganTxn = true;
+		}
+		try {
+			return executor.execute(getEntityManager());
+		} finally {
+			if (beganTxn) {
+				context.closeTxn(readOnly);
+			}
+		}
+	}
+	
+	private static interface Executor<T> {
+		
+		T execute(EntityManager manager);
 	}
 }

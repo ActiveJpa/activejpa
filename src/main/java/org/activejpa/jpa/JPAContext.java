@@ -36,6 +36,13 @@ public final class JPAContext {
 		entityManager.close();
 	}
 	
+	public void beginTxn() {
+		if (isTxnOpen()) {
+			return;
+		}
+		getEntityManager().getTransaction().begin();
+	}
+	
 	public void closeTxn(boolean rollback) {
 		try {
 			if (isTxnOpen()) {

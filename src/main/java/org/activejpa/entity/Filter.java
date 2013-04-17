@@ -105,4 +105,42 @@ public class Filter {
 		}
 		return startPosition;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((conditions == null) ? 0 : conditions.hashCode());
+		result = prime * result + ((pageNo == null) ? 0 : pageNo.hashCode());
+		result = prime * result + ((perPage == null) ? 0 : perPage.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Filter other = (Filter) obj;
+		if (conditions == null) {
+			if (other.conditions != null)
+				return false;
+		} else if (!conditions.equals(other.conditions))
+			return false;
+		if (pageNo == null) {
+			if (other.pageNo != null)
+				return false;
+		} else if (!pageNo.equals(other.pageNo))
+			return false;
+		if (perPage == null) {
+			if (other.perPage != null)
+				return false;
+		} else if (!perPage.equals(other.perPage))
+			return false;
+		return true;
+	}
 }

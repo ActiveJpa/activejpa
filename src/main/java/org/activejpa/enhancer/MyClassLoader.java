@@ -6,6 +6,12 @@ package org.activejpa.enhancer;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author ganeshs
@@ -17,23 +23,28 @@ public class MyClassLoader extends ClassLoader {
 	
 	private boolean initialzed;
 	
+	private List<String> excludedPackages = new ArrayList<String>(Arrays.asList("java.", "javax.", "sun.", "org.mockito"));
+	
+	private Logger logger = LoggerFactory.getLogger(MyClassLoader.class);
+	
 	public MyClassLoader() {
 		this(Thread.currentThread().getContextClassLoader());
 	}
 	
 	public MyClassLoader(ClassLoader loader) {
+		this(loader, null);
+	}
+	
+	public MyClassLoader(ClassLoader loader, List<String> excludedPackages) {
 		super(loader);
+		if (excludedPackages != null) {
+			this.excludedPackages.addAll(excludedPackages);
+		}
 	}
 	
 	private void init() {
 		enhancer = new DomainClassEnhancer();
-		try {
-			loadClass("org.activejpa.entity.EntityModel", true);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} finally {
-			initialzed = true;
-		}
+		initialzed = true;
 	}
 
 	@Override
@@ -41,52 +52,49 @@ public class MyClassLoader extends ClassLoader {
 		if (! initialzed) {
 			init();
 		}
-		System.out.println("Loading the class " + name);
-		if (name.startsWith("java.") || name.startsWith("javax.")) {
-			return super.loadClass(name, resolve);
+		logger.trace("Loading the class " + name);
+		for (String excluded : excludedPackages) {
+			if (name.startsWith(excluded)) {
+				return super.loadClass(name, resolve);
+			}
 		}
 		Class<?> clazz = findLoadedClass(name);
 		if (clazz != null) {
-			System.out.println("Class " + name + " is already loaded");
+			logger.trace("Class " + name + " is already loaded");
 			return clazz;
 		}
 		
-		InputStream classData = getResourceAsStream(name.replace('.', '/') + ".class");
 		byte[] bytes = null;
-		try {
-	        if(classData == null) {
-	        	System.out.println("Loading from parent loader");
+		if (enhancer.canEnhance(name)) {
+			bytes = enhancer.enhance(this, name);
+		} else {
+			InputStream classData = getResourceAsStream(name.replace('.', '/') + ".class");
+			if(classData == null) {
 	            return super.loadClass(name, resolve);
 	        }
-	        bytes = toByteArray(classData);
-		} catch (ClassNotFoundException e) {
-			throw e;
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		finally {
-			if (classData != null) {
-				try {
-					classData.close();
-				} catch (IOException e) {
-					// Ignore. Can't do much
+		
+			try {
+				bytes = toByteArray(classData);   
+			} catch (Exception e) {
+				logger.debug("Failed while converting classdata to bytes for the class " + name, e);
+				return super.loadClass(name, resolve);
+			} finally {
+				if (classData != null) {
+					try {
+						classData.close();
+					} catch (IOException e) {
+						// Ignore. Can't do much
+						logger.trace("Failed while closing the classData for the class " + name, e);
+					}
 				}
 			}
 		}
 		
-		if (bytes == null) {
-			return super.loadClass(name, resolve);
-		}
-        
-		if (enhancer.canEnhance(name)) {
-			bytes = enhancer.enhance(this, name);
-		}
 		clazz = defineClass(name, bytes, 0, bytes.length);
-		System.out.println("Loaded class " + clazz.getClassLoader());
 		if (resolve) {
 			resolveClass(clazz);
 		}
-		return super.loadClass(name, resolve);
+		return clazz;
 	}
 	
 	
