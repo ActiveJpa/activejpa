@@ -3,7 +3,7 @@
  */
 package org.activejpa;
 
-import org.activejpa.entity.DomainClassObjectFactory;
+import org.activejpa.entity.testng.DomainClassObjectFactory;
 import org.testng.IObjectFactory;
 import org.testng.ITestContext;
 import org.testng.annotations.ObjectFactory;
@@ -15,7 +15,7 @@ import org.testng.annotations.ObjectFactory;
 public class BaseTest {
 	
 	@ObjectFactory
-	public IObjectFactory getObjectFactory(ITestContext context) {
+	public IObjectFactory getObjectFactory(ITestContext context) throws Exception {
 		return new DomainClassObjectFactory();
 	}
 }

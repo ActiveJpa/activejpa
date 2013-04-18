@@ -1,0 +1,653 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" total="74" passed="74">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Default suite" duration-ms="7264" started-at="2013-04-18T04:20:34Z" finished-at="2013-04-18T04:20:41Z">
+    <groups>
+    </groups>
+    <test name="Default test" duration-ms="7264" started-at="2013-04-18T04:20:34Z" finished-at="2013-04-18T04:20:41Z">
+      <class name="org.activejpa.jpa.JPAContextTest">
+        <test-method status="PASS" signature="setup()[pri:0, instance:org.activejpa.jpa.JPAContextTest@12227539]" name="setup" is-config="true" duration-ms="451" started-at="2013-04-18T09:50:34Z" finished-at="2013-04-18T09:50:34Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="shouldBeginTransaction()[pri:0, instance:org.activejpa.jpa.JPAContextTest@12227539]" name="shouldBeginTransaction" duration-ms="24" started-at="2013-04-18T09:50:34Z" finished-at="2013-04-18T09:50:34Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldBeginTransaction -->
+        <test-method status="PASS" signature="setup()[pri:0, instance:org.activejpa.jpa.JPAContextTest@12227539]" name="setup" is-config="true" duration-ms="39" started-at="2013-04-18T09:50:34Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="shouldClose()[pri:0, instance:org.activejpa.jpa.JPAContextTest@12227539]" name="shouldClose" duration-ms="1" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldClose -->
+        <test-method status="PASS" signature="setup()[pri:0, instance:org.activejpa.jpa.JPAContextTest@12227539]" name="setup" is-config="true" duration-ms="33" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="shouldCommit()[pri:0, instance:org.activejpa.jpa.JPAContextTest@12227539]" name="shouldCommit" duration-ms="7" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldCommit -->
+        <test-method status="PASS" signature="setup()[pri:0, instance:org.activejpa.jpa.JPAContextTest@12227539]" name="setup" is-config="true" duration-ms="40" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="shouldGetEntityManager()[pri:0, instance:org.activejpa.jpa.JPAContextTest@12227539]" name="shouldGetEntityManager" duration-ms="6" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldGetEntityManager -->
+        <test-method status="PASS" signature="setup()[pri:0, instance:org.activejpa.jpa.JPAContextTest@12227539]" name="setup" is-config="true" duration-ms="28" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="shouldGetSameEntityManagerSecondTime()[pri:0, instance:org.activejpa.jpa.JPAContextTest@12227539]" name="shouldGetSameEntityManagerSecondTime" duration-ms="2" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldGetSameEntityManagerSecondTime -->
+        <test-method status="PASS" signature="setup()[pri:0, instance:org.activejpa.jpa.JPAContextTest@12227539]" name="setup" is-config="true" duration-ms="31" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="shouldNotBeginTransaction()[pri:0, instance:org.activejpa.jpa.JPAContextTest@12227539]" name="shouldNotBeginTransaction" duration-ms="7" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldNotBeginTransaction -->
+        <test-method status="PASS" signature="setup()[pri:0, instance:org.activejpa.jpa.JPAContextTest@12227539]" name="setup" is-config="true" duration-ms="28" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="shouldNotCommitIfTxnIsNotOpen()[pri:0, instance:org.activejpa.jpa.JPAContextTest@12227539]" name="shouldNotCommitIfTxnIsNotOpen" duration-ms="8" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldNotCommitIfTxnIsNotOpen -->
+        <test-method status="PASS" signature="setup()[pri:0, instance:org.activejpa.jpa.JPAContextTest@12227539]" name="setup" is-config="true" duration-ms="31" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="shouldNotRollbackIfTxnIsNotOpen()[pri:0, instance:org.activejpa.jpa.JPAContextTest@12227539]" name="shouldNotRollbackIfTxnIsNotOpen" duration-ms="9" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldNotRollbackIfTxnIsNotOpen -->
+        <test-method status="PASS" signature="setup()[pri:0, instance:org.activejpa.jpa.JPAContextTest@12227539]" name="setup" is-config="true" duration-ms="23" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="shouldRollback()[pri:0, instance:org.activejpa.jpa.JPAContextTest@12227539]" name="shouldRollback" duration-ms="7" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldRollback -->
+        <test-method status="PASS" signature="setup()[pri:0, instance:org.activejpa.jpa.JPAContextTest@12227539]" name="setup" is-config="true" duration-ms="21" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="shouldRollbackIfReadOnlyisSet()[pri:0, instance:org.activejpa.jpa.JPAContextTest@12227539]" name="shouldRollbackIfReadOnlyisSet" duration-ms="10" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldRollbackIfReadOnlyisSet -->
+        <test-method status="PASS" signature="setup()[pri:0, instance:org.activejpa.jpa.JPAContextTest@12227539]" name="setup" is-config="true" duration-ms="23" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="shouldRollbackIfTransactionIsMarkedForRollback()[pri:0, instance:org.activejpa.jpa.JPAContextTest@12227539]" name="shouldRollbackIfTransactionIsMarkedForRollback" duration-ms="7" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldRollbackIfTransactionIsMarkedForRollback -->
+        <test-method status="PASS" signature="setup()[pri:0, instance:org.activejpa.jpa.JPAContextTest@12227539]" name="setup" is-config="true" duration-ms="23" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="shouldSayTxnNotOpenOnNullTransaction()[pri:0, instance:org.activejpa.jpa.JPAContextTest@12227539]" name="shouldSayTxnNotOpenOnNullTransaction" duration-ms="1" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldSayTxnNotOpenOnNullTransaction -->
+        <test-method status="PASS" signature="setup()[pri:0, instance:org.activejpa.jpa.JPAContextTest@12227539]" name="setup" is-config="true" duration-ms="23" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="shouldSayTxnNotOpenWhenInactive()[pri:0, instance:org.activejpa.jpa.JPAContextTest@12227539]" name="shouldSayTxnNotOpenWhenInactive" duration-ms="7" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldSayTxnNotOpenWhenInactive -->
+        <test-method status="PASS" signature="setup()[pri:0, instance:org.activejpa.jpa.JPAContextTest@12227539]" name="setup" is-config="true" duration-ms="32" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="shouldSayTxnOpen()[pri:0, instance:org.activejpa.jpa.JPAContextTest@12227539]" name="shouldSayTxnOpen" duration-ms="6" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldSayTxnOpen -->
+      </class> <!-- org.activejpa.jpa.JPAContextTest -->
+      <class name="org.activejpa.entity.FilterTest">
+        <test-method status="PASS" signature="shouldAddConditionUsingNameValue()[pri:0, instance:org.activejpa.entity.FilterTest@716147e5]" name="shouldAddConditionUsingNameValue" duration-ms="0" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldAddConditionUsingNameValue -->
+        <test-method status="PASS" signature="shouldAddConditionUsingNameValueOperator()[pri:0, instance:org.activejpa.entity.FilterTest@716147e5]" name="shouldAddConditionUsingNameValueOperator" duration-ms="1" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldAddConditionUsingNameValueOperator -->
+        <test-method status="PASS" signature="shouldAddConditionsInConstructor()[pri:0, instance:org.activejpa.entity.FilterTest@716147e5]" name="shouldAddConditionsInConstructor" duration-ms="10" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldAddConditionsInConstructor -->
+        <test-method status="PASS" signature="shouldConstructQuery()[pri:0, instance:org.activejpa.entity.FilterTest@716147e5]" name="shouldConstructQuery" duration-ms="0" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldConstructQuery -->
+        <test-method status="PASS" signature="shouldSetActualValuesWhenInitialized()[pri:0, instance:org.activejpa.entity.FilterTest@716147e5]" name="shouldSetActualValuesWhenInitialized" duration-ms="0" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldSetActualValuesWhenInitialized -->
+        <test-method status="PASS" signature="shouldSetDefaultValuesWhenInitialized()[pri:0, instance:org.activejpa.entity.FilterTest@716147e5]" name="shouldSetDefaultValuesWhenInitialized" duration-ms="0" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldSetDefaultValuesWhenInitialized -->
+        <test-method status="PASS" signature="shouldSetParameters()[pri:0, instance:org.activejpa.entity.FilterTest@716147e5]" name="shouldSetParameters" duration-ms="11" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldSetParameters -->
+      </class> <!-- org.activejpa.entity.FilterTest -->
+      <class name="org.activejpa.enhancer.DomainClassFileTransformerTest">
+        <test-method status="PASS" signature="setup()[pri:0, instance:org.activejpa.enhancer.DomainClassFileTransformerTest@20ca0c9]" name="setup" is-config="true" duration-ms="155" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="shouldTransform()[pri:0, instance:org.activejpa.enhancer.DomainClassFileTransformerTest@20ca0c9]" name="shouldTransform" duration-ms="14" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldTransform -->
+      </class> <!-- org.activejpa.enhancer.DomainClassFileTransformerTest -->
+      <class name="org.activejpa.jpa.JPAConfigTest">
+        <test-method status="PASS" signature="setup()[pri:0, instance:org.activejpa.jpa.JPAConfigTest@1bf1a64c]" name="setup" is-config="true" duration-ms="4" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="shouldClearContext()[pri:0, instance:org.activejpa.jpa.JPAConfigTest@1bf1a64c]" name="shouldClearContext" duration-ms="2" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldClearContext -->
+        <test-method status="PASS" signature="setup()[pri:0, instance:org.activejpa.jpa.JPAConfigTest@1bf1a64c]" name="setup" is-config="true" duration-ms="6" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="shouldClose()[pri:0, instance:org.activejpa.jpa.JPAConfigTest@1bf1a64c]" name="shouldClose" duration-ms="0" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldClose -->
+        <test-method status="PASS" signature="setup()[pri:0, instance:org.activejpa.jpa.JPAConfigTest@1bf1a64c]" name="setup" is-config="true" duration-ms="5" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="shouldGetContext()[pri:0, instance:org.activejpa.jpa.JPAConfigTest@1bf1a64c]" name="shouldGetContext" duration-ms="1" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldGetContext -->
+        <test-method status="PASS" signature="setup()[pri:0, instance:org.activejpa.jpa.JPAConfigTest@1bf1a64c]" name="setup" is-config="true" duration-ms="6" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="shouldGetReadOnlyContext()[pri:0, instance:org.activejpa.jpa.JPAConfigTest@1bf1a64c]" name="shouldGetReadOnlyContext" duration-ms="1" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldGetReadOnlyContext -->
+        <test-method status="PASS" signature="setup()[pri:0, instance:org.activejpa.jpa.JPAConfigTest@1bf1a64c]" name="setup" is-config="true" duration-ms="7" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="shouldGetReadWriteContext()[pri:0, instance:org.activejpa.jpa.JPAConfigTest@1bf1a64c]" name="shouldGetReadWriteContext" duration-ms="1" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldGetReadWriteContext -->
+        <test-method status="PASS" signature="setup()[pri:0, instance:org.activejpa.jpa.JPAConfigTest@1bf1a64c]" name="setup" is-config="true" duration-ms="7" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="shouldGetSameContextSecondTime()[pri:0, instance:org.activejpa.jpa.JPAConfigTest@1bf1a64c]" name="shouldGetSameContextSecondTime" duration-ms="1" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldGetSameContextSecondTime -->
+      </class> <!-- org.activejpa.jpa.JPAConfigTest -->
+      <class name="org.activejpa.jpa.JPATest">
+        <test-method status="PASS" signature="setup()[pri:0, instance:org.activejpa.jpa.JPATest@3ce9d642]" name="setup" is-config="true" duration-ms="111" started-at="2013-04-18T09:50:37Z" finished-at="2013-04-18T09:50:37Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="shouldAddDefaultEntityManagerFactory()[pri:0, instance:org.activejpa.jpa.JPATest@3ce9d642]" name="shouldAddDefaultEntityManagerFactory" duration-ms="46" started-at="2013-04-18T09:50:37Z" finished-at="2013-04-18T09:50:37Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldAddDefaultEntityManagerFactory -->
+        <test-method status="PASS" signature="setup()[pri:0, instance:org.activejpa.jpa.JPATest@3ce9d642]" name="setup" is-config="true" duration-ms="19" started-at="2013-04-18T09:50:37Z" finished-at="2013-04-18T09:50:37Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="shouldAddDefaultPersistenceUnitUsingName()[pri:0, instance:org.activejpa.jpa.JPATest@3ce9d642]" name="shouldAddDefaultPersistenceUnitUsingName" duration-ms="25" started-at="2013-04-18T09:50:37Z" finished-at="2013-04-18T09:50:37Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldAddDefaultPersistenceUnitUsingName -->
+        <test-method status="PASS" signature="setup()[pri:0, instance:org.activejpa.jpa.JPATest@3ce9d642]" name="setup" is-config="true" duration-ms="167" started-at="2013-04-18T09:50:37Z" finished-at="2013-04-18T09:50:37Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="shouldAddDefaultPersistenceUnitWithProperties()[pri:0, instance:org.activejpa.jpa.JPATest@3ce9d642]" name="shouldAddDefaultPersistenceUnitWithProperties" duration-ms="164" started-at="2013-04-18T09:50:37Z" finished-at="2013-04-18T09:50:37Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldAddDefaultPersistenceUnitWithProperties -->
+        <test-method status="PASS" signature="setup()[pri:0, instance:org.activejpa.jpa.JPATest@3ce9d642]" name="setup" is-config="true" duration-ms="14" started-at="2013-04-18T09:50:37Z" finished-at="2013-04-18T09:50:37Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="shouldAddEntityManagerFactory()[pri:0, instance:org.activejpa.jpa.JPATest@3ce9d642]" name="shouldAddEntityManagerFactory" duration-ms="12" started-at="2013-04-18T09:50:37Z" finished-at="2013-04-18T09:50:37Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldAddEntityManagerFactory -->
+        <test-method status="PASS" signature="setup()[pri:0, instance:org.activejpa.jpa.JPATest@3ce9d642]" name="setup" is-config="true" duration-ms="12" started-at="2013-04-18T09:50:37Z" finished-at="2013-04-18T09:50:37Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="shouldAddNonDefaultPersistenceUnitUsingName()[pri:0, instance:org.activejpa.jpa.JPATest@3ce9d642]" name="shouldAddNonDefaultPersistenceUnitUsingName" duration-ms="11" started-at="2013-04-18T09:50:37Z" finished-at="2013-04-18T09:50:37Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldAddNonDefaultPersistenceUnitUsingName -->
+        <test-method status="PASS" signature="setup()[pri:0, instance:org.activejpa.jpa.JPATest@3ce9d642]" name="setup" is-config="true" duration-ms="13" started-at="2013-04-18T09:50:37Z" finished-at="2013-04-18T09:50:37Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="shouldAddPersistenceUnitUsingName()[pri:0, instance:org.activejpa.jpa.JPATest@3ce9d642]" name="shouldAddPersistenceUnitUsingName" duration-ms="10" started-at="2013-04-18T09:50:37Z" finished-at="2013-04-18T09:50:37Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldAddPersistenceUnitUsingName -->
+        <test-method status="PASS" signature="setup()[pri:0, instance:org.activejpa.jpa.JPATest@3ce9d642]" name="setup" is-config="true" duration-ms="11" started-at="2013-04-18T09:50:37Z" finished-at="2013-04-18T09:50:37Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="shouldAddPersistenceUnitWithProperties()[pri:0, instance:org.activejpa.jpa.JPATest@3ce9d642]" name="shouldAddPersistenceUnitWithProperties" duration-ms="10" started-at="2013-04-18T09:50:37Z" finished-at="2013-04-18T09:50:37Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldAddPersistenceUnitWithProperties -->
+        <test-method status="PASS" signature="setup()[pri:0, instance:org.activejpa.jpa.JPATest@3ce9d642]" name="setup" is-config="true" duration-ms="11" started-at="2013-04-18T09:50:37Z" finished-at="2013-04-18T09:50:37Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="shouldClose()[pri:0, instance:org.activejpa.jpa.JPATest@3ce9d642]" name="shouldClose" duration-ms="11" started-at="2013-04-18T09:50:37Z" finished-at="2013-04-18T09:50:37Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldClose -->
+      </class> <!-- org.activejpa.jpa.JPATest -->
+      <class name="org.activejpa.enhancer.DomainClassEnhancerTest">
+        <test-method status="PASS" signature="setup()[pri:0, instance:org.activejpa.enhancer.DomainClassEnhancerTest@74dd9f68]" name="setup" is-config="true" duration-ms="86" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="shouldAddMethodsToDomainClass()[pri:0, instance:org.activejpa.enhancer.DomainClassEnhancerTest@74dd9f68]" name="shouldAddMethodsToDomainClass" duration-ms="789" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:36Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldAddMethodsToDomainClass -->
+        <test-method status="PASS" signature="setup()[pri:0, instance:org.activejpa.enhancer.DomainClassEnhancerTest@74dd9f68]" name="setup" is-config="true" duration-ms="46" started-at="2013-04-18T09:50:36Z" finished-at="2013-04-18T09:50:36Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="shouldAllowEnhancingForDomainModel()[pri:0, instance:org.activejpa.enhancer.DomainClassEnhancerTest@74dd9f68]" name="shouldAllowEnhancingForDomainModel" duration-ms="2" started-at="2013-04-18T09:50:36Z" finished-at="2013-04-18T09:50:36Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldAllowEnhancingForDomainModel -->
+        <test-method status="PASS" signature="setup()[pri:0, instance:org.activejpa.enhancer.DomainClassEnhancerTest@74dd9f68]" name="setup" is-config="true" duration-ms="112" started-at="2013-04-18T09:50:36Z" finished-at="2013-04-18T09:50:36Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="shouldNotAllowEnhancingForNonEntity()[pri:0, instance:org.activejpa.enhancer.DomainClassEnhancerTest@74dd9f68]" name="shouldNotAllowEnhancingForNonEntity" duration-ms="4" started-at="2013-04-18T09:50:36Z" finished-at="2013-04-18T09:50:36Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldNotAllowEnhancingForNonEntity -->
+        <test-method status="PASS" signature="setup()[pri:0, instance:org.activejpa.enhancer.DomainClassEnhancerTest@74dd9f68]" name="setup" is-config="true" duration-ms="97" started-at="2013-04-18T09:50:36Z" finished-at="2013-04-18T09:50:37Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- setup -->
+        <test-method status="PASS" signature="shouldNotAllowEnhancingForNonModel()[pri:0, instance:org.activejpa.enhancer.DomainClassEnhancerTest@74dd9f68]" name="shouldNotAllowEnhancingForNonModel" duration-ms="1" started-at="2013-04-18T09:50:37Z" finished-at="2013-04-18T09:50:37Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldNotAllowEnhancingForNonModel -->
+      </class> <!-- org.activejpa.enhancer.DomainClassEnhancerTest -->
+      <class name="org.activejpa.entity.ConditionTest">
+        <test-method status="PASS" signature="shouldConstructBetweenQuery()[pri:0, instance:org.activejpa.entity.ConditionTest@15dcd5e9]" name="shouldConstructBetweenQuery" duration-ms="4" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldConstructBetweenQuery -->
+        <test-method status="PASS" signature="shouldConstructEqQuery()[pri:0, instance:org.activejpa.entity.ConditionTest@15dcd5e9]" name="shouldConstructEqQuery" duration-ms="0" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldConstructEqQuery -->
+        <test-method status="PASS" signature="shouldConstructGeQuery()[pri:0, instance:org.activejpa.entity.ConditionTest@15dcd5e9]" name="shouldConstructGeQuery" duration-ms="1" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldConstructGeQuery -->
+        <test-method status="PASS" signature="shouldConstructGtQuery()[pri:0, instance:org.activejpa.entity.ConditionTest@15dcd5e9]" name="shouldConstructGtQuery" duration-ms="0" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldConstructGtQuery -->
+        <test-method status="PASS" signature="shouldConstructInQuery()[pri:0, instance:org.activejpa.entity.ConditionTest@15dcd5e9]" name="shouldConstructInQuery" duration-ms="3" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldConstructInQuery -->
+        <test-method status="PASS" signature="shouldConstructLeQuery()[pri:0, instance:org.activejpa.entity.ConditionTest@15dcd5e9]" name="shouldConstructLeQuery" duration-ms="1" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldConstructLeQuery -->
+        <test-method status="PASS" signature="shouldConstructLikeQuery()[pri:0, instance:org.activejpa.entity.ConditionTest@15dcd5e9]" name="shouldConstructLikeQuery" duration-ms="1" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldConstructLikeQuery -->
+        <test-method status="PASS" signature="shouldConstructLtQuery()[pri:0, instance:org.activejpa.entity.ConditionTest@15dcd5e9]" name="shouldConstructLtQuery" duration-ms="1" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldConstructLtQuery -->
+        <test-method status="PASS" signature="shouldConstructNeQuery()[pri:0, instance:org.activejpa.entity.ConditionTest@15dcd5e9]" name="shouldConstructNeQuery" duration-ms="1" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldConstructNeQuery -->
+        <test-method status="PASS" signature="shouldSetParametersForBetweenQuery()[pri:0, instance:org.activejpa.entity.ConditionTest@15dcd5e9]" name="shouldSetParametersForBetweenQuery" duration-ms="15" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldSetParametersForBetweenQuery -->
+        <test-method status="PASS" signature="shouldSetParametersForEqQuery()[pri:0, instance:org.activejpa.entity.ConditionTest@15dcd5e9]" name="shouldSetParametersForEqQuery" duration-ms="12" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldSetParametersForEqQuery -->
+        <test-method status="PASS" signature="shouldSetParametersForGeQuery()[pri:0, instance:org.activejpa.entity.ConditionTest@15dcd5e9]" name="shouldSetParametersForGeQuery" duration-ms="13" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldSetParametersForGeQuery -->
+        <test-method status="PASS" signature="shouldSetParametersForGtQuery()[pri:0, instance:org.activejpa.entity.ConditionTest@15dcd5e9]" name="shouldSetParametersForGtQuery" duration-ms="12" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldSetParametersForGtQuery -->
+        <test-method status="PASS" signature="shouldSetParametersForInQuery()[pri:0, instance:org.activejpa.entity.ConditionTest@15dcd5e9]" name="shouldSetParametersForInQuery" duration-ms="14" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldSetParametersForInQuery -->
+        <test-method status="PASS" signature="shouldSetParametersForLeQuery()[pri:0, instance:org.activejpa.entity.ConditionTest@15dcd5e9]" name="shouldSetParametersForLeQuery" duration-ms="14" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldSetParametersForLeQuery -->
+        <test-method status="PASS" signature="shouldSetParametersForLikeQuery()[pri:0, instance:org.activejpa.entity.ConditionTest@15dcd5e9]" name="shouldSetParametersForLikeQuery" duration-ms="12" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldSetParametersForLikeQuery -->
+        <test-method status="PASS" signature="shouldSetParametersForLtQuery()[pri:0, instance:org.activejpa.entity.ConditionTest@15dcd5e9]" name="shouldSetParametersForLtQuery" duration-ms="14" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldSetParametersForLtQuery -->
+        <test-method status="PASS" signature="shouldSetParametersForNeQuery()[pri:0, instance:org.activejpa.entity.ConditionTest@15dcd5e9]" name="shouldSetParametersForNeQuery" duration-ms="34" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldSetParametersForNeQuery -->
+        <test-method status="PASS" signature="shouldUseEqWhenOperatorNotSpecified()[pri:0, instance:org.activejpa.entity.ConditionTest@15dcd5e9]" name="shouldUseEqWhenOperatorNotSpecified" duration-ms="8" started-at="2013-04-18T09:50:35Z" finished-at="2013-04-18T09:50:35Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldUseEqWhenOperatorNotSpecified -->
+      </class> <!-- org.activejpa.entity.ConditionTest -->
+      <class name="org.activejpa.entity.ModelTest">
+        <test-method status="PASS" signature="beforeClass()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="beforeClass" is-config="true" duration-ms="3359" started-at="2013-04-18T09:50:37Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeClass -->
+        <test-method status="PASS" signature="beforeMethod()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="beforeMethod" is-config="true" duration-ms="81" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method status="PASS" signature="shouldBeginTransaction()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="shouldBeginTransaction" duration-ms="3" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldBeginTransaction -->
+        <test-method status="PASS" signature="afterMethod()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="afterMethod" is-config="true" duration-ms="3" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterMethod -->
+        <test-method status="PASS" signature="beforeMethod()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="beforeMethod" is-config="true" duration-ms="0" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method status="PASS" signature="shouldCheckExists()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="shouldCheckExists" duration-ms="57" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldCheckExists -->
+        <test-method status="PASS" signature="afterMethod()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="afterMethod" is-config="true" duration-ms="0" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterMethod -->
+        <test-method status="PASS" signature="beforeMethod()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="beforeMethod" is-config="true" duration-ms="1" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method status="PASS" signature="shouldCreateModel()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="shouldCreateModel" duration-ms="426" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldCreateModel -->
+        <test-method status="PASS" signature="beforeMethod()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="beforeMethod" is-config="true" duration-ms="1" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method status="PASS" signature="afterMethod()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="afterMethod" is-config="true" duration-ms="0" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterMethod -->
+        <test-method status="PASS" signature="shouldDeleteAll()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="shouldDeleteAll" duration-ms="18" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldDeleteAll -->
+        <test-method status="PASS" signature="afterMethod()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="afterMethod" is-config="true" duration-ms="1" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterMethod -->
+        <test-method status="PASS" signature="beforeMethod()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="beforeMethod" is-config="true" duration-ms="0" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method status="PASS" signature="shouldDeleteEntity()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="shouldDeleteEntity" duration-ms="6" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldDeleteEntity -->
+        <test-method status="PASS" signature="afterMethod()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="afterMethod" is-config="true" duration-ms="1" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterMethod -->
+        <test-method status="PASS" signature="beforeMethod()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="beforeMethod" is-config="true" duration-ms="0" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method status="PASS" signature="shouldFindAll()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="shouldFindAll" duration-ms="11" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldFindAll -->
+        <test-method status="PASS" signature="afterMethod()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="afterMethod" is-config="true" duration-ms="1" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterMethod -->
+        <test-method status="PASS" signature="beforeMethod()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="beforeMethod" is-config="true" duration-ms="0" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method status="PASS" signature="shouldFindById()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="shouldFindById" duration-ms="2" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldFindById -->
+        <test-method status="PASS" signature="afterMethod()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="afterMethod" is-config="true" duration-ms="1" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterMethod -->
+        <test-method status="PASS" signature="beforeMethod()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="beforeMethod" is-config="true" duration-ms="0" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method status="PASS" signature="shouldMergeWithEntity()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="shouldMergeWithEntity" duration-ms="8" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldMergeWithEntity -->
+        <test-method status="PASS" signature="afterMethod()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="afterMethod" is-config="true" duration-ms="0" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterMethod -->
+        <test-method status="PASS" signature="shouldSearchAndReturnFirst()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="shouldSearchAndReturnFirst" duration-ms="22" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldSearchAndReturnFirst -->
+        <test-method status="PASS" signature="beforeMethod()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="beforeMethod" is-config="true" duration-ms="0" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method status="PASS" signature="afterMethod()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="afterMethod" is-config="true" duration-ms="1" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterMethod -->
+        <test-method status="PASS" signature="shouldSearchAndReturnTheOnlyMatch()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="shouldSearchAndReturnTheOnlyMatch" duration-ms="5" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldSearchAndReturnTheOnlyMatch -->
+        <test-method status="PASS" signature="beforeMethod()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="beforeMethod" is-config="true" duration-ms="0" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method status="PASS" signature="afterMethod()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="afterMethod" is-config="true" duration-ms="0" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterMethod -->
+        <test-method status="PASS" signature="beforeMethod()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="beforeMethod" is-config="true" duration-ms="1" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method status="PASS" signature="shouldSearchByKeyValue()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="shouldSearchByKeyValue" duration-ms="12" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldSearchByKeyValue -->
+        <test-method status="PASS" signature="beforeMethod()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="beforeMethod" is-config="true" duration-ms="1" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method status="PASS" signature="afterMethod()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="afterMethod" is-config="true" duration-ms="0" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterMethod -->
+        <test-method status="PASS" signature="shouldSearchByMultipleKeyValues()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="shouldSearchByMultipleKeyValues" duration-ms="6" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldSearchByMultipleKeyValues -->
+        <test-method status="PASS" signature="afterMethod()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="afterMethod" is-config="true" duration-ms="0" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterMethod -->
+        <test-method status="PASS" signature="shouldSearchUsingFilter()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="shouldSearchUsingFilter" duration-ms="6" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldSearchUsingFilter -->
+        <test-method status="PASS" signature="beforeMethod()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="beforeMethod" is-config="true" duration-ms="0" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method status="PASS" signature="afterMethod()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="afterMethod" is-config="true" duration-ms="0" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterMethod -->
+        <test-method status="PASS" signature="shouldThrowExceptionIfMoreThanOneMatches()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="shouldThrowExceptionIfMoreThanOneMatches" duration-ms="6" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <exception class="javax.persistence.NonUniqueResultException">
+            <message>
+              <![CDATA[result returns more than one elements]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[javax.persistence.NonUniqueResultException: result returns more than one elements
+	at org.hibernate.ejb.QueryImpl.getSingleResult(QueryImpl.java:293)
+	at org.activejpa.entity.Model.one(Model.java:73)
+	at org.activejpa.entity.DummyModel.one(DummyModel.java)
+	at org.activejpa.entity.ModelTest.shouldThrowExceptionIfMoreThanOneMatches(ModelTest.java:107)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:84)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:714)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:901)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1231)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
+	at org.testng.TestRunner.privateRun(TestRunner.java:767)
+	at org.testng.TestRunner.run(TestRunner.java:617)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:334)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:329)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:291)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:240)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1224)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1149)
+	at org.testng.TestNG.run(TestNG.java:1057)
+	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:111)
+	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:204)
+	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:175)
+]]>
+            </full-stacktrace>
+          </exception> <!-- javax.persistence.NonUniqueResultException -->
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldThrowExceptionIfMoreThanOneMatches -->
+        <test-method status="PASS" signature="beforeMethod()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="beforeMethod" is-config="true" duration-ms="0" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method status="PASS" signature="afterMethod()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="afterMethod" is-config="true" duration-ms="1" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterMethod -->
+        <test-method status="PASS" signature="beforeMethod()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="beforeMethod" is-config="true" duration-ms="0" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- beforeMethod -->
+        <test-method status="PASS" signature="shouldThrowExceptionIfNoMatcheFound()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="shouldThrowExceptionIfNoMatcheFound" duration-ms="2" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <exception class="javax.persistence.NoResultException">
+            <message>
+              <![CDATA[No entity found for query]]>
+            </message>
+            <full-stacktrace>
+              <![CDATA[javax.persistence.NoResultException: No entity found for query
+	at org.hibernate.ejb.QueryImpl.getSingleResult(QueryImpl.java:286)
+	at org.activejpa.entity.Model.one(Model.java:73)
+	at org.activejpa.entity.DummyModel.one(DummyModel.java)
+	at org.activejpa.entity.ModelTest.shouldThrowExceptionIfNoMatcheFound(ModelTest.java:112)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:84)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:714)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:901)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1231)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
+	at org.testng.TestRunner.privateRun(TestRunner.java:767)
+	at org.testng.TestRunner.run(TestRunner.java:617)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:334)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:329)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:291)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:240)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:52)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:86)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1224)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1149)
+	at org.testng.TestNG.run(TestNG.java:1057)
+	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:111)
+	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:204)
+	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:175)
+]]>
+            </full-stacktrace>
+          </exception> <!-- javax.persistence.NoResultException -->
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- shouldThrowExceptionIfNoMatcheFound -->
+        <test-method status="PASS" signature="afterMethod()[pri:0, instance:org.activejpa.entity.ModelTest@85379bc]" name="afterMethod" is-config="true" duration-ms="0" started-at="2013-04-18T09:50:41Z" finished-at="2013-04-18T09:50:41Z">
+          <reporter-output>
+          </reporter-output>
+        </test-method> <!-- afterMethod -->
+      </class> <!-- org.activejpa.entity.ModelTest -->
+    </test> <!-- Default test -->
+  </suite> <!-- Default suite -->
+</testng-results>

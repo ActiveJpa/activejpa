@@ -1,12 +1,12 @@
 /**
  * 
  */
-package org.activejpa.entity;
+package org.activejpa.entity.testng;
 
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
+import java.util.List;
 
-import org.activejpa.enhancer.MyClassLoader;
 import org.testng.IObjectFactory;
 
 /**
@@ -15,13 +15,18 @@ import org.testng.IObjectFactory;
  */
 public class DomainClassObjectFactory implements IObjectFactory {
 	
-	private MyClassLoader loader;
+	private static final long serialVersionUID = 1L;
 	
-	public DomainClassObjectFactory() {
-		 loader = new MyClassLoader(Thread.currentThread().getContextClassLoader(), Arrays.asList("org.xml."));
-		 Thread.currentThread().setContextClassLoader(loader);
+	private ClassLoader loader;
+	
+	public DomainClassObjectFactory() throws Exception {
+		Class<?> clazz = Class.forName("org.activejpa.enhancer.MyClassLoader");
+		Constructor<?> constructor = clazz.getConstructor(ClassLoader.class, List.class);
+		loader = (ClassLoader) constructor.newInstance(Thread.currentThread().getContextClassLoader(), Arrays.asList("org.xml."));
+		Thread.currentThread().setContextClassLoader(loader);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Object newInstance(Constructor constructor, Object... params) {
 		Class<?> clazz = constructor.getDeclaringClass();

@@ -14,11 +14,9 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 
-import org.activejpa.BaseTest;
+import org.activejpa.entity.testng.BaseModelTest;
 import org.activejpa.jpa.JPA;
-import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 
@@ -26,21 +24,11 @@ import org.testng.annotations.Test;
  * @author ganeshs
  *
  */
-public class ModelTest extends BaseTest {
+public class ModelTest extends BaseModelTest {
 	
 	@BeforeClass
 	public void beforeClass() {
 		JPA.instance.addPersistenceUnit("test");
-	}
-	
-	@BeforeMethod
-	public void setup() {
-		JPA.instance.getDefaultConfig().getContext(false).beginTxn();
-	}
-	
-	@AfterMethod
-	public void destroy() {
-		JPA.instance.getDefaultConfig().getContext(false).closeTxn(true);
 	}
 	
 	@Test
