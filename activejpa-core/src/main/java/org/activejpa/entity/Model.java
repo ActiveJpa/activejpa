@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.activejpa.jpa.JPA;
@@ -37,11 +38,19 @@ public abstract class Model {
 		throw new UnsupportedOperationException(NIE);
 	}
 	
+	public static long count(Filter filter) {
+		throw new UnsupportedOperationException(NIE);
+	}
+	
 	public static <T extends Model> List<T> all() {
 		throw new UnsupportedOperationException(NIE);
 	}
 	
 	public static void deleteAll() {
+		throw new UnsupportedOperationException(NIE);
+	}
+	
+	public static void deleteAll(Filter filter) {
 		throw new UnsupportedOperationException(NIE);
 	}
 	
@@ -119,7 +128,18 @@ public abstract class Model {
 	}
 	
 	protected static <T extends Model> long count(final Class<T> clazz) {
-		return getEntityManager().createQuery("select count(*) from " + clazz.getSimpleName(), Long.class).getSingleResult();
+		return count(clazz, new Filter());
+	}
+	
+	protected static <T extends Model> long count(final Class<T> clazz, Filter filter) {
+		StringWriter writer = new StringWriter();
+		writer.append("select count(*) from ").append(clazz.getSimpleName());
+		if (! filter.getConditions().isEmpty()) {
+			writer.append(" where ").append(filter.constructQuery());
+		}
+		TypedQuery<Long> query = getEntityManager().createQuery(writer.toString(), Long.class);
+		filter.setParameters(query, 1);
+		return query.getSingleResult();
 	}
 	
 	protected static <T extends Model> List<T> all(Class<T> clazz) {
@@ -127,7 +147,18 @@ public abstract class Model {
 	}
 	
 	protected static <T extends Model> void deleteAll(Class<T> clazz) {
-		getEntityManager().createQuery("delete from " + clazz.getSimpleName()).executeUpdate();
+		deleteAll(clazz, new Filter());
+	}
+	
+	protected static <T extends Model> void deleteAll(Class<T> clazz, Filter filter) {
+		StringWriter writer = new StringWriter();
+		writer.append("delete from ").append(clazz.getSimpleName());
+		if (! filter.getConditions().isEmpty()) {
+			writer.append(" where ").append(filter.constructQuery());
+		}
+		Query query = getEntityManager().createQuery(writer.toString());
+		filter.setParameters(query, 1);
+		query.executeUpdate();
 	}
 	
 	protected static <T extends Model> boolean exists(Class<T> clazz, Serializable id) {

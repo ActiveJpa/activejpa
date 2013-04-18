@@ -87,7 +87,9 @@ public class DomainClassEnhancer {
 		createMethod(ctClass, "findById", Model.class.getName(), "java.io.Serializable id");
 		createMethod(ctClass, "all", "java.util.List");
 		createMethod(ctClass, "count", "long");
+		createMethod(ctClass, "count", "long", Filter.class.getName() + " filter");
 		createMethod(ctClass, "deleteAll", "void");
+		createMethod(ctClass, "deleteAll", "void", Filter.class.getName() + " filter");
 		createMethod(ctClass, "exists", "boolean", "java.io.Serializable id");
 		createMethod(ctClass, "where", "java.util.List", "Object[] paramValues");
 		createMethod(ctClass, "where", "java.util.List", Filter.class.getName() + " filter");

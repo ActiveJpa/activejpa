@@ -54,10 +54,12 @@ public class DomainClassEnhancerTest {
 		enhancer.enhance(this.getClass().getClassLoader(), DummyModel.class.getName().replace(".", "/"));
 		assertNotNull(ctClass.getMethod("findById", "(Ljava/io/Serializable;)Lorg/activejpa/entity/Model;"));
 		assertNotNull(ctClass.getMethod("count", "()J"));
+		assertNotNull(ctClass.getMethod("count", "(Lorg/activejpa/entity/Filter;)J"));
 		assertNotNull(ctClass.getMethod("all", "()Ljava/util/List;"));
 		assertNotNull(ctClass.getMethod("one", "([Ljava/lang/Object;)Lorg/activejpa/entity/Model;"));
 		assertNotNull(ctClass.getMethod("first", "([Ljava/lang/Object;)Lorg/activejpa/entity/Model;"));
 		assertNotNull(ctClass.getMethod("deleteAll", "()V"));
+		assertNotNull(ctClass.getMethod("deleteAll", "(Lorg/activejpa/entity/Filter;)V"));
 		assertNotNull(ctClass.getMethod("where", "([Ljava/lang/Object;)Ljava/util/List;"));
 		assertNotNull(ctClass.getMethod("where", "(Lorg/activejpa/entity/Filter;)Ljava/util/List;"));
 		assertNotNull(ctClass.getMethod("exists", "(Ljava/io/Serializable;)Z"));

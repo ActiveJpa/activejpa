@@ -59,6 +59,14 @@ public class ModelTest extends BaseModelTest {
 	}
 	
 	@Test
+	public void shouldDeleteAllByFilter() {
+		createModel("test234", "test");
+		createModel("test123", "test");
+		DummyModel.deleteAll(new Filter(new Condition("column1", "test123")));
+		assertEquals(DummyModel.count(), 1);
+	}
+	
+	@Test
 	public void shouldSearchByKeyValue() {
 		DummyModel model = createModel("test123", "test");
 		createModel("test1234", "test");
@@ -139,6 +147,14 @@ public class ModelTest extends BaseModelTest {
 		DummyModel model = createModel("test", "test123");
 		model.delete();
 		assertNull(DummyModel.findById(model.getId()));
+	}
+	
+	@Test
+	public void shouldCountByFilter() {
+		createModel("test", "test123");
+		createModel("test1", "test124");
+		createModel("test1", "test124");
+		assertEquals(DummyModel.count(new Filter(new Condition("column2", "test124"))), 2);
 	}
 	
 	private DummyModel createModel(String column1, String column2) {
