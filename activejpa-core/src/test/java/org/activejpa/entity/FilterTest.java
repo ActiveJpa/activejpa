@@ -58,7 +58,7 @@ public class FilterTest {
 		Filter filter = new Filter();
 		filter.addCondition("testKey", Operator.eq, "testValue");
 		filter.addCondition("testKey1", Operator.eq, "testValue1");
-		assertEquals(filter.constructQuery(), "testKey = ?  and testKey1 = ? ");
+		assertEquals(filter.constructQuery(), "testKey = :testKey and testKey1 = :testKey1");
 	}
 	
 	@Test
@@ -67,8 +67,8 @@ public class FilterTest {
 		filter.addCondition("testKey", Operator.eq, "testValue");
 		filter.addCondition("testKey1", Operator.eq, "testValue1");
 		Query query = mock(Query.class);
-		filter.setParameters(query, 3);
-		verify(query).setParameter(3, "testValue");
-		verify(query).setParameter(4, "testValue1");
+		filter.setParameters(query);
+		verify(query).setParameter("testKey", "testValue");
+		verify(query).setParameter("testKey1", "testValue1");
 	}
 }

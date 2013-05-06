@@ -9,6 +9,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.activejpa.entity.Condition.Operator;
 
@@ -97,13 +101,22 @@ public class Filter {
 		return writer.toString();
 	}
 	
-	public int setParameters(Query query, int startPosition) {
+	public <T extends Model> void constructQuery(CriteriaBuilder builder, CriteriaQuery<?> query, Root<T> root) {
+		if (conditions != null || !conditions.isEmpty()) {
+			List<Predicate> predicates = new ArrayList<Predicate>();
+			for (Condition condition : conditions) {
+				predicates.add(condition.constructQuery(builder, root));
+			}
+			query.where(predicates.toArray(new Predicate[0]));
+		}
+	}
+	
+	public void setParameters(Query query) {
 		if (conditions != null && !conditions.isEmpty()) {
 			for (Condition condition : conditions) {
-				startPosition = condition.setParameters(query, startPosition, condition.getValue());
+				condition.setParameters(query, condition.getValue());
 			}
 		}
-		return startPosition;
 	}
 
 	@Override

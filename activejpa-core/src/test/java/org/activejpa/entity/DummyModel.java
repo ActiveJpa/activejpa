@@ -3,10 +3,18 @@
  */
 package org.activejpa.entity;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 /**
  * @author ganeshs
@@ -22,6 +30,47 @@ public class DummyModel extends Model {
 	private String column2;
 	
 	private String column3;
+	
+	private Set<DummyModel> children = new HashSet<DummyModel>();
+	
+	private DummyModel parent;
+
+	/**
+	 * @return the parent
+	 */
+	@ManyToOne(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+	@JoinColumn(name="parent_id")
+	public DummyModel getParent() {
+		return parent;
+	}
+
+	/**
+	 * @param parent the parent to set
+	 */
+	public void setParent(DummyModel parent) {
+		this.parent = parent;
+	}
+
+	/**
+	 * @return the children
+	 */
+	@OneToMany(fetch=FetchType.LAZY)
+	@JoinColumn(name="parent_id")
+	public Set<DummyModel> getChildren() {
+		return children;
+	}
+
+	/**
+	 * @param children the children to set
+	 */
+	public void setChildren(Set<DummyModel> children) {
+		this.children = children;
+	}
+	
+	public void addChild(DummyModel child) {
+		child.parent = this;
+		this.children.add(child);
+	}
 
 	@Override
 	@Id

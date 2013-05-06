@@ -9,6 +9,7 @@ import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
 import java.util.Arrays;
+import java.util.List;
 
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
@@ -155,6 +156,31 @@ public class ModelTest extends BaseModelTest {
 		createModel("test1", "test124");
 		createModel("test1", "test124");
 		assertEquals(DummyModel.count(new Filter(new Condition("column2", "test124"))), 2);
+	}
+	
+	@Test
+	public void shouldSearchByFilterJoin() {
+		DummyModel parent = createModel("test", "test123");
+		DummyModel child1 = createModel("test1", "test124");
+		DummyModel child2 = createModel("test1", "test124");
+		parent.addChild(child1);
+		parent.addChild(child2);
+		parent.persist();
+		List<DummyModel> list = DummyModel.where(new Filter(new Condition("children.column1", "test1"), new Condition("column1", "test")));
+		assertEquals(list.size(), 2);
+	}
+	
+	@Test
+	public void shouldFilterCollection() {
+		DummyModel parent = createModel("test", "test123");
+		DummyModel child1 = createModel("test1", "test124");
+		DummyModel child2 = createModel("test2", "test123");
+		parent.addChild(child1);
+		parent.addChild(child2);
+		parent.persist();
+		List<DummyModel> list = parent.filterCollection(DummyModel.class, "children", new Filter(new Condition("children.column1", "test2")));
+		assertEquals(list.size(), 1);
+		assertEquals(list.get(0), child2);
 	}
 	
 	private DummyModel createModel(String column1, String column2) {

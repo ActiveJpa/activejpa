@@ -3,7 +3,16 @@
  */
 package org.activejpa.entity;
 
+import java.util.Set;
+
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.From;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 /**
  * @author ganeshs
@@ -15,21 +24,57 @@ public class Condition {
 	 * @author ganeshs
 	 *
 	 */
+	@SuppressWarnings({"rawtypes", "unchecked"})
 	public enum Operator {
-		eq("="), 
-		ne("!="), 
-		le("<="), 
-		lt("<"), 
-		ge(">="), 
-		gt(">"), 
+		eq("=") {
+			@Override
+			protected Predicate createPredicate(CriteriaBuilder builder, Path path, Expression... parameter) {
+				return builder.equal(path, parameter[0]);
+			} 
+		},
+		ne("!=") {
+			@Override
+			protected Predicate createPredicate(CriteriaBuilder builder, Path path, Expression... parameter) {
+				return builder.notEqual(path, parameter[0]);
+			}
+		},
+		le("<=") {
+			@Override
+			protected Predicate createPredicate(CriteriaBuilder builder, Path path, Expression... parameter) {
+				return builder.lessThanOrEqualTo(path, parameter[0]);
+			}
+		},
+		lt("<") {
+			@Override
+			protected Predicate createPredicate(CriteriaBuilder builder, Path path, Expression... parameter) {
+				return builder.lessThan(path, parameter[0]);
+			}
+		},
+		ge(">=") {
+			@Override
+			protected Predicate createPredicate(CriteriaBuilder builder, Path path, Expression... parameter) {
+				return builder.greaterThanOrEqualTo(path, parameter[0]);
+			}
+		}, 
+		gt(">") {
+			@Override
+			protected Predicate createPredicate(CriteriaBuilder builder, Path path, Expression... parameter) {
+				return builder.greaterThan(path, parameter[0]);
+			}
+		},
 		between("between") {
 			@Override
 			public String constructCondition(String name, Object value) {
-				return name + " between ? and ? ";
+				return name + " between :from" + name + " and :to" + name;
 			}
 			
 			@Override
-			public int setParameters(Query query, String name, Object value, int position) {
+			public Predicate constructCondition(CriteriaBuilder builder, Path path, String name) {
+				return createPredicate(builder, path, builder.parameter(path.getJavaType(), "from" + name), builder.parameter(path.getJavaType(), "to" + name));
+			}
+			
+			@Override
+			public void setParameters(Query query, String name, Object value) {
 				Object[] values = null;
 				if (value instanceof Object[]) {
 					values = (Object[]) value;
@@ -37,13 +82,27 @@ public class Condition {
 				if (values == null || values.length != 2) {
 					throw new IllegalArgumentException("Value - " + value + " should be an array of size 2");
 				}
-				query.setParameter(position++, values[0]);
-				query.setParameter(position++, values[1]);
-				return position;
+				query.setParameter("from" + name, values[0]);
+				query.setParameter("to" + name, values[1]);
+			}
+			
+			@Override
+			protected Predicate createPredicate(CriteriaBuilder builder, Path path, Expression... parameter) {
+				return builder.between(path, parameter[0], parameter[1]);
 			}
 		}, 
-		in("in"), 
-		like("like");
+		in("in") {
+			@Override
+			protected Predicate createPredicate(CriteriaBuilder builder, Path path, Expression... parameter) {
+				return builder.in(path);
+			}
+		},
+		like("like") {
+			@Override
+			protected Predicate createPredicate(CriteriaBuilder builder, Path path, Expression... parameter) {
+				return builder.like(path, parameter[0]);
+			}
+		};
 		
 		private String operator;
 		
@@ -52,13 +111,18 @@ public class Condition {
 		}
 		
 		public String constructCondition(String name, Object value) {
-			return name + " " + operator + " ? ";
+			return name + " " + operator + " :" + name;
 		}
 		
-		public int setParameters(Query query, String name, Object value, int position) {
-			query.setParameter(position++, value);
-			return position;
+		public void setParameters(Query query, String name, Object value) {
+			query.setParameter(name, value);
 		}
+		
+		public Predicate constructCondition(CriteriaBuilder builder, Path path, String name) {
+			return createPredicate(builder, path, builder.parameter(path.getJavaType(), name));
+		}
+		
+		protected abstract Predicate createPredicate(CriteriaBuilder builder, Path path, Expression... parameter);
 	}
 	
 	private String name;
@@ -138,8 +202,36 @@ public class Condition {
 		return operator.constructCondition(name, value);
 	}
 	
-	public int setParameters(Query query, int position, Object value) {
-		return operator.setParameters(query, name, value, position);
+	public <T extends Model> Predicate constructQuery(CriteriaBuilder builder, Root<T> root) {
+		Path<?> path = getPath(root, name);
+		return operator.constructCondition(builder, path, name);
+	}
+	
+	public void setParameters(Query query, Object value) {
+		operator.setParameters(query, name, value);
+	}
+	
+	private <T, S> Path<?> getPath(From<T, S> root, String name) {
+		int index = name.indexOf(".");
+		if (index > 0 ) {
+			String attribute = name.substring(0, index);
+			From<S, ?> join = getJoin(attribute, root.getJoins());
+			if (join == null) {
+				join = root.join(attribute);
+			}
+			return getPath(join, name.substring(index + 1));
+		} else {
+			return root.get(name);
+		}
+	}
+	
+	private <T> Join<T, ?> getJoin(String name, Set<Join<T, ?>> joins) {
+		for (Join<T, ?> join : joins) {
+			if (join.getAttribute().getName().equals(name)) {
+				return join;
+			}
+		}
+		return null;
 	}
 
 	@Override
