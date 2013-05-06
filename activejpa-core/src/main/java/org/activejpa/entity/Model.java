@@ -229,12 +229,12 @@ public abstract class Model {
 	}
 	
 	protected static <T extends Model> long count(final Class<T> clazz, Filter filter) {
-		StringWriter writer = new StringWriter();
-		writer.append("select count(*) from ").append(clazz.getSimpleName());
-		if (! filter.getConditions().isEmpty()) {
-			writer.append(" where ").append(filter.constructQuery());
-		}
-		TypedQuery<Long> query = getEntityManager().createQuery(writer.toString(), Long.class);
+		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+		CriteriaQuery<Long> cQuery = builder.createQuery(Long.class);
+		Root<T> root = cQuery.from(clazz);
+		cQuery.select(builder.count(root));
+		filter.constructQuery(builder, cQuery, root);
+		TypedQuery<Long> query = getEntityManager().createQuery(cQuery);
 		filter.setParameters(query);
 		return query.getSingleResult();
 	}
@@ -262,6 +262,14 @@ public abstract class Model {
 		return findById(clazz, id) != null;
 	}
 	
+	/**
+	 * Filters the collection under the scope of current model
+	 * 
+	 * @param clazz
+	 * @param collectionName
+	 * @param filter
+	 * @return
+	 */
 	public <T extends Model> List<T> filterCollection(Class<T> clazz, String collectionName, Filter filter) {
 		TypedQuery<T> query = createQuery(getClass(), collectionName, clazz, filter);
 		filter.setParameters(query);

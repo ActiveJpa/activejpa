@@ -3,10 +3,16 @@
  */
 package org.activejpa.entity;
 
-import static org.testng.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.testng.Assert.assertEquals;
 
 import javax.persistence.Query;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 import org.activejpa.entity.Condition.Operator;
 import org.testng.annotations.Test;
@@ -59,6 +65,20 @@ public class FilterTest {
 		filter.addCondition("testKey", Operator.eq, "testValue");
 		filter.addCondition("testKey1", Operator.eq, "testValue1");
 		assertEquals(filter.constructQuery(), "testKey = :testKey and testKey1 = :testKey1");
+	}
+	
+	@Test
+	public void shouldConstructCriteriaQuery() {
+		Filter filter = new Filter(mock(Condition.class), mock(Condition.class));
+		CriteriaBuilder builder = mock(CriteriaBuilder.class);
+		Root root = mock(Root.class);
+		Predicate p1 = mock(Predicate.class);
+		Predicate p2 = mock(Predicate.class);
+		when(filter.getConditions().get(0).constructQuery(builder, root)).thenReturn(p1);
+		when(filter.getConditions().get(1).constructQuery(builder, root)).thenReturn(p2);
+		CriteriaQuery query = mock(CriteriaQuery.class);
+		filter.constructQuery(builder, query, root);
+		verify(query).where(p1, p2);
 	}
 	
 	@Test
