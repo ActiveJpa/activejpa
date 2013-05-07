@@ -32,7 +32,7 @@ public class Filter {
 		this.pageNo = pageNo > 0 ? pageNo : 1;
 		this.perPage = (perPage < 1) ? Integer.MAX_VALUE : perPage;
 		if (conditions != null && conditions.length > 0) {
-			this.conditions = Arrays.asList(conditions);
+			this.conditions.addAll(Arrays.asList(conditions));
 		}
 	}
 	

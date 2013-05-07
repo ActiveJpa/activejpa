@@ -1,0 +1,57 @@
+/**
+ * 
+ */
+package org.activejpa.entity;
+
+import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Root;
+
+import org.activejpa.jpa.JPA;
+
+/**
+ * @author ganeshs
+ *
+ */
+class BaseObject {
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	protected static <T extends Model, S extends Model> TypedQuery<S> createQuery(Class<T> entityType, String attribute, Class<S> attributeType, Filter filter) {
+		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+		CriteriaQuery<S> cQuery = builder.createQuery(attributeType);
+		Root<T> root = cQuery.from(entityType);
+		if (attribute != null) {
+			Join join = root.join(attribute);
+			cQuery.select(join);
+		}
+		filter.constructQuery(builder, cQuery, root);
+		TypedQuery<S> query = getEntityManager().createQuery(cQuery);
+		filter.setParameters(query);
+		return query;
+	}
+	
+	protected static <T extends Model> TypedQuery<T> createQuery(Class<T> clazz, Filter filter) {
+		return createQuery(clazz, null, clazz, filter);
+	}
+	
+	protected static <T extends Model> TypedQuery<T> createQuery(Class<T> clazz, Object... paramValues) {
+		return createQuery(clazz, createFilter(paramValues));
+	}
+	
+	protected static Filter createFilter(Object... paramValues) {
+		Filter filter = new Filter();
+		if (paramValues != null) {
+			for (int i = 0; i < paramValues.length; i += 2) {
+				filter.addCondition(paramValues[i].toString(), paramValues[i + 1]);
+			}
+		}
+		return filter;
+	}
+	
+	protected static EntityManager getEntityManager() {
+		return JPA.instance.getDefaultConfig().getContext().getEntityManager();
+	}
+}

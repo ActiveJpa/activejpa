@@ -16,8 +16,9 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
+import javax.persistence.metamodel.ManagedType;
+import javax.persistence.metamodel.PluralAttribute;
 
 import org.activejpa.jpa.JPA;
 import org.activejpa.jpa.JPAContext;
@@ -34,11 +35,12 @@ import org.activejpa.jpa.JPAContext;
  * Person.findById(1L);
  * Person.where("firstName", "Ganesh", "lastName", "Subramanian");
  * Person.count();
+ * Person.collection("accounts")
  * 
  * @author ganeshs
  *
  */
-public abstract class Model {
+public abstract class Model extends BaseObject {
 	
 	private static final String NIE = "Your models are not instrumented. Make sure you run with -javaagent:activejpa-instrument.jar";
 	
@@ -157,14 +159,6 @@ public abstract class Model {
 		throw new UnsupportedOperationException(NIE);
 	}
 	
-	protected static <T extends Model> T findById(Class<T> clazz, Serializable id) {
-		return getEntityManager().find(clazz, id);
-	}
-	
-	protected static <T extends Model> T one(Class<T> clazz, Object... paramValues) {
-		return createQuery(clazz, paramValues).getSingleResult();
-	}
-	
 	/**
 	 * Starts the transaction if its not active already. Returns back the new transaction or existing active one.
 	 * 
@@ -173,6 +167,14 @@ public abstract class Model {
 	public static EntityTransaction beginTxn() {
 		JPA.instance.getDefaultConfig().getContext().beginTxn();
 		return getEntityManager().getTransaction();
+	}
+	
+	protected static <T extends Model> T findById(Class<T> clazz, Serializable id) {
+		return getEntityManager().find(clazz, id);
+	}
+	
+	protected static <T extends Model> T one(Class<T> clazz, Object... paramValues) {
+		return createQuery(clazz, paramValues).getSingleResult();
 	}
 	
 	protected static <T extends Model> T first(Class<T> clazz, Object... paramValues) {
@@ -189,39 +191,6 @@ public abstract class Model {
 	
 	protected static <T extends Model> List<T> where(Class<T> clazz, Filter filter) {
 		return createQuery(clazz, filter).getResultList();
-	}
-	
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private static <T extends Model, S extends Model> TypedQuery<S> createQuery(Class<T> entityType, String attribute, Class<S> attributeType, Filter filter) {
-		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
-		CriteriaQuery<S> cQuery = builder.createQuery(attributeType);
-		Root<T> root = cQuery.from(entityType);
-		if (attribute != null) {
-			Join join = root.join(attribute);
-			cQuery.select(join);
-		}
-		filter.constructQuery(builder, cQuery, root);
-		TypedQuery<S> query = getEntityManager().createQuery(cQuery);
-		filter.setParameters(query);
-		return query;
-	}
-	
-	private static <T extends Model> TypedQuery<T> createQuery(Class<T> clazz, Filter filter) {
-		return createQuery(clazz, null, clazz, filter);
-	}
-	
-	private static <T extends Model> TypedQuery<T> createQuery(Class<T> clazz, Object... paramValues) {
-		Filter filter = new Filter();
-		if (paramValues != null) {
-			for (int i = 0; i < paramValues.length; i += 2) {
-				filter.addCondition(paramValues[i].toString(), paramValues[i + 1]);
-			}
-		}
-		return createQuery(clazz, filter);
-	}
-	
-	protected static EntityManager getEntityManager() {
-		return JPA.instance.getDefaultConfig().getContext().getEntityManager();
 	}
 	
 	protected static <T extends Model> long count(final Class<T> clazz) {
@@ -260,20 +229,6 @@ public abstract class Model {
 	
 	protected static <T extends Model> boolean exists(Class<T> clazz, Serializable id) {
 		return findById(clazz, id) != null;
-	}
-	
-	/**
-	 * Filters the collection under the scope of current model
-	 * 
-	 * @param clazz
-	 * @param collectionName
-	 * @param filter
-	 * @return
-	 */
-	public <T extends Model> List<T> filterCollection(Class<T> clazz, String collectionName, Filter filter) {
-		TypedQuery<T> query = createQuery(getClass(), collectionName, clazz, filter);
-		filter.setParameters(query);
-		return query.getResultList();
 	}
 	
 	/**
@@ -326,6 +281,18 @@ public abstract class Model {
 				return null;
 			}
 		}, true);
+	}
+	
+	public <T extends Model> EntityCollection<T> collection(String name) {
+		ManagedType<? extends Model> type = getEntityManager().getMetamodel().managedType(getClass());
+		Class<T> elementType = null;
+		if (type.getAttribute(name).isCollection()) {
+			elementType = ((PluralAttribute)type.getAttribute(name)).getElementType().getJavaType();
+		} else {
+			// Throw exception
+			return null;
+		}
+		return new EntityCollection<T>(this, name, elementType);
 	}
 	
 	protected static <T> T execute(Executor<T> executor, boolean readOnly) {

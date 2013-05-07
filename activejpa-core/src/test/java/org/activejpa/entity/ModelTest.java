@@ -5,6 +5,7 @@ package org.activejpa.entity;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
@@ -171,16 +172,15 @@ public class ModelTest extends BaseModelTest {
 	}
 	
 	@Test
-	public void shouldFilterCollection() {
+	public void shouldGetCollection() {
 		DummyModel parent = createModel("test", "test123");
 		DummyModel child1 = createModel("test1", "test124");
 		DummyModel child2 = createModel("test2", "test123");
 		parent.addChild(child1);
 		parent.addChild(child2);
 		parent.persist();
-		List<DummyModel> list = parent.filterCollection(DummyModel.class, "children", new Filter(new Condition("children.column1", "test2")));
-		assertEquals(list.size(), 1);
-		assertEquals(list.get(0), child2);
+		EntityCollection<DummyModel> collection = parent.collection("children");
+		assertNotNull(collection);
 	}
 	
 	private DummyModel createModel(String column1, String column2) {
