@@ -4,6 +4,10 @@
 	<groupId>org.activejpa</groupId>
 	<artifactId>activejpa-parent</artifactId>
 	<version>0.0.1</version>
+  <modules>
+    <module>activejpa-core</module>
+    <module>activejpa-test</module>
+  </modules>
 	<build>
 		<plugins>
 			<plugin>
