@@ -34,6 +34,10 @@ public class EntityCollection<T extends Model> extends BaseObject {
 		return one(name + ".id", id);
 	}
 	
+	public List<T> all() {
+		return where(new Filter());
+	}
+	
 	public T first(Object... paramValues) {
 		List<T> list = where(createFilter(paramValues));
 		if (list == null) {

@@ -5,6 +5,7 @@ package org.activejpa.entity;
 
 import java.util.Set;
 
+import javax.persistence.Parameter;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
@@ -13,6 +14,8 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+
+import org.apache.commons.beanutils.ConvertUtils;
 
 /**
  * @author ganeshs
@@ -82,8 +85,8 @@ public class Condition {
 				if (values == null || values.length != 2) {
 					throw new IllegalArgumentException("Value - " + value + " should be an array of size 2");
 				}
-				query.setParameter("from" + name, values[0]);
-				query.setParameter("to" + name, values[1]);
+				super.setParameters(query, "from" + name, values[0]);
+				super.setParameters(query, "to" + name, values[1]);
 			}
 			
 			@Override
@@ -115,6 +118,8 @@ public class Condition {
 		}
 		
 		public void setParameters(Query query, String name, Object value) {
+			Parameter param = query.getParameter(name);
+			value = ConvertUtils.convert(value, param.getParameterType());
 			query.setParameter(name, value);
 		}
 		

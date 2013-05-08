@@ -3,6 +3,7 @@
  */
 package org.activejpa.entity;
 
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -10,6 +11,7 @@ import static org.testng.Assert.assertEquals;
 
 import java.util.Arrays;
 
+import javax.persistence.Parameter;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.ParameterExpression;
@@ -17,7 +19,7 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 
 import org.activejpa.entity.Condition.Operator;
-import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /**
@@ -34,13 +36,20 @@ public class ConditionTest {
 	
 	private Root<? extends Model> root;
 	
-	@BeforeClass
+	private Query query;
+	
+	@BeforeMethod
 	public void setup() {
 		builder = mock(CriteriaBuilder.class);
 		path = mock(Path.class);
 		when(path.getJavaType()).thenReturn(String.class);
 		expression = mock(ParameterExpression.class);
 		root = mock(Root.class);
+		query = mock(Query.class);
+		Parameter param = mock(Parameter.class);
+		when(param.getParameterType()).thenReturn(String.class);
+		when(query.getParameter(anyString())).thenReturn(param);
+		
 	}
 
 	@Test
@@ -66,7 +75,6 @@ public class ConditionTest {
 	
 	@Test
 	public void shouldSetParametersForEqQuery() {
-		Query query = mock(Query.class);
 		Condition condition = new Condition("key", Operator.eq, "value");
 		condition.setParameters(query, "value");
 		verify(query).setParameter("key", "value");
@@ -89,7 +97,6 @@ public class ConditionTest {
 	
 	@Test
 	public void shouldSetParametersForNeQuery() {
-		Query query = mock(Query.class);
 		Condition condition = new Condition("key", Operator.ne, "value");
 		condition.setParameters(query, "value");
 		verify(query).setParameter("key", "value");
@@ -112,7 +119,6 @@ public class ConditionTest {
 	
 	@Test
 	public void shouldSetParametersForLtQuery() {
-		Query query = mock(Query.class);
 		Condition condition = new Condition("key", Operator.lt, "value");
 		condition.setParameters(query, "value");
 		verify(query).setParameter("key", "value");
@@ -135,7 +141,6 @@ public class ConditionTest {
 	
 	@Test
 	public void shouldSetParametersForGtQuery() {
-		Query query = mock(Query.class);
 		Condition condition = new Condition("key", Operator.gt, "value");
 		condition.setParameters(query, "value");
 		verify(query).setParameter("key", "value");
@@ -158,7 +163,6 @@ public class ConditionTest {
 	
 	@Test
 	public void shouldSetParametersForLeQuery() {
-		Query query = mock(Query.class);
 		Condition condition = new Condition("key", Operator.le, "value");
 		condition.setParameters(query, "value");
 		verify(query).setParameter("key", "value");
@@ -181,7 +185,6 @@ public class ConditionTest {
 	
 	@Test
 	public void shouldSetParametersForGeQuery() {
-		Query query = mock(Query.class);
 		Condition condition = new Condition("key", Operator.ge, "value");
 		condition.setParameters(query, "value");
 		verify(query).setParameter("key", "value");
@@ -204,7 +207,6 @@ public class ConditionTest {
 	
 	@Test
 	public void shouldSetParametersForInQuery() {
-		Query query = mock(Query.class);
 		Condition condition = new Condition("key", Operator.in, Arrays.asList("value"));
 		condition.setParameters(query, "value");
 		verify(query).setParameter("key", "value");
@@ -227,7 +229,6 @@ public class ConditionTest {
 	
 	@Test
 	public void shouldSetParametersForLikeQuery() {
-		Query query = mock(Query.class);
 		Condition condition = new Condition("key", Operator.like, "value");
 		condition.setParameters(query, "value");
 		verify(query).setParameter("key", "value");
@@ -251,7 +252,6 @@ public class ConditionTest {
 	
 	@Test
 	public void shouldSetParametersForBetweenQuery() {
-		Query query = mock(Query.class);
 		Condition condition = new Condition("key", Operator.between, new Object[]{"value1", "value2"});
 		condition.setParameters(query, new String[]{"value1", "value2"});
 		verify(query).setParameter("fromkey", "value1");

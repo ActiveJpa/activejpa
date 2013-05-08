@@ -3,11 +3,13 @@
  */
 package org.activejpa.entity;
 
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
 
+import javax.persistence.Parameter;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -87,6 +89,9 @@ public class FilterTest {
 		filter.addCondition("testKey", Operator.eq, "testValue");
 		filter.addCondition("testKey1", Operator.eq, "testValue1");
 		Query query = mock(Query.class);
+		Parameter param = mock(Parameter.class);
+		when(param.getParameterType()).thenReturn(String.class);
+		when(query.getParameter(anyString())).thenReturn(param);
 		filter.setParameters(query);
 		verify(query).setParameter("testKey", "testValue");
 		verify(query).setParameter("testKey1", "testValue1");
