@@ -10,7 +10,9 @@ import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
@@ -20,7 +22,6 @@ import org.activejpa.entity.testng.BaseModelTest;
 import org.activejpa.jpa.JPA;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
-
 
 /**
  * @author ganeshs
@@ -181,6 +182,17 @@ public class ModelTest extends BaseModelTest {
 		parent.persist();
 		EntityCollection<DummyModel> collection = parent.collection("children");
 		assertNotNull(collection);
+	}
+	
+	@Test
+	public void shouldUpdateAttributes() {
+		DummyModel parent = createModel("test", "test123");
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("column1", "test1");
+		map.put("column2", "test2");
+		parent.updateAttributes(map);
+		assertEquals(parent.getColumn1(), "test1");
+		assertEquals(parent.getColumn2(), "test2");
 	}
 	
 	private DummyModel createModel(String column1, String column2) {

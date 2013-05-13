@@ -6,6 +6,7 @@ package org.activejpa.entity;
 import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -20,8 +21,10 @@ import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.ManagedType;
 import javax.persistence.metamodel.PluralAttribute;
 
+import org.activejpa.ActiveJpaException;
 import org.activejpa.jpa.JPA;
 import org.activejpa.jpa.JPAContext;
+import org.apache.commons.beanutils.BeanUtils;
 
 
 
@@ -43,6 +46,23 @@ import org.activejpa.jpa.JPAContext;
 public abstract class Model extends BaseObject {
 	
 	private static final String NIE = "Your models are not instrumented. Make sure you run with -javaagent:activejpa-instrument.jar";
+	
+	public Model() {
+	}
+	
+	/**
+	 * Loads the given attributes to this model
+	 * 
+	 * @param attributes
+	 */
+	public void updateAttributes(Map<String, Object> attributes) {
+		try {
+			BeanUtils.populate(this, attributes);
+			persist();
+		} catch (Exception e) {
+			throw new ActiveJpaException("Failed while updating the attributes", e);
+		}
+	}
 	
 	/**
 	 * The model identifier. Override and annotate with {@link Id}
@@ -283,6 +303,12 @@ public abstract class Model extends BaseObject {
 		}, true);
 	}
 	
+	/**
+	 * Returns the collection object identified by the given name
+	 * 
+	 * @param name
+	 * @return
+	 */
 	public <T extends Model> EntityCollection<T> collection(String name) {
 		ManagedType<? extends Model> type = getEntityManager().getMetamodel().managedType(getClass());
 		Class<T> elementType = null;

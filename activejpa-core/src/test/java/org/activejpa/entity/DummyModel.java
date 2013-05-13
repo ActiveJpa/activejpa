@@ -4,6 +4,7 @@
 package org.activejpa.entity;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -34,6 +35,9 @@ public class DummyModel extends Model {
 	private Set<DummyModel> children = new HashSet<DummyModel>();
 	
 	private DummyModel parent;
+
+	public DummyModel() {
+	}
 
 	/**
 	 * @return the parent

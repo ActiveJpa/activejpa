@@ -5,7 +5,10 @@ package org.activejpa.entity;
 
 import static org.testng.Assert.assertEquals;
 
+import java.io.Serializable;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.activejpa.entity.testng.BaseModelTest;
 import org.activejpa.jpa.JPA;
@@ -49,7 +52,7 @@ public class EntityCollectionTest extends BaseModelTest {
 	}
 	
 	@Test
-	public void shouldSearchAndReturnFirst() {
+	public void should1SearchAndReturnFirst() {
 		assertEquals(model.collection("children").first("children.column1", "testChildColumn1"), child2);
 	}
 	
@@ -73,11 +76,83 @@ public class EntityCollectionTest extends BaseModelTest {
 		assertEquals(model.collection("children").where(new Filter(new Condition("children.column1", "testChildColumn0"), new Condition("children.column2", "testChildColumn2"))), Arrays.asList(child1));
 	}
 	
+	@Test
+	public void shouldAddItemToCollectionUsingAddMethod() {
+		ParentWithAddMethod parent = new ParentWithAddMethod();
+		EntityCollection<DummyModel> collection = new EntityCollection<DummyModel>(parent, "models", DummyModel.class);
+		collection.add(model);
+		assertEquals(parent.models.size(), 1);
+	}
+	
+	@Test
+	public void shouldAddItemToCollectionUsingGetter() {
+		ParentWithGetter parent = new ParentWithGetter();
+		EntityCollection<DummyModel> collection = new EntityCollection<DummyModel>(parent, "models", DummyModel.class);
+		collection.add(model);
+		assertEquals(parent.models.size(), 1);
+	}
+	
+	@Test
+	public void shouldAddItemToCollectionUsingField() {
+		ParentWithField parent = new ParentWithField();
+		EntityCollection<DummyModel> collection = new EntityCollection<DummyModel>(parent, "models", DummyModel.class);
+		collection.add(model);
+		assertEquals(parent.models.size(), 1);
+	}
+	
 	private DummyModel createModel(String column1, String column2) {
 		DummyModel model = new DummyModel();
 		model.setColumn1(column1);
 		model.setColumn2(column2);
 		model.persist();
 		return model;
+	}
+	
+	public static class ParentWithAddMethod extends Model {
+		
+		private Set<DummyModel> models = new HashSet<DummyModel>();
+		
+		public void addModel(DummyModel model) {
+			models.add(model);
+		}
+
+		@Override
+		public Serializable getId() {
+			return null;
+		}
+	}
+	
+	public static class ParentWithGetter extends Model {
+		
+		private Set<DummyModel> models = new HashSet<DummyModel>();
+		
+		@Override
+		public Serializable getId() {
+			return null;
+		}
+
+		/**
+		 * @return the models
+		 */
+		public Set<DummyModel> getModels() {
+			return models;
+		}
+
+		/**
+		 * @param models the models to set
+		 */
+		public void setModels(Set<DummyModel> models) {
+			this.models = models;
+		}
+	}
+	
+	public static class ParentWithField extends Model {
+		
+		private Set<DummyModel> models = new HashSet<DummyModel>();
+		
+		@Override
+		public Serializable getId() {
+			return null;
+		}
 	}
 }
