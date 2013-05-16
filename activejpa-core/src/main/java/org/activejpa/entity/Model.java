@@ -236,15 +236,22 @@ public abstract class Model extends BaseObject {
 		deleteAll(clazz, new Filter());
 	}
 	
-	protected static <T extends Model> void deleteAll(Class<T> clazz, Filter filter) {
-		StringWriter writer = new StringWriter();
-		writer.append("delete from ").append(clazz.getSimpleName());
-		if (! filter.getConditions().isEmpty()) {
-			writer.append(" where ").append(filter.constructQuery());
-		}
-		Query query = getEntityManager().createQuery(writer.toString());
-		filter.setParameters(query);
-		query.executeUpdate();
+	protected static <T extends Model> void deleteAll(final Class<T> clazz, final Filter filter) {
+		execute(new Executor<Void>() {
+			@Override
+			public Void execute(EntityManager manager) {
+				StringWriter writer = new StringWriter();
+				writer.append("delete from ").append(clazz.getSimpleName());
+				if (! filter.getConditions().isEmpty()) {
+					writer.append(" where ").append(filter.constructQuery());
+				}
+				Query query = manager.createQuery(writer.toString());
+				filter.setParameters(query);
+				query.executeUpdate();
+				return null;
+			}
+		}, false);
+		
 	}
 	
 	protected static <T extends Model> boolean exists(Class<T> clazz, Serializable id) {
