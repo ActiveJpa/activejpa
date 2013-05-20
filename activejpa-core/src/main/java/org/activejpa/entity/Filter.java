@@ -142,7 +142,7 @@ public class Filter {
 		if (conditions == null) {
 			if (other.conditions != null)
 				return false;
-		} else if (!conditions.equals(other.conditions))
+		} else if (!conditions.containsAll(other.conditions))
 			return false;
 		if (pageNo == null) {
 			if (other.pageNo != null)

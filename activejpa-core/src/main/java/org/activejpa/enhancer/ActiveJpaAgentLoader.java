@@ -15,11 +15,20 @@ import com.sun.tools.attach.VirtualMachine;
  * @author ganeshs
  *
  */
-public class ActionJpaAgentLoader {
+public class ActiveJpaAgentLoader {
 
-	static final Logger logger = LoggerFactory.getLogger(ActionJpaAgentLoader.class);
+	private static final Logger logger = LoggerFactory.getLogger(ActiveJpaAgentLoader.class);
+	
+	private static final ActiveJpaAgentLoader loader = new ActiveJpaAgentLoader();
+	
+	private ActiveJpaAgentLoader() {
+	}
+	
+	public static ActiveJpaAgentLoader instance() {
+		return loader;
+	}
 
-    public static void loadAgent() {
+    public void loadAgent() {
         logger.info("dynamically loading javaagent");
         String nameOfRunningVM = ManagementFactory.getRuntimeMXBean().getName();
         int p = nameOfRunningVM.indexOf('@');
