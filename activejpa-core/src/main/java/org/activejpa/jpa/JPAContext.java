@@ -9,7 +9,7 @@ import javax.persistence.EntityManager;
  * @author ganeshs
  *
  */
-public final class JPAContext {
+public class JPAContext {
 
 	private final JPAConfig config;
 	
