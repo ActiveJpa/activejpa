@@ -33,7 +33,9 @@ public class JPAContext {
 	}
 	
 	public void close() {
-		entityManager.close();
+		if (entityManager.isOpen()) {
+			entityManager.close();
+		}
 	}
 	
 	public void beginTxn() {

@@ -60,8 +60,17 @@ public class JPAContextTest extends BaseTest {
 	@Test
 	public void shouldClose() {
 		EntityManager entityManager = context.getEntityManager();
+		when(entityManager.isOpen()).thenReturn(true);
 		context.close();
 		verify(entityManager).close();
+	}
+	
+	@Test
+	public void shouldNotCloseIfNotOpen() {
+		EntityManager entityManager = context.getEntityManager();
+		when(entityManager.isOpen()).thenReturn(false);
+		context.close();
+		verify(entityManager, never()).close();
 	}
 	
 	@Test
