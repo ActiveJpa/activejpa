@@ -11,7 +11,6 @@ package org.mockito.configuration;
 public class MockitoConfiguration extends DefaultMockitoConfiguration {
 	
 	public MockitoConfiguration() {
-		System.out.println("test");
 	}
 
 	@Override
