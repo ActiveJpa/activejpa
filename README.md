@@ -3,7 +3,7 @@ ActiveJpa
 
 ActiveJpa is a java library that attempts to implement the active record pattern on top of JPA. The goal of this library is to eliminate the need to create DAO or Repository classes and make programming DAL a lot more simpler. 
 
-What can I do with ActiveJpa
+What can you do with ActiveJpa?
 ----------------------------
 AcitveJpa abstracts out some of the most common functionalities you might need in your DAL. You should be able to do,
 
@@ -93,7 +93,19 @@ ActiveJPA does some runtime bytecode enhancement to simplify development and mad
 ```java
 	ActiveJpaAgentLoader.instance().loadAgent();
 ```
+
+### Setup EntityManagerFactory
+
+You have to feed in the persistence unit to ActiveJpa to do the magic. There are multiple ways you can do this,
+
+```java
+	// Add the persistence unit defined by persistence.xml identified by the name 'order'. The persistence.xml should be available in the classpath
+	JPA.addPersistenceUnit('order');
 	
+	// If you have entity manager factory already created, you can attach the same to ActiveJpa
+	JPA.addPersistenceUnit('order', entityManagerFactory);
+```
+
 ### Enhancing your Entities
 
 ActiveJpa enhances all the classes that is a subclass of org.activejpa.entity.Model and has java.persistence.Entity annotation. So ensure all your JPA entities extend org.activejpa.entity.Model class 
@@ -111,3 +123,25 @@ ActiveJpa enhances all the classes that is a subclass of org.activejpa.entity.Mo
 		}
 	}
 ```
+
+### Managing transactions
+
+All the update operations in the model class will open up a transaction if one is not found in the current context. Below code demonstrates wrapping a unit of work under a transaction,
+
+```java
+	JPAContext context = JPA.instance.getDefaultConfig().getContext();
+	context.beginTxn();
+	boolean failed = true;
+	try {
+		// Your unit of work here
+		failed = false;
+	} finally {
+		// Commit or rollback the transaction
+		context.closeTxn(failed);
+	}
+	
+```
+
+License
+-------
+ActiveJPA is offered under Apache License, Version 2.0
