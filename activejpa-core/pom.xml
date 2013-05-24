@@ -93,10 +93,6 @@
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.atteo</groupId>
-			<artifactId>evo-inflector</artifactId>
-		</dependency>
 	</dependencies>
 	<dependencyManagement>
 		<dependencies>
@@ -149,11 +145,6 @@
 				<groupId>commons-beanutils</groupId>
 				<artifactId>commons-beanutils</artifactId>
 				<version>1.8.3</version>
-			</dependency>
-			<dependency>
-				<groupId>org.atteo</groupId>
-				<artifactId>evo-inflector</artifactId>
-				<version>1.0.1</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
