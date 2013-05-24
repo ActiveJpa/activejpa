@@ -45,7 +45,7 @@ import org.apache.commons.beanutils.BeanUtils;
  */
 public abstract class Model extends BaseObject {
 	
-	private static final String NIE = "Your models are not instrumented. Make sure you run with -javaagent:activejpa-instrument.jar";
+	private static final String NIE = "Your models are not instrumented. Make sure you run with -javaagent:activejpa-core.jar or you load the agent using ActiveJpaAgentLoader.instance().loadAgent()";
 	
 	public Model() {
 	}
