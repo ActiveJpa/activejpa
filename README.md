@@ -21,6 +21,45 @@ AcitveJpa abstracts out some of the most common functionalities you might need i
 	filter.addCondition(new Condition("orderItems.product.category", Operator.eq, "books");
 	List<Order> orders = Order.where(filter);
 	
+	// Count of orders matching the filter
+	Long count = Order.count(filter);
+	
+	// Get the first order matching the filter
+	Long count = Order.first("customer_email", "dummyemail@dummy.com", "status", "shipped");
+	
+	// Get the unique order matching the conditions
+	Long count = Order.one("customer_email", "dummyemail@dummy.com", "status", "shipped");
+	
+	// Dump everything
+	List<Order> orders = Order.all();
+	
+	// Delete all orders matching the filter
+	Long count = Order.deleteAll(filter);
+	
+	// Check if order exists with the given identifier
+	boolean exists = Order.exists(1234L);
+	
+	// Save order
+	order.setBillingAmount(1000.0);
+	order.persist();
+	
+	// Delete order
+	order.delete();
+	
+	// Update attributes
+	Map<String, Object> attributes = new HashMap<String, Object>();
+	attributes.put("billingAmount", 1000.0);
+	order.updateAttributes(attributes);
+	
+	// Find order item by id within an order
+	order.collections('order_items').findById(123L);
+	
+	// Search order items by filter with an order
+	order.collections('order_items').findById(filter);
+	
+	....
+	....
+	
 ```
 
 Getting Started
