@@ -52,10 +52,10 @@ AcitveJpa abstracts out some of the most common functionalities you might need i
 	order.updateAttributes(attributes);
 	
 	// Find order item by id within an order
-	order.collections('order_items').findById(123L);
+	order.collections("order_items").findById(123L);
 	
 	// Search order items by filter with an order
-	order.collections('order_items').findById(filter);
+	order.collections("order_items").findById(filter);
 	
 	....
 	....
@@ -100,10 +100,10 @@ You have to feed in the persistence unit to ActiveJpa to do the magic. There are
 
 ```java
 	// Add the persistence unit defined by persistence.xml identified by the name 'order'. The persistence.xml should be available in the classpath
-	JPA.addPersistenceUnit('order');
+	JPA.addPersistenceUnit("order");
 	
 	// If you have entity manager factory already created, you can attach the same to ActiveJpa
-	JPA.addPersistenceUnit('order', entityManagerFactory);
+	JPA.addPersistenceUnit("order", entityManagerFactory);
 ```
 
 ### Enhancing your Entities
@@ -154,11 +154,11 @@ ActiveJpa provides an abstract model test class for tesng that enables instrumen
 		@Test
 		public void testCreateOrder() {
 			Order order = new Order();
-			order.setCustomerEmail('dummyemail@dummy.com');
+			order.setCustomerEmail("dummyemail@dummy.com");
 			...
 			...
 			order.persist();
-			Assert.assertEquals(Order.where('customer_email', 'dummyemail@dummy.com').get(0), order);
+			Assert.assertEquals(Order.where("customer_email", "dummyemail@dummy.com").get(0), order);
 		}
 	}
 ```
