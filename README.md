@@ -142,6 +142,27 @@ All the update operations in the model class will open up a transaction if one i
 	
 ```
 
+### Testing your models
+
+The setup done for taking care of byte code instrumentation applies for your test cases. But most of the IDE's support running individual test cases and adding the -javaagent option to every such run is a pain.
+
+ActiveJpa provides an abstract model test class for tesng that enables instrumentation for all your modles without specifying -javaagent option to your test runs. To use this you will have to extend org.activejpa.entity.testng.BaseModelTest class,
+
+```java
+	public class OrderTest extends BaseModelTest {
+		
+		@Test
+		public void testCreateOrder() {
+			Order order = new Order();
+			order.setCustomerEmail('dummyemail@dummy.com');
+			...
+			...
+			order.persist();
+			Assert.assertEquals(Order.where('customer_email', 'dummyemail@dummy.com').get(0), order);
+		}
+	}
+```
+
 License
 -------
 ActiveJPA is offered under Apache License, Version 2.0
