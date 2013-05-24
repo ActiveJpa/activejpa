@@ -1,4 +1,10 @@
 *.class
+.idea
+target
+atlassian-ide-plugin.xml
+logs
+*.iml
+*.ipr
 
 # Package Files #
 *.jar
@@ -8,5 +14,5 @@
 # Eclipse Files
 .classpath
 .project
-.settings
+.settings/
 .factorypath
