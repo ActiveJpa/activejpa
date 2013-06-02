@@ -50,17 +50,12 @@ public class JPAContext {
 	}
 	
 	public void closeTxn(boolean rollback) {
-		try {
-			if (isTxnOpen()) {
-				if (rollback || readOnly || entityManager.getTransaction().getRollbackOnly()) {
-					entityManager.getTransaction().rollback();
-				} else {
-					entityManager.getTransaction().commit();
-				}
+		if (isTxnOpen()) {
+			if (rollback || readOnly || entityManager.getTransaction().getRollbackOnly()) {
+				entityManager.getTransaction().rollback();
+			} else {
+				entityManager.getTransaction().commit();
 			}
-		} finally {
-			config.clearContext();
-			close();
 		}
 	}
 	
