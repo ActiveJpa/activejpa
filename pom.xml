@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.activejpa</groupId>
 	<artifactId>activejpa</artifactId>
-	<version>0.0.4</version>
+	<version>0.0.5-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>ActiveJpa</name>
 	<modules>
@@ -19,7 +19,7 @@
 
 	<scm>
 		<developerConnection>scm:git:https://github.com/ActiveJpa/activejpa.git</developerConnection>
-	  <tag>cf6229c</tag>
+	  <tag>HEAD</tag>
   </scm>
 
 	<developers>
