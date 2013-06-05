@@ -1,79 +1,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.activejpa</groupId>
 	<artifactId>activejpa-test</artifactId>
-	<version>0.0.3</version>
 	<description>ActiveJpa test library</description>
-  <url>http://github.com/ActiveJpa/activejpa</url>
-  <licenses>
-    <license>
-      <name>The Apache Software License, Version 2.0</name>
-      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-      <distribution>repo</distribution>
-    </license>
-  </licenses>
-  <scm>
-    <url>https://github.com/ActiveJpa/activejpa</url>
-    <connection>https://github.com/ActiveJpa/activejpa</connection>
-  </scm>
-  <developers>
-    <developer>
-      <id>ganeshs</id>
-      <name>Ganesh Subramanian</name>
-      <email>subramanian.ganesh@gmail.com</email>
-    </developer>
-  </developers>
-	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.3.2</version>
-				<configuration>
-					<source />
-					<target />
-				</configuration>
-			</plugin>
 
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>attach-sources</id>
-						<goals>
-							<goal>jar</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.4</version>
-				<configuration>
-					<archive>
-						<addMavenDescriptor>false</addMavenDescriptor>
-						<manifestEntries>
-							<Premain-Class>org.activejpa.enhancer.ActiveJpaAgent</Premain-Class>
-							<Agent-Class>org.activejpa.enhancer.ActiveJpaAgent</Agent-Class>
-							<Can-Redefine-Classes>true</Can-Redefine-Classes>
-							<Can-Retransform-Classes>true</Can-Retransform-Classes>
-						</manifestEntries>
-					</archive>
-				</configuration>
-			</plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.9</version>
-        <configuration>
-          <stylesheetfile>${basedir}/src/main/javadoc/stylesheet.css</stylesheetfile>
-          <show>public</show>
-        </configuration>
-      </plugin>
-		</plugins>
-	</build>
+	<parent>
+		<groupId>org.activejpa</groupId>
+		<artifactId>activejpa</artifactId>
+		<version>0.0.4-SNAPSHOT</version>
+	</parent>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.testng</groupId>
