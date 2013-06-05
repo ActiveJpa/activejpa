@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.activejpa</groupId>
 	<artifactId>activejpa</artifactId>
-	<version>0.0.5-SNAPSHOT</version>
+	<version>0.0.4-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>ActiveJpa</name>
 	<modules>
@@ -14,7 +14,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<github.global.server>github</github.global.server>
-		<project.deploymentType>snapshots</project.deploymentType>
+    <project.deploymentType>${deploymentType}</project.deploymentType>
 	</properties>
 
 	<scm>
@@ -104,7 +104,7 @@
 					<merge>true</merge>
 				</configuration>
 				<executions>
-					<!-- run site-maven-plugin's 'site' target as part of the build's normal 
+					<!-- run site-maven-plugin's 'site' target as part of the build's normal
 						'deploy' phase -->
 					<execution>
 						<goals>
