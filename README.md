@@ -69,11 +69,24 @@ Getting Started
 ActiveJpa is available as a Maven artifact and should be fairly simpler to integrate with your application. Just add the below maven dependency to your pom.xml file,
 
 ```xml
-   <dependency>
-      <groupId>org.activejpa</groupId>
-      <artifactId>activejpa-core</artifactId>
-      <version>0.0.1</version>
-   </dependency>
+   <dependencies>
+     <dependency>
+       <groupId>org.activejpa</groupId>
+       <artifactId>activejpa-core</artifactId>
+       <version>0.0.7</version>
+     </dependency>
+   </dependencies>
+   
+   <repositories>
+     <repository>
+       <id>activejpa-repo</id>
+       <url>https://raw.github.com/ActiveJpa/activejpa/mvn-repo/releases</url>
+       <snapshots>
+         <enabled>true</enabled>
+         <updatePolicy>always</updatePolicy>
+       </snapshots>
+     </repository>
+   </repositories>
 ```
 
 If you are on a non-maven project, you will have to include these additional dependencies in addition to activejpa-core,
