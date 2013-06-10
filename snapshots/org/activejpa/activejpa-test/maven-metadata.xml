@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>org.activejpa</groupId>
+  <artifactId>activejpa-test</artifactId>
+  <versioning>
+    <versions>
+      <version>0.0.8-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20130610164839</lastUpdated>
+  </versioning>
+</metadata>
