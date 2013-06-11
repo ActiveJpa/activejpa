@@ -6,7 +6,9 @@ package org.activejpa.enhancer;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javassist.CannotCompileException;
 import javassist.ClassPool;
@@ -34,6 +36,8 @@ public class DomainClassEnhancer {
 	
     private static final Logger logger = LoggerFactory.getLogger(DomainClassEnhancer.class);
     
+    private static Set<String> loadedClasses = new HashSet<String>();
+    
     public DomainClassEnhancer(ClassPool classPool) {
     	this.classPool = classPool;
 		try {
@@ -53,13 +57,20 @@ public class DomainClassEnhancer {
 		try {
 			logger.trace("Attempting to enahce the class - " + className);
 			CtClass ctClass = classPool.get(className.replace("/", "."));
-			if (! canEnhance(ctClass)) {
-				return null;
+			
+			if (! loadedClasses.contains(className)) {
+				if (! canEnhance(ctClass)) {
+					return null;
+				}
+				logger.info("Transforming the class - " + className);
+				ctClass.defrost();
+				createModelMethods(ctClass);
+			} else {
+				logger.info("Class already enhanced - " + className);
 			}
-			logger.info("Transforming the class - " + className);
-			ctClass.defrost();
-			createModelMethods(ctClass);
-			return ctClass.toBytecode();
+			byte[] byteCode = ctClass.toBytecode();
+			loadedClasses.add(className);
+			return byteCode;
 		} catch (NotFoundException e) {
 			// Can't do much. Just log and ignore
 			logger.trace("Failed while transforming the class " + className, e);
