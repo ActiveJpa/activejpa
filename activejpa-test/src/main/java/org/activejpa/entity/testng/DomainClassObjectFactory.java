@@ -19,11 +19,15 @@ public class DomainClassObjectFactory implements IObjectFactory {
 	
 	private ClassLoader loader;
 	
-	public DomainClassObjectFactory() throws Exception {
+	public DomainClassObjectFactory(List<String> ingnoredPackages) throws Exception {
 		Class<?> clazz = Class.forName("org.activejpa.enhancer.MyClassLoader");
 		Constructor<?> constructor = clazz.getConstructor(ClassLoader.class, List.class);
-		loader = (ClassLoader) constructor.newInstance(Thread.currentThread().getContextClassLoader(), Arrays.asList("org.xml."));
+		loader = (ClassLoader) constructor.newInstance(Thread.currentThread().getContextClassLoader(), ingnoredPackages);
 		Thread.currentThread().setContextClassLoader(loader);
+	}
+	
+	public DomainClassObjectFactory() throws Exception {
+		this(Arrays.asList("org.xml."));
 	}
 
 	@SuppressWarnings("rawtypes")

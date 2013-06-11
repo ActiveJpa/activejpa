@@ -54,9 +54,11 @@ public class DomainClassEnhancer {
 	}
     
 	public byte[] enhance(ClassLoader loader, String className) {
+		className = className.replace("/", ".");
 		try {
 			logger.trace("Attempting to enahce the class - " + className);
-			CtClass ctClass = classPool.get(className.replace("/", "."));
+			CtClass ctClass = classPool.get(className);
+			
 			
 			if (! loadedClasses.contains(className)) {
 				if (! canEnhance(ctClass)) {
@@ -65,12 +67,13 @@ public class DomainClassEnhancer {
 				logger.info("Transforming the class - " + className);
 				ctClass.defrost();
 				createModelMethods(ctClass);
+				byte[] byteCode = ctClass.toBytecode();
+				loadedClasses.add(className);
+				return byteCode;
 			} else {
 				logger.info("Class already enhanced - " + className);
+				return null;
 			}
-			byte[] byteCode = ctClass.toBytecode();
-			loadedClasses.add(className);
-			return byteCode;
 		} catch (NotFoundException e) {
 			// Can't do much. Just log and ignore
 			logger.trace("Failed while transforming the class " + className, e);
