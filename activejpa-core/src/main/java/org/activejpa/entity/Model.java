@@ -24,7 +24,7 @@ import javax.persistence.metamodel.PluralAttribute;
 import org.activejpa.ActiveJpaException;
 import org.activejpa.jpa.JPA;
 import org.activejpa.jpa.JPAContext;
-import org.apache.commons.beanutils.BeanUtils;
+import org.activejpa.util.BeanUtil;
 
 
 
@@ -57,7 +57,7 @@ public abstract class Model extends BaseObject {
 	 */
 	public void updateAttributes(Map<String, Object> attributes) {
 		try {
-			BeanUtils.populate(this, attributes);
+			BeanUtil.load(this, attributes);
 			persist();
 		} catch (Exception e) {
 			throw new ActiveJpaException("Failed while updating the attributes", e);
