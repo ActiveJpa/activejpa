@@ -28,8 +28,13 @@ public class Filter {
 	
 	private Integer perPage;
 	
+	private boolean cacheable;
+	
+	private boolean shouldPage;
+	
 	public Filter(int perPage, int pageNo, Condition... conditions) {
 		this.pageNo = pageNo > 0 ? pageNo : 1;
+		this.shouldPage = perPage > 0;
 		this.perPage = (perPage < 1) ? Integer.MAX_VALUE : perPage;
 		if (conditions != null && conditions.length > 0) {
 			this.conditions.addAll(Arrays.asList(conditions));
@@ -66,6 +71,10 @@ public class Filter {
 	
 	public Integer getLimit() {
 		return perPage;
+	}
+	
+	public boolean shouldPage() {
+		return shouldPage;
 	}
 
 	/**
@@ -118,6 +127,27 @@ public class Filter {
 			}
 		}
 	}
+	
+	public void setPage(Query query) {
+		if (shouldPage()) {
+			query.setFirstResult(getStart());
+			query.setMaxResults(getPerPage());
+		}
+	}
+
+	/**
+	 * @return the cacheable
+	 */
+	public boolean isCacheable() {
+		return cacheable;
+	}
+
+	/**
+	 * @param cacheable the cacheable to set
+	 */
+	public void setCacheable(boolean cacheable) {
+		this.cacheable = cacheable;
+	}
 
 	@Override
 	public int hashCode() {
@@ -155,5 +185,15 @@ public class Filter {
 		} else if (!perPage.equals(other.perPage))
 			return false;
 		return true;
+	}
+	
+	public Filter clone(boolean paginate) {
+		Filter filter = new Filter(conditions.toArray(new Condition[0]));
+		if (paginate) {
+			filter.perPage = perPage;
+			filter.pageNo = pageNo;
+			filter.shouldPage = shouldPage;
+		}
+		return filter;
 	}
 }

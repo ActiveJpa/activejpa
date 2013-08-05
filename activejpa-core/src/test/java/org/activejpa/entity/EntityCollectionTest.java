@@ -47,6 +47,11 @@ public class EntityCollectionTest extends BaseModelTest {
 	}
 	
 	@Test
+	public void shouldGetCount() {
+		assertEquals(model.collection("children").count(new Filter()), 3);
+	}
+	
+	@Test
 	public void shouldFindById() {
 		assertEquals(model.collection("children").findById(child2.getId()), child2);
 	}

@@ -10,8 +10,13 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Root;
 
 import org.activejpa.ActiveJpaException;
+import org.activejpa.jpa.JPA;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -112,9 +117,7 @@ public class EntityCollection<T extends Model> extends BaseObject {
 	
 	public T one(Object... paramValues) {
 		Filter filter = createFilter(paramValues);
-		TypedQuery<T> query = createCollectionQuery(filter);
-		filter.setParameters(query);
-		return query.getSingleResult();
+		return createCollectionQuery(filter).getSingleResult();
 	}
 	
 	public List<T> where(Filter filter) {
@@ -125,10 +128,22 @@ public class EntityCollection<T extends Model> extends BaseObject {
 		return where(createFilter(paramValues));
 	}
 	
+	public long count(Filter filter) {
+		filter.addCondition("id", parent.getId());
+		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
+		CriteriaQuery<Long> cQuery = builder.createQuery(Long.class);
+		Root<? extends Model> root = cQuery.from(parent.getClass());
+		Join join = root.join(name);
+		cQuery.select(builder.count(join));
+		filter.constructQuery(builder, cQuery, root);
+		
+		TypedQuery<Long> query = createQuery(cQuery, filter);
+		return query.getSingleResult();
+	}
+	
 	private TypedQuery<T> createCollectionQuery(Filter filter) {
 		filter.addCondition("id", parent.getId());
 		TypedQuery<T> query = createQuery(parent.getClass(), name, elementType, filter);
-		filter.setParameters(query);
 		return query;
 	}
 	

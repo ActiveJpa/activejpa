@@ -11,6 +11,8 @@ import java.util.Map;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.spi.PersistenceProvider;
+import javax.persistence.spi.PersistenceProviderResolverHolder;
 
 /**
  * @author ganeshs
@@ -24,7 +26,26 @@ public class JPA {
 	
 	private Map<String, JPAConfig> configs = new HashMap<String, JPAConfig>();
 	
+	private String cacheableHint;
+	
+	private static final String HIBERNATE_PERSISTENCE = "org.hibernate.ejb.HibernatePersistence";
+	
+	private static final String ECLIPSE_PERSISTENCE = "org.eclipse.persistence.jpa.PersistenceProvider";
+	
+	private static final String OPENJPA_PERSISTENCE = "org.apache.openjpa.persistence.PersistenceProviderImpl";
+	
 	private JPA() {
+		List<PersistenceProvider> providers = PersistenceProviderResolverHolder.getPersistenceProviderResolver().getPersistenceProviders();
+		if (providers != null) {
+			String providerClass = providers.get(0).getClass().getCanonicalName();
+			if (providerClass.equals(HIBERNATE_PERSISTENCE)) {
+				cacheableHint = "org.hibernate.cacheable";
+			} else if (providerClass.equals(ECLIPSE_PERSISTENCE)) {
+				cacheableHint = "eclipselink.query-results-cache";
+			} else if (providerClass.equals(OPENJPA_PERSISTENCE)) {
+				cacheableHint = "openjpa.QueryCache";
+			}
+		}
 	}
 	
 	public void addPersistenceUnit(String persistenceUnitName) {
@@ -74,5 +95,12 @@ public class JPA {
 	
 	protected EntityManagerFactory createEntityManagerFactory(String persistenceUnitName, Map<String, String> properties) {
 		return Persistence.createEntityManagerFactory(persistenceUnitName, properties);	
+	}
+
+	/**
+	 * @return the cacheableHint
+	 */
+	public String getCacheableHint() {
+		return cacheableHint;
 	}
 }

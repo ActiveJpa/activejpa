@@ -17,6 +17,14 @@ import org.activejpa.jpa.JPA;
  *
  */
 class BaseObject {
+	
+	protected static <T> TypedQuery<T> createQuery(CriteriaQuery<T> cQuery, Filter filter) {
+		TypedQuery<T> query = getEntityManager().createQuery(cQuery);
+		filter.setParameters(query);
+		filter.setPage(query);
+		query.setHint(JPA.instance.getCacheableHint(), filter.isCacheable());
+		return query;
+	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	protected static <T extends Model, S extends Model> TypedQuery<S> createQuery(Class<T> entityType, String attribute, Class<S> attributeType, Filter filter) {
@@ -28,9 +36,7 @@ class BaseObject {
 			cQuery.select(join);
 		}
 		filter.constructQuery(builder, cQuery, root);
-		TypedQuery<S> query = getEntityManager().createQuery(cQuery);
-		filter.setParameters(query);
-		return query;
+		return createQuery(cQuery, filter);
 	}
 	
 	protected static <T extends Model> TypedQuery<T> createQuery(Class<T> clazz, Filter filter) {

@@ -8,6 +8,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
 import javax.persistence.Parameter;
 import javax.persistence.Query;
@@ -95,5 +97,51 @@ public class FilterTest {
 		filter.setParameters(query);
 		verify(query).setParameter("testKey", "testValue");
 		verify(query).setParameter("testKey1", "testValue1");
+	}
+	
+	@Test
+	public void shouldCloneFilter() {
+		Filter filter = new Filter();
+		Filter clonedFilter = filter.clone(false);
+		assertTrue(clonedFilter.getConditions().isEmpty());
+		assertEquals(clonedFilter.getPageNo(), Integer.valueOf(1));
+		assertEquals(clonedFilter.getPerPage(), Integer.valueOf(Integer.MAX_VALUE));
+	}
+	
+	@Test
+	public void shouldCloneFilterWithConditions() {
+		Filter filter = new Filter(mock(Condition.class));
+		Filter clonedFilter = filter.clone(false);
+		assertEquals(clonedFilter.getConditions().size(), 1);
+	}
+	
+	@Test
+	public void shouldCloneFilterWithConditionsWithPaginate() {
+		Filter filter = new Filter(2, 20, mock(Condition.class));
+		Filter clonedFilter = filter.clone(true);
+		assertEquals(clonedFilter.getConditions().size(), 1);
+		assertEquals(clonedFilter.getPageNo(), Integer.valueOf(20));
+		assertEquals(clonedFilter.getPerPage(), Integer.valueOf(2));
+	}
+	
+	@Test
+	public void shouldCloneFilterWithConditionsWithoutPaginate() {
+		Filter filter = new Filter(2, 20, mock(Condition.class));
+		Filter clonedFilter = filter.clone(false);
+		assertEquals(clonedFilter.getConditions().size(), 1);
+		assertEquals(clonedFilter.getPageNo(), Integer.valueOf(1));
+		assertEquals(clonedFilter.getPerPage(), Integer.valueOf(Integer.MAX_VALUE));
+	}
+	
+	@Test
+	public void shouldNotPageIfPerPageIsNotSet() {
+		Filter filter = new Filter(mock(Condition.class));
+		assertFalse(filter.shouldPage());
+	}
+	
+	@Test
+	public void shouldPageIfPerPageIsSet() {
+		Filter filter = new Filter(10, 1, mock(Condition.class));
+		assertTrue(filter.shouldPage());
 	}
 }

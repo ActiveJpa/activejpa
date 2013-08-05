@@ -223,8 +223,7 @@ public abstract class Model extends BaseObject {
 		Root<T> root = cQuery.from(clazz);
 		cQuery.select(builder.count(root));
 		filter.constructQuery(builder, cQuery, root);
-		TypedQuery<Long> query = getEntityManager().createQuery(cQuery);
-		filter.setParameters(query);
+		TypedQuery<Long> query = createQuery(cQuery, filter);
 		return query.getSingleResult();
 	}
 	
@@ -251,7 +250,6 @@ public abstract class Model extends BaseObject {
 				return null;
 			}
 		}, false);
-		
 	}
 	
 	protected static <T extends Model> boolean exists(Class<T> clazz, Serializable id) {
