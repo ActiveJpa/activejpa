@@ -4,8 +4,8 @@
   <artifactId>activejpa</artifactId>
   <versioning>
     <versions>
-      <version>0.0.9-SNAPSHOT</version>
+      <version>0.0.10-SNAPSHOT</version>
     </versions>
-    <lastUpdated>20130706173031</lastUpdated>
+    <lastUpdated>20130805061705</lastUpdated>
   </versioning>
 </metadata>
