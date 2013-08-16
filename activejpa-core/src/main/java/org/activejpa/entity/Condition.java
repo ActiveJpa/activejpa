@@ -3,6 +3,10 @@
  */
 package org.activejpa.entity;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Parameter;
@@ -97,7 +101,25 @@ public class Condition {
 		in("in") {
 			@Override
 			protected Predicate createPredicate(CriteriaBuilder builder, Path path, Expression... parameter) {
-				return builder.in(path);
+				return path.in(parameter[0]);
+			}
+			
+			@Override
+			public void setParameters(Query query, String name, Object value) {
+				Parameter param = query.getParameter(name);
+				if (value instanceof Object[]) {
+					value = Arrays.asList((Object[]) value);
+				}
+				List list = new ArrayList();
+				for (Object val : (List) value) {
+					list.add(ConvertUtils.convert(val, param.getParameterType()));
+				}
+				query.setParameter(name, list);
+			}
+			
+			@Override
+			public Predicate constructCondition(CriteriaBuilder builder, Path path, String name) {
+				return createPredicate(builder, path, builder.parameter(Collection.class, name));
 			}
 		},
 		like("like") {

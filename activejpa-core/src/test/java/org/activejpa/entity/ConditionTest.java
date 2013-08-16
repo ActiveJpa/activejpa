@@ -10,6 +10,7 @@ import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
 
 import java.util.Arrays;
+import java.util.Collection;
 
 import javax.persistence.Parameter;
 import javax.persistence.Query;
@@ -199,17 +200,18 @@ public class ConditionTest {
 	@Test
 	public void shouldConstructInCriteriaQuery() {
 		Condition condition = new Condition("key", Operator.in, Arrays.asList("value"));
-		when(builder.parameter(path.getJavaType(), "key")).thenReturn(expression);
+		when(builder.parameter(Collection.class, "key")).thenReturn(expression);
 		when(root.get("key")).thenReturn(path);
 		condition.constructQuery(builder, root);
-		verify(builder).in(path);
+		verify(path).in(expression);
 	}
 	
 	@Test
 	public void shouldSetParametersForInQuery() {
-		Condition condition = new Condition("key", Operator.in, Arrays.asList("value"));
-		condition.setParameters(query, "value");
-		verify(query).setParameter("key", "value");
+		Object value = Arrays.asList("value");
+		Condition condition = new Condition("key", Operator.in, value);
+		condition.setParameters(query, value);
+		verify(query).setParameter("key", value);
 	}
 	
 	@Test
