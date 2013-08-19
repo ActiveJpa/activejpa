@@ -105,6 +105,36 @@ public class EntityCollectionTest extends BaseModelTest {
 		assertEquals(parent.models.size(), 1);
 	}
 	
+	@Test
+	public void shouldRemoveItemFromCollectionUsingRemoveMethod() {
+		ParentWithAddMethod parent = new ParentWithAddMethod();
+		EntityCollection<DummyModel> collection = new EntityCollection<DummyModel>(parent, "models", DummyModel.class);
+		collection.add(model);
+		assertEquals(parent.models.size(), 1);
+		collection.remove(model);
+		assertEquals(parent.models.size(), 0);
+	}
+	
+	@Test
+	public void shouldRemoveItemFromCollectionUsingGetter() {
+		ParentWithGetter parent = new ParentWithGetter();
+		EntityCollection<DummyModel> collection = new EntityCollection<DummyModel>(parent, "models", DummyModel.class);
+		collection.add(model);
+		assertEquals(parent.models.size(), 1);
+		collection.remove(model);
+		assertEquals(parent.models.size(), 0);
+	}
+	
+	@Test
+	public void shouldRemoveItemFromCollectionUsingField() {
+		ParentWithField parent = new ParentWithField();
+		EntityCollection<DummyModel> collection = new EntityCollection<DummyModel>(parent, "models", DummyModel.class);
+		collection.add(model);
+		assertEquals(parent.models.size(), 1);
+		collection.remove(model);
+		assertEquals(parent.models.size(), 0);
+	}
+	
 	private DummyModel createModel(String column1, String column2) {
 		DummyModel model = new DummyModel();
 		model.setColumn1(column1);
@@ -119,6 +149,10 @@ public class EntityCollectionTest extends BaseModelTest {
 		
 		public void addModel(DummyModel model) {
 			models.add(model);
+		}
+		
+		public void removeModel(DummyModel model) {
+			models.remove(model);
 		}
 
 		@Override

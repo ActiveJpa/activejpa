@@ -16,7 +16,6 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
 
 import org.activejpa.ActiveJpaException;
-import org.activejpa.jpa.JPA;
 import org.apache.commons.beanutils.PropertyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,21 +45,36 @@ public class EntityCollection<T extends Model> extends BaseObject {
 	}
 	
 	/**
-	 * Adds the item to the underlying collection. This method attempts in the following order to add the item,
+	 * Adds the item to the underlying collection
+	 */
+	public T add(T item) {
+		logger.debug("Adding the item {} to the collection", item);
+		return addOrRemove(item, true);
+	}
+	
+	/**
+	 * Removes the item from the underlying collection
+	 */
+	public T remove(T item) {
+		logger.debug("Removing the item {} from the collection", item);
+		return addOrRemove(item, false);
+	}
+	
+	/**
+	 * Adds or Removes the item to/from the underlying collection. This method attempts in the following order to add/remove the item,
 	 * <ul>
 	 * <li> Checks if there's a method with the signature <code>addOrderItem(OrderItem orderItem)</code> in the parent model where orderItem is a collection.
-	 * <li> Retrieves the getter for the collection property and adds the item to that
-	 * <li> Retrieves the collection property field and adds the item to that
+	 * <li> Retrieves the getter for the collection property and adds/removes the item to/from that
+	 * <li> Retrieves the collection property field and adds/removes the item to/from that
 	 * </ul>
 	 * 
-	 * Throws {@link ActiveJpaException} if none of the above ways adds the item to the collection
+	 * Throws {@link ActiveJpaException} if none of the above ways adds/removes the item to/from the collection
 	 * @param item
 	 */
 	@SuppressWarnings("unchecked")
-	public T add(T item) {
-		logger.debug("Adding the item {} to the collection", item);
+	protected T addOrRemove(T item, boolean add) {
 		Method method = null;
-		String methodName = getMethodName("add", name);
+		String methodName = getMethodName(add ? "add" : "remove", name);
 		try {
 			
 			logger.trace("Attempting to invoke the method {} on the parent {}", methodName, parent);
@@ -76,8 +90,12 @@ public class EntityCollection<T extends Model> extends BaseObject {
 		// Try adding the item to the collection property returned by the getter
 		try {
 			logger.trace("Attempting to invoke the getter for the property {} on the parent {}", name, parent);
-			Collection<T> collection = (Collection<T>)PropertyUtils.getProperty(parent, name); 
-			collection.add(item);
+			Collection<T> collection = (Collection<T>)PropertyUtils.getProperty(parent, name);
+			if (add) {
+				collection.add(item);
+			} else {
+				collection.remove(item);
+			}
 			return item;
 		} catch (NoSuchMethodException e) {
 			logger.debug("Getter doesn't exist for the property {} in the class {}", name, parent.getClass());
@@ -85,17 +103,21 @@ public class EntityCollection<T extends Model> extends BaseObject {
 			throw new ActiveJpaException("Failed while invoking the getter for the property " + name + " in the class " + parent.getClass(), e);
 		}
 		
-		// Try to find out the field and add it to that
+		// Try to find out the field and add/remove it to/from that
 		try {
 			logger.trace("Attempting to invoke the the property {} on the parent {}", name, parent);
 			Field field = parent.getClass().getDeclaredField(name);
 			field.setAccessible(true);
 			Collection<T> collection = (Collection<T>) field.get(parent);
-			collection.add(item);
+			if (add) {
+				collection.add(item);
+			} else {
+				collection.remove(item);
+			}
 			return item;
 		} catch (Exception e) {
-			logger.error("Failed to add the item {} to the collection of the parent", item, parent);
-			throw new ActiveJpaException("Failed while adding the item to the collection - " + name, e);
+			logger.error("Failed to {} the item {} to the collection of the parent", add ? "add" : "remove", item, parent);
+			throw new ActiveJpaException("Failed while adding/removing the item to the collection - " + name, e);
 		}
 	}
 
