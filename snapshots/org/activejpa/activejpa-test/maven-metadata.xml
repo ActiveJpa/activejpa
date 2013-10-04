@@ -4,8 +4,8 @@
   <artifactId>activejpa-test</artifactId>
   <versioning>
     <versions>
-      <version>0.0.10-SNAPSHOT</version>
+      <version>0.1.2-SNAPSHOT</version>
     </versions>
-    <lastUpdated>20130805061718</lastUpdated>
+    <lastUpdated>20131004080225</lastUpdated>
   </versioning>
 </metadata>
