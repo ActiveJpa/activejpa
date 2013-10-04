@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.activejpa</groupId>
 	<artifactId>activejpa</artifactId>
-	<version>0.1.2</version>
+	<version>0.1.2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>ActiveJpa</name>
 	<modules>
@@ -18,7 +18,7 @@
 
 	<scm>
 		<developerConnection>scm:git:https://github.com/ActiveJpa/activejpa.git</developerConnection>
-		<tag>activejpa-0.1.2</tag>
+		<tag>activejpa-0.1.2-SNAPSHOT</tag>
 	</scm>
 
 	<developers>
@@ -103,7 +103,7 @@
 					<merge>true</merge>
 				</configuration>
 				<executions>
-					<!-- run site-maven-plugin's 'site' target as part of the build's normal 
+					<!-- run site-maven-plugin's 'site' target as part of the build's normal
 						'deploy' phase -->
 					<execution>
 						<goals>
@@ -126,7 +126,7 @@
 				<profile.deploymentType>snapshots</profile.deploymentType>
 			</properties>
 		</profile>
-		
+
 		<profile>
 			<id>releases</id>
 			<properties>
