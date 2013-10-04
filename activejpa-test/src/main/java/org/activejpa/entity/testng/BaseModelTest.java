@@ -12,6 +12,7 @@ import org.testng.ITestContext;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.ObjectFactory;
+import org.testng.internal.ObjectFactoryImpl;
 
 /**
  * @author ganeshs
@@ -23,7 +24,12 @@ public class BaseModelTest {
 
 	@ObjectFactory
 	public IObjectFactory getObjectFactory(ITestContext context) throws Exception {
-		return new DomainClassObjectFactory();
+		Class<?> clazz = Class.forName("org.activejpa.enhancer.ActiveJpaAgentLoader");
+		Method method = clazz.getMethod("instance");
+		Object loader = method.invoke(null);
+		method = clazz.getMethod("loadAgent");
+		method.invoke(loader);
+		return new ObjectFactoryImpl();
 	}
 	
 	@BeforeMethod
