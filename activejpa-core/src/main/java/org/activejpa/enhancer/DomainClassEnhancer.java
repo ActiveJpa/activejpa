@@ -6,8 +6,10 @@ package org.activejpa.enhancer;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javassist.CannotCompileException;
@@ -15,6 +17,7 @@ import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.CtNewMethod;
+import javassist.LoaderClassPath;
 import javassist.NotFoundException;
 
 import javax.persistence.Entity;
@@ -30,45 +33,25 @@ import org.slf4j.LoggerFactory;
  */
 public class DomainClassEnhancer {
 	
-	private ClassPool classPool;
-	
-	private CtClass modelClass;
-	
     private static final Logger logger = LoggerFactory.getLogger(DomainClassEnhancer.class);
     
-    private static Set<String> loadedClasses = new HashSet<String>();
-    
-    public DomainClassEnhancer(ClassPool classPool) {
-    	this.classPool = classPool;
-		try {
-			modelClass = classPool.get(Model.class.getName());
-		} catch (Exception e) {
-			// Shouldn't get here
-			logger.error("Class " + Model.class.getName() + " is not found", e);
-			throw new IllegalStateException("Class " + Model.class.getName() + " is not found");
-		}
-	}
-    
-    public DomainClassEnhancer() {
-    	this(ClassPool.getDefault());
-	}
+    private static Map<ClassLoader, Context> contextMap = new HashMap<ClassLoader, Context>();
     
 	public byte[] enhance(ClassLoader loader, String className) {
+		Context context = getContext(loader);
 		className = className.replace("/", ".");
 		try {
-			logger.trace("Attempting to enahce the class - " + className);
-			CtClass ctClass = classPool.get(className);
-			
-			
-			if (! loadedClasses.contains(className)) {
-				if (! canEnhance(ctClass)) {
+			logger.trace("Attempting to enhance the class - " + className);
+			if (! context.isClassLoaded(className)) {
+				CtClass ctClass = context.getCtClass(className);
+				if (! canEnhance(context, ctClass)) {
 					return null;
 				}
 				logger.info("Transforming the class - " + className);
 				ctClass.defrost();
-				createModelMethods(ctClass);
+				createModelMethods(context, ctClass);
 				byte[] byteCode = ctClass.toBytecode();
-				loadedClasses.add(className);
+				context.addClass(className);
 				return byteCode;
 			} else {
 				logger.info("Class already enhanced - " + className);
@@ -84,34 +67,50 @@ public class DomainClassEnhancer {
 		return null;
 	}
 	
+	public Context getContext(ClassLoader classLoader) {
+		Context context = contextMap.get(classLoader);
+		Context parent = null;
+		if (context == null) {
+			if (classLoader != null) {
+				if (classLoader.getParent() != null) {
+					parent = getContext(classLoader.getParent()); 
+				}
+			}
+			context = new Context(parent, classLoader);
+			contextMap.put(classLoader, context);
+		}
+		return context;
+	}
+	
 	public boolean canEnhance(String className) {
+		Context context = getContext(Thread.currentThread().getContextClassLoader());
 		try {
-			return canEnhance(classPool.get(className));
+			return canEnhance(context, context.getCtClass(className));
 		} catch (Exception e) {
 			logger.trace("Error while checking is the class can be enhanced", e);
 			return false;
 		}
 	}
 	
-	protected boolean canEnhance(CtClass ctClass) throws IOException, NotFoundException {
-		return isEntity(ctClass) && isExtendingModel(ctClass);
+	protected boolean canEnhance(Context context, CtClass ctClass) throws IOException, NotFoundException {
+		return isEntity(ctClass) && isExtendingModel(context, ctClass);
 	}
 	
-	private void createModelMethods(CtClass ctClass) throws CannotCompileException {
-		createMethod(ctClass, "findById", Model.class.getName(), "java.io.Serializable id");
-		createMethod(ctClass, "all", "java.util.List");
-		createMethod(ctClass, "count", "long");
-		createMethod(ctClass, "count", "long", Filter.class.getName() + " filter");
-		createMethod(ctClass, "deleteAll", "void");
-		createMethod(ctClass, "deleteAll", "void", Filter.class.getName() + " filter");
-		createMethod(ctClass, "exists", "boolean", "java.io.Serializable id");
-		createMethod(ctClass, "where", "java.util.List", "Object[] paramValues");
-		createMethod(ctClass, "where", "java.util.List", Filter.class.getName() + " filter");
-		createMethod(ctClass, "one", Model.class.getName(), "Object[] paramValues");
-		createMethod(ctClass, "first", Model.class.getName(), "Object[] paramValues");
+	private void createModelMethods(Context context, CtClass ctClass) throws CannotCompileException {
+		createMethod(context, ctClass, "findById", Model.class.getName(), "java.io.Serializable id");
+		createMethod(context, ctClass, "all", "java.util.List");
+		createMethod(context, ctClass, "count", "long");
+		createMethod(context, ctClass, "count", "long", Filter.class.getName() + " filter");
+		createMethod(context, ctClass, "deleteAll", "void");
+		createMethod(context, ctClass, "deleteAll", "void", Filter.class.getName() + " filter");
+		createMethod(context, ctClass, "exists", "boolean", "java.io.Serializable id");
+		createMethod(context, ctClass, "where", "java.util.List", "Object[] paramValues");
+		createMethod(context, ctClass, "where", "java.util.List", Filter.class.getName() + " filter");
+		createMethod(context, ctClass, "one", Model.class.getName(), "Object[] paramValues");
+		createMethod(context, ctClass, "first", Model.class.getName(), "Object[] paramValues");
 	}
 	
-	private void createMethod(CtClass ctClass, String methodName, String returnType, String... arguments) throws CannotCompileException {
+	private void createMethod(Context context, CtClass ctClass, String methodName, String returnType, String... arguments) throws CannotCompileException {
 		logger.info("Creating the method - " + methodName + " under the class - " + ctClass.getName());
 		StringWriter writer = new StringWriter();
 		writer.append("public static ").append(returnType).append(" ").append(methodName).append("(");
@@ -135,7 +134,7 @@ public class DomainClassEnhancer {
 		
 		CtMethod method = null;
 		try {
-			method = getMethod(ctClass, methodName, arguments);
+			method = getMethod(context, ctClass, methodName, arguments);
 			if (method != null) {
 				ctClass.removeMethod(method);
 			}
@@ -149,11 +148,11 @@ public class DomainClassEnhancer {
         ctClass.addMethod(method);
 	}
 	
-	private CtMethod getMethod(CtClass ctClass, String methodName, String... arguments) throws NotFoundException {
+	private CtMethod getMethod(Context context, CtClass ctClass, String methodName, String... arguments) throws NotFoundException {
 		List<CtClass> paramTypes = new ArrayList<CtClass>();
 		if (arguments != null) {
 			for (String argument : arguments) {
-				paramTypes.add(classPool.get(argument.split(" ")[0]));
+				paramTypes.add(context.getCtClass(argument.split(" ")[0]));
 			}
 		}
 		return ctClass.getDeclaredMethod(methodName, paramTypes.toArray(new CtClass[0]));
@@ -163,8 +162,8 @@ public class DomainClassEnhancer {
 		return ctClass.hasAnnotation(Entity.class);
 	}
 	
-	protected boolean isExtendingModel(CtClass ctClass) throws NotFoundException {
-		return getSuperClasses(ctClass).contains(modelClass);
+	protected boolean isExtendingModel(Context context, CtClass ctClass) throws NotFoundException {
+		return getSuperClasses(ctClass).contains(context.getCtClass(Model.class.getName()));
 	}
 	
 	/**
@@ -186,5 +185,84 @@ public class DomainClassEnhancer {
 	
 	protected CtClass getSuperClass(CtClass modelClass) throws NotFoundException {
 		return modelClass.getSuperclass();
+	}
+	
+	public static class Context {
+		
+		private Context parent;
+		
+		private Set<String> loadedClasses = new HashSet<String>();
+		
+		private ClassPool classPool;
+		
+		public Context(Context parent, ClassLoader loader) {
+			this.parent = parent;
+			if (parent == null) {
+				classPool = ClassPool.getDefault();
+			} else {
+				classPool =  new ClassPool(parent.classPool);
+				classPool.appendClassPath(new LoaderClassPath(loader));
+			}
+		}
+
+		/**
+		 * @return the parent
+		 */
+		public Context getParent() {
+			return parent;
+		}
+
+		/**
+		 * @param parent the parent to set
+		 */
+		public void setParent(Context parent) {
+			this.parent = parent;
+		}
+
+		/**
+		 * @return the loadedClasses
+		 */
+		public Set<String> getLoadedClasses() {
+			return loadedClasses;
+		}
+
+		/**
+		 * @param loadedClasses the loadedClasses to set
+		 */
+		public void setLoadedClasses(Set<String> loadedClasses) {
+			this.loadedClasses = loadedClasses;
+		}
+
+		/**
+		 * @return the classPool
+		 */
+		public ClassPool getClassPool() {
+			return classPool;
+		}
+
+		/**
+		 * @param classPool the classPool to set
+		 */
+		public void setClassPool(ClassPool classPool) {
+			this.classPool = classPool;
+		}
+		
+		public boolean isClassLoaded(String className) {
+			if (loadedClasses.contains(className)) {
+				return true;
+			}
+			if (parent != null) {
+				return parent.isClassLoaded(className);
+			}
+			return false;
+		}
+		
+		public CtClass getCtClass(String className) throws NotFoundException {
+			return classPool.get(className);
+		}
+		
+		public void addClass(String className) {
+			loadedClasses.add(className);
+		}
 	}
 }

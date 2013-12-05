@@ -19,7 +19,7 @@ import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import org.apache.commons.beanutils.ConvertUtils;
+import org.activejpa.util.ConvertUtil;
 
 /**
  * @author ganeshs
@@ -112,7 +112,7 @@ public class Condition {
 				}
 				List list = new ArrayList();
 				for (Object val : (List) value) {
-					list.add(ConvertUtils.convert(val, param.getParameterType()));
+					list.add(ConvertUtil.convert(val, param.getParameterType()));
 				}
 				query.setParameter(name, list);
 			}
@@ -141,7 +141,7 @@ public class Condition {
 		
 		public void setParameters(Query query, String name, Object value) {
 			Parameter param = query.getParameter(name);
-			value = ConvertUtils.convert(value, param.getParameterType());
+			value = ConvertUtil.convert(value, param.getParameterType());
 			query.setParameter(name, value);
 		}
 		

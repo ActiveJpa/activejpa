@@ -3,11 +3,11 @@
  */
 package org.activejpa.enhancer;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import java.lang.instrument.IllegalClassFormatException;
 
-import org.activejpa.BaseTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -15,7 +15,7 @@ import org.testng.annotations.Test;
  * @author ganeshs
  *
  */
-public class DomainClassFileTransformerTest extends BaseTest {
+public class DomainClassFileTransformerTest {
 
 	private DomainClassEnhancer enhancer;
 	

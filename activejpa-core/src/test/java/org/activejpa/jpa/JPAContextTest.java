@@ -16,7 +16,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 
-import org.activejpa.BaseTest;
 import org.mockito.Mock;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -25,7 +24,7 @@ import org.testng.annotations.Test;
  * @author ganeshs
  *
  */
-public class JPAContextTest extends BaseTest {
+public class JPAContextTest {
 
 	@Mock private JPAConfig config;
 	

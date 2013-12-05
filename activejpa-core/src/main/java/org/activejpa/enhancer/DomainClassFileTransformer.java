@@ -33,6 +33,9 @@ public class DomainClassFileTransformer implements ClassFileTransformer {
 			ProtectionDomain protectionDomain, byte[] classfileBuffer) throws IllegalClassFormatException {
 		try {
 			logger.trace("Trying to transform - " + className);
+			if (loader == null) {
+				loader = Thread.currentThread().getContextClassLoader();
+			}
 			return enhancer.enhance(loader, className);
 		} catch (Exception e) {
 			logger.error("Failed while transforming the class " + className, e);

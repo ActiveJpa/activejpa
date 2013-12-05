@@ -3,7 +3,10 @@
  */
 package org.activejpa.util;
 
+import java.beans.PropertyDescriptor;
 import java.io.Serializable;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.net.URI;
@@ -14,7 +17,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
 
-import org.apache.commons.lang3.ClassUtils;
+import org.activejpa.ActiveJpaException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,7 +54,7 @@ public class PropertyUtil {
 	 * @return whether the given type represents a "simple" value type
 	 */
 	public static boolean isSimpleValueType(Class<?> clazz) {
-		return ClassUtils.isPrimitiveOrWrapper(clazz) || clazz.isEnum() ||
+		return isPrimitiveOrWrapper(clazz) || clazz.isEnum() ||
 				CharSequence.class.isAssignableFrom(clazz) ||
 				Number.class.isAssignableFrom(clazz) ||
 				Date.class.isAssignableFrom(clazz) ||
@@ -60,6 +63,13 @@ public class PropertyUtil {
 				clazz.equals(Serializable.class) || clazz.equals(Timestamp.class);
 	}
 	
+	/**
+	 * Checks if the given type is a collection. If includeMaps is set, maps will be treated as collections
+	 * 
+	 * @param type
+	 * @param includeMaps
+	 * @return
+	 */
 	public static boolean isCollectionProperty(Type type, boolean includeMaps) {
 		if (type instanceof Class) {
 			return isCollectionProperty((Class<?>)type, includeMaps);
@@ -70,10 +80,23 @@ public class PropertyUtil {
 		return false;
 	}
 	
+	/**
+	 * Checks if the given clazz is a collection. If includeMaps is set, maps will be treated as collections
+	 * 
+	 * @param clazz
+	 * @param includeMaps
+	 * @return
+	 */
 	public static boolean isCollectionProperty(Class<?> clazz, boolean includeMaps) {
 		return Collection.class.isAssignableFrom(clazz) || (includeMaps && isMapProperty(clazz));
 	}
 	
+	/**
+	 * Checks if the given type is a map
+	 * 
+	 * @param type
+	 * @return
+	 */
 	public static boolean isMapProperty(Type type) {
 		if (type instanceof Class) {
 			return isMapProperty((Class<?>)type);
@@ -84,10 +107,22 @@ public class PropertyUtil {
 		return false;
 	}
 	
+	/**
+	 * Checks if the given class is a map
+	 * 
+	 * @param clazz
+	 * @return
+	 */
 	public static boolean isMapProperty(Class<?> clazz) {
 		return Map.class.isAssignableFrom(clazz);
 	}
 	
+	/**
+	 * Returns the element type of the collection
+	 * 
+	 * @param type
+	 * @return
+	 */
 	public static Class<?> getCollectionElementType(Type type) {
 		if (! (type instanceof ParameterizedType)) {
 			return Object.class;
@@ -106,5 +141,76 @@ public class PropertyUtil {
 			logger.warn("Failed while getting the collection element type", e);
 		}
 		return Object.class;
+	}
+	
+	/**
+	 * Returns the property value for the given property name from the bean
+	 * 
+	 * @param bean
+	 * @param name
+	 * @return
+	 */
+	public static Object getProperty(Object bean, String name) {
+		try {
+			Class<?> clazz = Thread.currentThread().getContextClassLoader().loadClass("org.apache.commons.beanutils.PropertyUtils");
+			Method method = clazz.getMethod("getProperty", Object.class, String.class);
+			return method.invoke(null, bean, name);
+		} catch (InvocationTargetException e) {
+			if (e.getCause() instanceof NoSuchMethodException) {
+				logger.debug("Getter doesn't exist for the property {} in the class {}", name, bean.getClass());
+				return null;
+			}
+			throw new ActiveJpaException("Failed while invoking the getter for the property " + name + " in the class " + bean.getClass(), e);
+		} catch (Exception e) {
+			throw new ActiveJpaException("Failed while invoking the getter for the property " + name + " in the class " + bean.getClass(), e);
+		}
+	}
+	
+	/**
+	 * Sets the value to the property on the bean
+	 * 
+	 * @param bean
+	 * @param name
+	 * @param value
+	 */
+	public static void setProperty(Object bean, String name, Object value) {
+		try {
+			Class<?> clazz = Thread.currentThread().getContextClassLoader().loadClass("org.apache.commons.beanutils.BeanUtils");
+			Method method = clazz.getMethod("setProperty", Object.class, String.class, Object.class);
+			method.invoke(null, bean, name, value);
+		} catch (Exception e) {
+			throw new ActiveJpaException("Failed while setting the property", e);
+		}
+	}
+	
+	public static Method getReadMethod(Object bean, String name) {
+		try {
+			Class<?> clazz = Thread.currentThread().getContextClassLoader().loadClass("org.apache.commons.beanutils.PropertyUtils");
+			Method method = clazz.getMethod("getPropertyDescriptor", Object.class, String.class);
+			Object descriptor = method.invoke(null, bean, name);
+			if (descriptor == null) {
+				throw new ActiveJpaException("Property descriptor not found for the field - " + name);
+			}
+			method = clazz.getMethod("getReadMethod", PropertyDescriptor.class);
+			return (Method) method.invoke(null, descriptor);
+		} catch (Exception e) {
+			throw new ActiveJpaException("Failed while getting the property descriptor", e);
+		}
+	}
+	
+	/**
+	 * Checks if the given class is primitive type or wrapper
+	 * 
+	 * @param clazz
+	 * @return
+	 */
+	public static Boolean isPrimitiveOrWrapper(Class<?> clazz) {
+		try {
+			Class<?> utils = Thread.currentThread().getContextClassLoader().loadClass("org.apache.commons.lang3.ClassUtils");
+			Method method = utils.getMethod("isPrimitiveOrWrapper", Class.class);
+			return (Boolean) method.invoke(null, clazz);
+		} catch (Exception e) {
+			throw new ActiveJpaException("Failed while getting the property descriptor", e);
+		}
 	}
 }

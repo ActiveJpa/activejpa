@@ -12,8 +12,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.apache.commons.beanutils.BeanUtils;
-import org.apache.commons.beanutils.PropertyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,14 +33,14 @@ public class BeanUtil {
 	public static void load(Object model, Map<String, Object> attributes) {
 		for (Entry<String, Object> entry : attributes.entrySet()) {
 			try {
-				Method method = PropertyUtils.getReadMethod(PropertyUtils.getPropertyDescriptor(model, entry.getKey()));
+				Method method = PropertyUtil.getReadMethod(model, entry.getKey());
 				if (method == null) {
 					continue;
 				}
 				Type propertyType = method.getGenericReturnType() != null ? method.getGenericReturnType() : method.getReturnType();
-				Object property = PropertyUtils.getProperty(model, entry.getKey());
+				Object property = PropertyUtil.getProperty(model, entry.getKey());
 				if (PropertyUtil.isSimpleProperty(entry.getValue().getClass())) {
-					BeanUtils.setProperty(model, entry.getKey(), entry.getValue());
+					PropertyUtil.setProperty(model, entry.getKey(), entry.getValue());
 				} else if (PropertyUtil.isCollectionProperty(propertyType, false)) {
 					// TODO Need to figure out a way to populate collection
 				} else if (PropertyUtil.isMapProperty(propertyType)) {
@@ -50,13 +48,13 @@ public class BeanUtil {
 						property = new HashMap();
 					}
 					loadMap((Map)property, (Map)attributes.get(entry.getKey()), getCollectionElementType(propertyType));
-					BeanUtils.setProperty(model, entry.getKey(), property);
+					PropertyUtil.setProperty(model, entry.getKey(), property);
 				} else {
 					if (property == null && propertyType instanceof Class) {
 						property = ((Class)propertyType).newInstance();
 					}
 					load(property, (Map<String, Object>) entry.getValue());
-					BeanUtils.setProperty(model, entry.getKey(), property);
+					PropertyUtil.setProperty(model, entry.getKey(), property);
 				}
 			} catch (Exception e) {
 				logger.warn("Failed while loading the attributes to the bean", e);

@@ -29,7 +29,7 @@ public class DomainClassEnhancerTest {
 	@BeforeMethod
 	public void setup() throws NotFoundException {
 		this.classPool = spy(ClassPool.getDefault());
-		this.enhancer = new DomainClassEnhancer(classPool);
+		this.enhancer = new DomainClassEnhancer();
 	}
 	
 	@Test

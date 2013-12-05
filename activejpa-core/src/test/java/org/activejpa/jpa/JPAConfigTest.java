@@ -13,7 +13,6 @@ import static org.testng.Assert.assertTrue;
 
 import javax.persistence.EntityManagerFactory;
 
-import org.activejpa.BaseTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -21,7 +20,7 @@ import org.testng.annotations.Test;
  * @author ganeshs
  *
  */
-public class JPAConfigTest extends BaseTest {
+public class JPAConfigTest {
 	
 	private JPAConfig config;
 	

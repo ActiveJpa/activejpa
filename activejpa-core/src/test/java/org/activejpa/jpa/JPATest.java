@@ -17,7 +17,6 @@ import java.util.Collections;
 
 import javax.persistence.EntityManagerFactory;
 
-import org.activejpa.BaseTest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -25,7 +24,7 @@ import org.testng.annotations.Test;
  * @author ganeshs
  *
  */
-public class JPATest extends BaseTest {
+public class JPATest {
 	
 	private EntityManagerFactory emf;
 	

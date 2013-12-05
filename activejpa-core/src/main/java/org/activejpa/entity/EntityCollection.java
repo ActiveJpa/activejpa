@@ -16,7 +16,7 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
 
 import org.activejpa.ActiveJpaException;
-import org.apache.commons.beanutils.PropertyUtils;
+import org.activejpa.util.PropertyUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,7 +76,6 @@ public class EntityCollection<T extends Model> extends BaseObject {
 		Method method = null;
 		String methodName = getMethodName(add ? "add" : "remove", name);
 		try {
-			
 			logger.trace("Attempting to invoke the method {} on the parent {}", methodName, parent);
 			method = parent.getClass().getDeclaredMethod(methodName, elementType);
 			method.invoke(parent, item);
@@ -88,19 +87,15 @@ public class EntityCollection<T extends Model> extends BaseObject {
 		}
 		
 		// Try adding the item to the collection property returned by the getter
-		try {
-			logger.trace("Attempting to invoke the getter for the property {} on the parent {}", name, parent);
-			Collection<T> collection = (Collection<T>)PropertyUtils.getProperty(parent, name);
+		logger.trace("Attempting to invoke the getter for the property {} on the parent {}", name, parent);
+		Collection<T> collection = (Collection<T>) PropertyUtil.getProperty(parent, name);
+		if (collection != null) {
 			if (add) {
 				collection.add(item);
 			} else {
 				collection.remove(item);
 			}
 			return item;
-		} catch (NoSuchMethodException e) {
-			logger.debug("Getter doesn't exist for the property {} in the class {}", name, parent.getClass());
-		} catch (Exception e) {
-			throw new ActiveJpaException("Failed while invoking the getter for the property " + name + " in the class " + parent.getClass(), e);
 		}
 		
 		// Try to find out the field and add/remove it to/from that
@@ -108,7 +103,7 @@ public class EntityCollection<T extends Model> extends BaseObject {
 			logger.trace("Attempting to invoke the the property {} on the parent {}", name, parent);
 			Field field = parent.getClass().getDeclaredField(name);
 			field.setAccessible(true);
-			Collection<T> collection = (Collection<T>) field.get(parent);
+			collection = (Collection<T>) field.get(parent);
 			if (add) {
 				collection.add(item);
 			} else {
