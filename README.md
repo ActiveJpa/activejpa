@@ -73,7 +73,7 @@ ActiveJpa is available as a Maven artifact and should be fairly simpler to integ
      <dependency>
        <groupId>org.activejpa</groupId>
        <artifactId>activejpa-core</artifactId>
-       <version>0.0.7</version>
+       <version>0.1.5</version>
      </dependency>
    </dependencies>
    
@@ -93,8 +93,10 @@ If you are on a non-maven project, you will have to include these additional dep
 
 * Javassist-3.17.1-GA.jar
 * hibernate-jpa-2.0-api.1.0.1-Final.jar
-* commons-collection-1.8.3.jar
-* slf4j-log4j12-1.7.5.jar
+* commons-beanutils-1.8.3.jar
+* commons-lang3-3.1.jar
+* guava-14.0.1.jar
+* slf4j-api-1.7.5.jar
 
 ### Hooking into your application
 
@@ -175,6 +177,10 @@ ActiveJpa provides an abstract model test class for tesng that enables instrumen
 		}
 	}
 ```
+
+### Examples
+#### Spring integration
+There's a [sample application](https://github.com/ActiveJpa/activejpa/tree/master/activejpa-examples/activejpa-examples-spring) that demonstrates the Spring-ActiveJpa integration
 
 License
 -------
