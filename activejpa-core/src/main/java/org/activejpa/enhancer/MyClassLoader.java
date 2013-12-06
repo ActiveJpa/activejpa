@@ -14,6 +14,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * A class loader that emulates the functionality of the agent. To be used for testing in an environment where loading agent is not possible
+ * 
+ * WARNING: Use it only for testing. Not recommended for production use. 
+ * 
  * @author ganeshs
  *
  */
