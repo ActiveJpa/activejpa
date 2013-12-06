@@ -8,6 +8,7 @@
 	<modules>
 		<module>activejpa-core</module>
 		<module>activejpa-test</module>
+		<module>activejpa-examples</module>
 	</modules>
 
 	<properties>
