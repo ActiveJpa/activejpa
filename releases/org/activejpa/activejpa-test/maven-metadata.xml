@@ -3,10 +3,10 @@
   <groupId>org.activejpa</groupId>
   <artifactId>activejpa-test</artifactId>
   <versioning>
-    <release>0.1.3</release>
+    <release>0.1.4</release>
     <versions>
-      <version>0.1.3</version>
+      <version>0.1.4</version>
     </versions>
-    <lastUpdated>20131106194326</lastUpdated>
+    <lastUpdated>20131206040121</lastUpdated>
   </versioning>
 </metadata>
