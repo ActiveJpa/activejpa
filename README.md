@@ -182,6 +182,11 @@ ActiveJpa provides an abstract model test class for tesng that enables instrumen
 #### Spring integration
 There's a [sample application](https://github.com/ActiveJpa/activejpa/tree/master/activejpa-examples/activejpa-examples-spring) that demonstrates the Spring-ActiveJpa integration
 
+How to ask for help?
+-------------------
+Create an [issue](https://github.com/ActiveJpa/activejpa/issues) explaining your issue as detail as possible.
+
+
 License
 -------
 ActiveJPA is offered under Apache License, Version 2.0
