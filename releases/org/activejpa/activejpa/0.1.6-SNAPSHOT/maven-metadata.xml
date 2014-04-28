@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata modelVersion="1.1.0">
+  <groupId>org.activejpa</groupId>
+  <artifactId>activejpa</artifactId>
+  <version>0.1.6-SNAPSHOT</version>
+  <versioning>
+    <snapshot>
+      <timestamp>20140428.172816</timestamp>
+      <buildNumber>1</buildNumber>
+    </snapshot>
+    <lastUpdated>20140428172816</lastUpdated>
+    <snapshotVersions>
+      <snapshotVersion>
+        <extension>pom</extension>
+        <value>0.1.6-20140428.172816-1</value>
+        <updated>20140428172816</updated>
+      </snapshotVersion>
+    </snapshotVersions>
+  </versioning>
+</metadata>
