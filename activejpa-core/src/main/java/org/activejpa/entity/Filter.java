@@ -11,6 +11,7 @@ import java.util.List;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -23,6 +24,8 @@ import org.activejpa.entity.Condition.Operator;
 public class Filter {
 	
 	private List<Condition> conditions = new ArrayList<Condition>();
+	
+	private List<SortField> sortFields = new ArrayList<SortField>();
 
 	private Integer pageNo;
 	
@@ -118,6 +121,14 @@ public class Filter {
 			}
 			query.where(predicates.toArray(new Predicate[0]));
 		}
+		
+		if (sortFields != null && !sortFields.isEmpty()) {
+			List<Order> orders = new ArrayList<Order>();
+			for (SortField sortField : sortFields) {
+				orders.add(sortField.getOrder(builder, root));
+			}
+			query.orderBy(orders);
+		}
 	}
 	
 	public void setParameters(Query query) {
@@ -134,7 +145,7 @@ public class Filter {
 			query.setMaxResults(getPerPage());
 		}
 	}
-
+	
 	/**
 	 * @return the cacheable
 	 */
@@ -147,6 +158,39 @@ public class Filter {
 	 */
 	public void setCacheable(boolean cacheable) {
 		this.cacheable = cacheable;
+	}
+	
+	/**
+	 * Adds the sort field
+	 * 
+	 * @param name
+	 * @param asc
+	 */
+	public void addSortField(String name, boolean asc) {
+		this.sortFields.add(new SortField(name, asc));
+	}
+	
+	/**
+	 * Adds the sort field
+	 * 
+	 * @param sortField
+	 */
+	public void addSortField(SortField sortField) {
+		this.sortFields.add(sortField);
+	}
+
+	/**
+	 * @return the sortFields
+	 */
+	public List<SortField> getSortFields() {
+		return sortFields;
+	}
+
+	/**
+	 * @param sortFields the sortFields to set
+	 */
+	public void setSortFields(List<SortField> sortFields) {
+		this.sortFields = sortFields;
 	}
 
 	@Override

@@ -11,10 +11,13 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
+import java.util.Arrays;
+
 import javax.persistence.Parameter;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -86,6 +89,22 @@ public class FilterTest {
 	}
 	
 	@Test
+	public void shouldConstructCriteriaQueryWithSortFields() {
+		Filter filter = new Filter();
+		filter.addSortField(mock(SortField.class));
+		filter.addSortField(mock(SortField.class));
+		CriteriaBuilder builder = mock(CriteriaBuilder.class);
+		Root root = mock(Root.class);
+		Order order1 = mock(Order.class);
+		Order order2 = mock(Order.class);
+		when(filter.getSortFields().get(0).getOrder(builder, root)).thenReturn(order1);
+		when(filter.getSortFields().get(1).getOrder(builder, root)).thenReturn(order2);
+		CriteriaQuery query = mock(CriteriaQuery.class);
+		filter.constructQuery(builder, query, root);
+		verify(query).orderBy(Arrays.asList(order1, order2));
+	}
+	
+	@Test
 	public void shouldSetParameters() {
 		Filter filter = new Filter();
 		filter.addCondition("testKey", Operator.eq, "testValue");
@@ -143,5 +162,10 @@ public class FilterTest {
 	public void shouldPageIfPerPageIsSet() {
 		Filter filter = new Filter(10, 1, mock(Condition.class));
 		assertTrue(filter.shouldPage());
+	}
+	
+	@Test
+	public void shouldOrderByPrimaryTableField() {
+		
 	}
 }

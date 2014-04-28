@@ -215,4 +215,38 @@ public class ModelTest extends BaseModelTest {
 		model.persist();
 		return model;
 	}
+	
+	@Test
+	public void shouldOrderByFieldAsc() {
+		DummyModel model = createModel("column1", "column2");
+		DummyModel model1 = createModel("column1", "column2");
+		Filter filter = new Filter();
+		filter.addSortField("id", true);
+		List<DummyModel> models = DummyModel.where(filter);
+		assertEquals(models.get(0), model);
+		assertEquals(models.get(1), model1);
+	}
+	
+	@Test
+	public void shouldOrderByFieldDesc() {
+		DummyModel model = createModel("column1", "column2");
+		DummyModel model1 = createModel("column1", "column2");
+		Filter filter = new Filter();
+		filter.addSortField("id", false);
+		List<DummyModel> models = DummyModel.where(filter);
+		assertEquals(models.get(1), model);
+		assertEquals(models.get(0), model1);
+	}
+	
+	@Test
+	public void shouldOrderByMultipleFields() {
+		DummyModel model = createModel("column1", "column2");
+		DummyModel model1 = createModel("column1", "column2");
+		Filter filter = new Filter();
+		filter.addSortField("column1", false);
+		filter.addSortField("id", false);
+		List<DummyModel> models = DummyModel.where(filter);
+		assertEquals(models.get(0), model1);
+		assertEquals(models.get(1), model);
+	}
 }

@@ -7,14 +7,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Parameter;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.From;
-import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -25,7 +22,7 @@ import org.activejpa.util.ConvertUtil;
  * @author ganeshs
  *
  */
-public class Condition {
+public class Condition extends AbstractConstruct {
 
 	/**
 	 * @author ganeshs
@@ -236,29 +233,6 @@ public class Condition {
 	
 	public void setParameters(Query query, Object value) {
 		operator.setParameters(query, name, value);
-	}
-	
-	private <T, S> Path<?> getPath(From<T, S> root, String name) {
-		int index = name.indexOf(".");
-		if (index > 0 ) {
-			String attribute = name.substring(0, index);
-			From<S, ?> join = getJoin(attribute, root.getJoins());
-			if (join == null) {
-				join = root.join(attribute);
-			}
-			return getPath(join, name.substring(index + 1));
-		} else {
-			return root.get(name);
-		}
-	}
-	
-	private <T> Join<T, ?> getJoin(String name, Set<Join<T, ?>> joins) {
-		for (Join<T, ?> join : joins) {
-			if (join.getAttribute().getName().equals(name)) {
-				return join;
-			}
-		}
-		return null;
 	}
 
 	@Override
