@@ -19,6 +19,7 @@ AcitveJpa abstracts out some of the most common functionalities you might need i
 	filter.setPageNo(1);
 	filter.setPerPage(25);
 	filter.addCondition(new Condition("orderItems.product.category", Operator.eq, "books");
+	filter.addSortField("status", true);
 	List<Order> orders = Order.where(filter);
 	
 	// Count of orders matching the filter
@@ -73,7 +74,7 @@ ActiveJpa is available as a Maven artifact and should be fairly simpler to integ
      <dependency>
        <groupId>org.activejpa</groupId>
        <artifactId>activejpa-core</artifactId>
-       <version>0.1.5</version>
+       <version>0.1.6</version>
      </dependency>
    </dependencies>
    
