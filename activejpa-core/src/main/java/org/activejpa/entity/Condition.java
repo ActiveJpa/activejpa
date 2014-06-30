@@ -137,16 +137,27 @@ public class Condition extends AbstractConstruct {
 		}
 		
 		public void setParameters(Query query, String name, Object value) {
+			name = cleanName(name);
 			Parameter param = query.getParameter(name);
 			value = ConvertUtil.convert(value, param.getParameterType());
 			query.setParameter(name, value);
 		}
 		
 		public Predicate constructCondition(CriteriaBuilder builder, Path path, String name) {
-			return createPredicate(builder, path, builder.parameter(path.getJavaType(), name));
+			return createPredicate(builder, path, builder.parameter(path.getJavaType(), cleanName(name)));
 		}
 		
 		protected abstract Predicate createPredicate(CriteriaBuilder builder, Path path, Expression... parameter);
+		
+		/**
+		 * Cleans the name to align with the jpa query language constructs
+		 *  
+		 * @param name
+		 * @return
+		 */
+		protected String cleanName(String name) {
+			return name.replace(".", "0_");
+		}
 	}
 	
 	private String name;

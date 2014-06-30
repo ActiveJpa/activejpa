@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
@@ -113,6 +114,13 @@ public class Filter {
 		return writer.toString();
 	}
 	
+	/**
+	 * Constructs the select criteria query
+	 * 
+	 * @param builder
+	 * @param query
+	 * @param root
+	 */
 	public <T extends Model> void constructQuery(CriteriaBuilder builder, CriteriaQuery<?> query, Root<T> root) {
 		if (conditions != null || !conditions.isEmpty()) {
 			List<Predicate> predicates = new ArrayList<Predicate>();
@@ -128,6 +136,23 @@ public class Filter {
 				orders.add(sortField.getOrder(builder, root));
 			}
 			query.orderBy(orders);
+		}
+	}
+	
+	/**
+	 * Constructs the delete criteria query
+	 * 
+	 * @param builder
+	 * @param query
+	 * @param root
+	 */
+	public <T extends Model> void constructQuery(CriteriaBuilder builder, CriteriaDelete<?> query, Root<T> root) {
+		if (conditions != null || !conditions.isEmpty()) {
+			List<Predicate> predicates = new ArrayList<Predicate>();
+			for (Condition condition : conditions) {
+				predicates.add(condition.constructQuery(builder, root));
+			}
+			query.where(predicates.toArray(new Predicate[0]));
 		}
 	}
 	

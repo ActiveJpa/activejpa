@@ -4,7 +4,6 @@
 package org.activejpa.entity;
 
 import java.io.Serializable;
-import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +15,7 @@ import javax.persistence.NonUniqueResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.ManagedType;
@@ -25,8 +25,6 @@ import org.activejpa.ActiveJpaException;
 import org.activejpa.jpa.JPA;
 import org.activejpa.jpa.JPAContext;
 import org.activejpa.util.BeanUtil;
-
-
 
 /**
  * <p> Base class for all entities. Embeds entity manager in it and provides a bunch of DAL abstractions to make data access a lot simpler.
@@ -239,13 +237,11 @@ public abstract class Model extends BaseObject {
 		execute(new Executor<Void>() {
 			@Override
 			public Void execute(EntityManager manager) {
-				StringWriter writer = new StringWriter();
-				writer.append("delete from ").append(clazz.getSimpleName());
-				if (! filter.getConditions().isEmpty()) {
-					writer.append(" where ").append(filter.constructQuery());
-				}
-				Query query = manager.createQuery(writer.toString());
-				filter.setParameters(query);
+				CriteriaBuilder builder = manager.getCriteriaBuilder();
+				CriteriaDelete<T> deleteQuery = builder.createCriteriaDelete(clazz);
+				Root<T> root = deleteQuery.from(clazz);
+				filter.constructQuery(builder, deleteQuery, root);
+				Query query = createQuery(deleteQuery, filter);
 				query.executeUpdate();
 				return null;
 			}
