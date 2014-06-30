@@ -17,6 +17,7 @@ import javax.persistence.criteria.Root;
 
 import org.activejpa.ActiveJpaException;
 import org.activejpa.util.PropertyUtil;
+import org.javalite.common.Inflector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -168,10 +169,15 @@ public class EntityCollection<T extends Model> extends BaseObject {
 		parent.persist();
 	}
 	
+	/**
+	 * Constructs the name of the method from the collectionName 
+	 * 
+	 * @param prefix
+	 * @param collectionName
+	 * @return
+	 */
 	private String getMethodName(String prefix, String collectionName) {
-		if (collectionName.endsWith("s")) {
-			collectionName = collectionName.substring(0, collectionName.length() - 1);
-		}
+		collectionName = Inflector.singularize(collectionName);
 		return prefix + collectionName.substring(0, 1).toUpperCase() + collectionName.substring(1);
 	}
 }
