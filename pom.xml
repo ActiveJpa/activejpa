@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.activejpa</groupId>
 	<artifactId>activejpa</artifactId>
-	<version>0.1.8-SNAPSHOT</version>
+	<version>0.2.0</version>
 	<packaging>pom</packaging>
 	<name>ActiveJpa</name>
 	<modules>
