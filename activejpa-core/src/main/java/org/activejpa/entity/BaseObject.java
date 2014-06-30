@@ -4,8 +4,10 @@
 package org.activejpa.entity;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Root;
@@ -20,10 +22,20 @@ class BaseObject {
 	
 	protected static <T> TypedQuery<T> createQuery(CriteriaQuery<T> cQuery, Filter filter) {
 		TypedQuery<T> query = getEntityManager().createQuery(cQuery);
+		updateQueryParams(query, filter);
+		return query;
+	}
+	
+	protected static <T> Query createQuery(CriteriaDelete<T> cQuery, Filter filter) {
+		Query query = getEntityManager().createQuery(cQuery);
+		updateQueryParams(query, filter);
+		return query;
+	}
+	
+	private static void updateQueryParams(Query query, Filter filter) {
 		filter.setParameters(query);
 		filter.setPage(query);
 		query.setHint(JPA.instance.getCacheableHint(), filter.isCacheable());
-		return query;
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })

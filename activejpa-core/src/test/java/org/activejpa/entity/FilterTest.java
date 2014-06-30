@@ -16,6 +16,7 @@ import java.util.Arrays;
 import javax.persistence.Parameter;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
@@ -84,6 +85,20 @@ public class FilterTest {
 		when(filter.getConditions().get(0).constructQuery(builder, root)).thenReturn(p1);
 		when(filter.getConditions().get(1).constructQuery(builder, root)).thenReturn(p2);
 		CriteriaQuery query = mock(CriteriaQuery.class);
+		filter.constructQuery(builder, query, root);
+		verify(query).where(p1, p2);
+	}
+	
+	@Test
+	public void shouldConstructCriteriaDeleteQuery() {
+		Filter filter = new Filter(mock(Condition.class), mock(Condition.class));
+		CriteriaBuilder builder = mock(CriteriaBuilder.class);
+		Root root = mock(Root.class);
+		Predicate p1 = mock(Predicate.class);
+		Predicate p2 = mock(Predicate.class);
+		when(filter.getConditions().get(0).constructQuery(builder, root)).thenReturn(p1);
+		when(filter.getConditions().get(1).constructQuery(builder, root)).thenReturn(p2);
+		CriteriaDelete query = mock(CriteriaDelete.class);
 		filter.constructQuery(builder, query, root);
 		verify(query).where(p1, p2);
 	}
