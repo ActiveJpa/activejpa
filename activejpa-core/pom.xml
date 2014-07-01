@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.activejpa</groupId>
 		<artifactId>activejpa</artifactId>
-		<version>0.2.1-SNAPSHOT</version>
+		<version>0.2.1</version>
 	</parent>
 
 	<build>
@@ -108,6 +108,7 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>4.3.5.Final</version>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 	<dependencyManagement>
@@ -143,7 +144,7 @@
 			<dependency>
 				<groupId>org.activejpa</groupId>
 				<artifactId>activejpa-test</artifactId>
-				<version>0.2.1-SNAPSHOT</version>
+				<version>0.2.1</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>

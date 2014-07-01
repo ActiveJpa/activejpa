@@ -8,7 +8,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import javax.persistence.Parameter;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Expression;
@@ -74,11 +73,13 @@ public class Condition extends AbstractConstruct {
 			
 			@Override
 			public Predicate constructCondition(CriteriaBuilder builder, Path path, String name) {
+				name = cleanName(name);
 				return createPredicate(builder, path, builder.parameter(path.getJavaType(), "from" + name), builder.parameter(path.getJavaType(), "to" + name));
 			}
 			
 			@Override
-			public void setParameters(Query query, String name, Object value) {
+			public void setParameters(Query query, String name, Object value, Class<?> paramType) {
+				name = cleanName(name);
 				Object[] values = null;
 				if (value instanceof Object[]) {
 					values = (Object[]) value;
@@ -86,8 +87,8 @@ public class Condition extends AbstractConstruct {
 				if (values == null || values.length != 2) {
 					throw new IllegalArgumentException("Value - " + value + " should be an array of size 2");
 				}
-				super.setParameters(query, "from" + name, values[0]);
-				super.setParameters(query, "to" + name, values[1]);
+				super.setParameters(query, "from" + name, values[0], paramType);
+				super.setParameters(query, "to" + name, values[1], paramType);
 			}
 			
 			@Override
@@ -102,20 +103,21 @@ public class Condition extends AbstractConstruct {
 			}
 			
 			@Override
-			public void setParameters(Query query, String name, Object value) {
-				Parameter param = query.getParameter(name);
+			public void setParameters(Query query, String name, Object value, Class<?> paramType) {
+				name = cleanName(name);
 				if (value instanceof Object[]) {
 					value = Arrays.asList((Object[]) value);
 				}
 				List list = new ArrayList();
 				for (Object val : (List) value) {
-					list.add(ConvertUtil.convert(val, param.getParameterType()));
+					list.add(ConvertUtil.convert(val, paramType));
 				}
 				query.setParameter(name, list);
 			}
 			
 			@Override
 			public Predicate constructCondition(CriteriaBuilder builder, Path path, String name) {
+				name = cleanName(name);
 				return createPredicate(builder, path, builder.parameter(Collection.class, name));
 			}
 		},
@@ -136,10 +138,9 @@ public class Condition extends AbstractConstruct {
 			return name + " " + operator + " :" + name;
 		}
 		
-		public void setParameters(Query query, String name, Object value) {
+		public void setParameters(Query query, String name, Object value, Class<?> paramType) {
 			name = cleanName(name);
-			Parameter param = query.getParameter(name);
-			value = ConvertUtil.convert(value, param.getParameterType());
+			value = ConvertUtil.convert(value, paramType);
 			query.setParameter(name, value);
 		}
 		
@@ -165,6 +166,8 @@ public class Condition extends AbstractConstruct {
 	private Object value;
 	
 	private Operator operator;
+	
+	private Path path;
 	
 	/**
 	 * Default constructor
@@ -238,12 +241,12 @@ public class Condition extends AbstractConstruct {
 	}
 	
 	public <T extends Model> Predicate constructQuery(CriteriaBuilder builder, Root<T> root) {
-		Path<?> path = getPath(root, name);
+		path = getPath(root, name);
 		return operator.constructCondition(builder, path, name);
 	}
 	
 	public void setParameters(Query query, Object value) {
-		operator.setParameters(query, name, value);
+		operator.setParameters(query, name, value, path.getJavaType());
 	}
 
 	@Override
