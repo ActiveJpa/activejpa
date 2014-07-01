@@ -167,7 +167,7 @@ public class Condition extends AbstractConstruct {
 	
 	private Operator operator;
 	
-	private Path path;
+	private Path<?> path;
 	
 	/**
 	 * Default constructor
@@ -247,6 +247,20 @@ public class Condition extends AbstractConstruct {
 	
 	public void setParameters(Query query, Object value) {
 		operator.setParameters(query, name, value, path.getJavaType());
+	}
+
+	/**
+	 * @return the path
+	 */
+	Path<?> getPath() {
+		return path;
+	}
+
+	/**
+	 * @param path the path to set
+	 */
+	void setPath(Path<?> path) {
+		this.path = path;
 	}
 
 	@Override

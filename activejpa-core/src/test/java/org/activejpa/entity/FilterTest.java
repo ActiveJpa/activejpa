@@ -19,6 +19,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Order;
+import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
@@ -124,6 +125,10 @@ public class FilterTest {
 		Filter filter = new Filter();
 		filter.addCondition("testKey", Operator.eq, "testValue");
 		filter.addCondition("testKey1", Operator.eq, "testValue1");
+		Path path = mock(Path.class);
+		when(path.getJavaType()).thenReturn(String.class);
+		filter.getConditions().get(0).setPath(path);
+		filter.getConditions().get(1).setPath(path);
 		Query query = mock(Query.class);
 		Parameter param = mock(Parameter.class);
 		when(param.getParameterType()).thenReturn(String.class);

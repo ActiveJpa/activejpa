@@ -77,6 +77,7 @@ public class ConditionTest {
 	@Test
 	public void shouldSetParametersForEqQuery() {
 		Condition condition = new Condition("key", Operator.eq, "value");
+		condition.setPath(path);
 		condition.setParameters(query, "value");
 		verify(query).setParameter("key", "value");
 	}
@@ -99,6 +100,7 @@ public class ConditionTest {
 	@Test
 	public void shouldSetParametersForNeQuery() {
 		Condition condition = new Condition("key", Operator.ne, "value");
+		condition.setPath(path);
 		condition.setParameters(query, "value");
 		verify(query).setParameter("key", "value");
 	}
@@ -121,6 +123,7 @@ public class ConditionTest {
 	@Test
 	public void shouldSetParametersForLtQuery() {
 		Condition condition = new Condition("key", Operator.lt, "value");
+		condition.setPath(path);
 		condition.setParameters(query, "value");
 		verify(query).setParameter("key", "value");
 	}
@@ -143,6 +146,7 @@ public class ConditionTest {
 	@Test
 	public void shouldSetParametersForGtQuery() {
 		Condition condition = new Condition("key", Operator.gt, "value");
+		condition.setPath(path);
 		condition.setParameters(query, "value");
 		verify(query).setParameter("key", "value");
 	}
@@ -165,6 +169,7 @@ public class ConditionTest {
 	@Test
 	public void shouldSetParametersForLeQuery() {
 		Condition condition = new Condition("key", Operator.le, "value");
+		condition.setPath(path);
 		condition.setParameters(query, "value");
 		verify(query).setParameter("key", "value");
 	}
@@ -187,6 +192,7 @@ public class ConditionTest {
 	@Test
 	public void shouldSetParametersForGeQuery() {
 		Condition condition = new Condition("key", Operator.ge, "value");
+		condition.setPath(path);
 		condition.setParameters(query, "value");
 		verify(query).setParameter("key", "value");
 	}
@@ -210,6 +216,7 @@ public class ConditionTest {
 	public void shouldSetParametersForInQuery() {
 		Object value = Arrays.asList("value");
 		Condition condition = new Condition("key", Operator.in, value);
+		condition.setPath(path);
 		condition.setParameters(query, value);
 		verify(query).setParameter("key", value);
 	}
@@ -232,6 +239,7 @@ public class ConditionTest {
 	@Test
 	public void shouldSetParametersForLikeQuery() {
 		Condition condition = new Condition("key", Operator.like, "value");
+		condition.setPath(path);
 		condition.setParameters(query, "value");
 		verify(query).setParameter("key", "value");
 	}
@@ -255,6 +263,7 @@ public class ConditionTest {
 	@Test
 	public void shouldSetParametersForBetweenQuery() {
 		Condition condition = new Condition("key", Operator.between, new Object[]{"value1", "value2"});
+		condition.setPath(path);
 		condition.setParameters(query, new String[]{"value1", "value2"});
 		verify(query).setParameter("fromkey", "value1");
 		verify(query).setParameter("tokey", "value2");
