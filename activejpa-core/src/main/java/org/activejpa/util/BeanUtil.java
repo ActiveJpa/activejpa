@@ -65,12 +65,16 @@ public class BeanUtil {
 	@SuppressWarnings({ "rawtypes", "unchecked" }) 
 	private static void loadMap(Map map, Map attributes, Class<?> elementType) throws Exception {
 		for (Entry entry : (Set<Entry>) attributes.entrySet()) {
-			Object value = map.get(entry.getKey());
-			if (value == null) {
-				value = elementType.newInstance();
+			if (PropertyUtil.isSimpleValueType(elementType)) {
+				map.put(entry.getKey(), ConvertUtil.convert(entry.getValue(), elementType));
+			} else {
+				Object value = map.get(entry.getKey());
+				if (value == null) {
+					value = elementType.newInstance();
+				}
+				load(value, (Map)entry.getValue());
+				map.put(entry.getKey(), value);
 			}
-			load(value, (Map)entry.getValue());
-			map.put(entry.getKey(), value);
 		}
 	}
 }

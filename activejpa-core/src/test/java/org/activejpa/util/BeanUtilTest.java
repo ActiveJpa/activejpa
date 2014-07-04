@@ -44,6 +44,19 @@ public class BeanUtilTest {
 		assertEquals(map.get("test123").getModel().getIntegerValue(), new Integer(1234));
 		assertEquals(map.get("test123").getModel().getStringValue(), "string");
 	}
+	
+	@Test
+	public void shouldLoadBeanWithMapOfStrings() {
+		Map<String, Object> data = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<String, Object>();
+		data.put("stringValue", "string");
+		data.put("integerValue", "1234");
+		map.put("map", data);
+		
+		DummyModel2 model2 = new DummyModel2();
+		BeanUtil.load(model2, map);
+		assertTrue(model2.getMap().containsKey("stringValue"));
+	}
 
 	public static class DummyModel1 {
 		
@@ -85,6 +98,8 @@ public class BeanUtilTest {
 	public static class DummyModel2 {
 		
 		private DummyModel1 model;
+		
+		private Map<String, String> map = new HashMap<String, String>();
 
 		/**
 		 * @return the model
@@ -98,6 +113,20 @@ public class BeanUtilTest {
 		 */
 		public void setModel(DummyModel1 model) {
 			this.model = model;
+		}
+
+		/**
+		 * @return the map
+		 */
+		public Map<String, String> getMap() {
+			return map;
+		}
+
+		/**
+		 * @param map the map to set
+		 */
+		public void setMap(Map<String, String> map) {
+			this.map = map;
 		}
 	}
 	
