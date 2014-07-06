@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.activejpa</groupId>
 		<artifactId>activejpa</artifactId>
-		<version>0.2.2-SNAPSHOT</version>
+		<version>0.2.3-SNAPSHOT</version>
 	</parent>
 
 	<build>
@@ -144,7 +144,7 @@
 			<dependency>
 				<groupId>org.activejpa</groupId>
 				<artifactId>activejpa-test</artifactId>
-				<version>0.2.2-SNAPSHOT</version>
+				<version>0.2.3-SNAPSHOT</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
