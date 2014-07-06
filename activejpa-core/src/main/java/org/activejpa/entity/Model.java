@@ -338,7 +338,7 @@ public abstract class Model extends BaseObject {
 		}
 	}
 	
-	private static interface Executor<T> {
+	public static interface Executor<T> {
 		
 		T execute(EntityManager manager);
 	}
