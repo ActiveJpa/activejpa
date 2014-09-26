@@ -74,7 +74,7 @@ ActiveJpa is available as a Maven artifact and should be fairly simpler to integ
      <dependency>
        <groupId>org.activejpa</groupId>
        <artifactId>activejpa-core</artifactId>
-       <version>0.2.2</version>
+       <version>0.2.3</version>
      </dependency>
    </dependencies>
    
