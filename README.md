@@ -1,4 +1,4 @@
-ActiveJpa [![Build Status](https://travis-ci.org/ActiveJpa/activejpa.png?branch=master)](https://travis-ci.org/ActiveJpa/activejpa)
+ActiveJpa [![Build Status](https://travis-ci.org/ActiveJpa/activejpa.png?branch=master)](https://travis-ci.org/ActiveJpa/activejpa)  [![Coverage Status](https://img.shields.io/coveralls/ActiveJpa/activejpa.svg)](https://coveralls.io/r/ActiveJpa/activejpa)
 =========
 
 ActiveJpa is a java library that attempts to implement the active record pattern on top of JPA. The goal of this library is to eliminate the need to create DAO or Repository classes and make programming DAL a lot more simpler. 

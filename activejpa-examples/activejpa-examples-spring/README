@@ -33,3 +33,5 @@ Ensure your entity classes extend org.activejpa.entity.Model
 
 ## Starting the example application
 Just run `mvn tomcat7:run`
+
+Hit http://localhost:9966/petclinic/ and playaround with the petclinic application
