@@ -18,7 +18,7 @@
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
-			<version>6.8.8</version>
+			<version>6.9.4</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -30,7 +30,7 @@
 		<dependency>
 			<groupId>org.hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
-			<version>2.2.9</version>
+			<version>2.3.2</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -41,7 +41,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>4.3.5.Final</version>
+			<version>4.3.10.Final</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

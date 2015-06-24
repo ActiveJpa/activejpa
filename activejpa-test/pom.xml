@@ -26,7 +26,7 @@
 			<dependency>
 				<groupId>org.testng</groupId>
 				<artifactId>testng</artifactId>
-				<version>6.8.5</version>
+				<version>6.9.4</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
