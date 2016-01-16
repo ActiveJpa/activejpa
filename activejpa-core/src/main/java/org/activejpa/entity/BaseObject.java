@@ -3,16 +3,12 @@
  */
 package org.activejpa.entity;
 
+import org.activejpa.jpa.JPA;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaDelete;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Root;
-
-import org.activejpa.jpa.JPA;
+import javax.persistence.criteria.*;
 
 /**
  * @author ganeshs
@@ -42,6 +38,9 @@ class BaseObject {
 	protected static <T extends Model, S extends Model> TypedQuery<S> createQuery(Class<T> entityType, String attribute, Class<S> attributeType, Filter filter) {
 		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
 		CriteriaQuery<S> cQuery = builder.createQuery(attributeType);
+		//
+		cQuery.distinct(filter.isDistinct());
+		//
 		Root<T> root = cQuery.from(entityType);
 		if (attribute != null) {
 			Join join = root.join(attribute);
