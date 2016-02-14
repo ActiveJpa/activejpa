@@ -30,6 +30,8 @@ public class JPA {
 	
 	private static final String HIBERNATE_PERSISTENCE = "org.hibernate.ejb.HibernatePersistence";
 	
+	private static final String HIBERNATE_JPA_PERSISTENCE = "org.hibernate.jpa.HibernatePersistenceProvider";
+	
 	private static final String ECLIPSE_PERSISTENCE = "org.eclipse.persistence.jpa.PersistenceProvider";
 	
 	private static final String OPENJPA_PERSISTENCE = "org.apache.openjpa.persistence.PersistenceProviderImpl";
@@ -38,7 +40,7 @@ public class JPA {
 		List<PersistenceProvider> providers = PersistenceProviderResolverHolder.getPersistenceProviderResolver().getPersistenceProviders();
 		if (providers != null) {
 			String providerClass = providers.get(0).getClass().getCanonicalName();
-			if (providerClass.equals(HIBERNATE_PERSISTENCE)) {
+			if (providerClass.equals(HIBERNATE_PERSISTENCE) || providerClass.equals(HIBERNATE_JPA_PERSISTENCE)) {
 				cacheableHint = "org.hibernate.cacheable";
 			} else if (providerClass.equals(ECLIPSE_PERSISTENCE)) {
 				cacheableHint = "eclipselink.query-results-cache";
