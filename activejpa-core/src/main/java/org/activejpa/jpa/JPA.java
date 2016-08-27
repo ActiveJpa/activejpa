@@ -67,12 +67,20 @@ public class JPA {
 		addPersistenceUnit(persistenceUnitName, factory, true);
 	}
 	
-	public void addPersistenceUnit(String persistenceUnitName, EntityManagerFactory factory, boolean isDefault) {
-		JPAConfig config = new JPAConfig(persistenceUnitName, factory);
+	public void addPersistenceUnit(String persistenceUnitName, EntityManagerProvider provider) {
+		addPersistenceUnit(persistenceUnitName, provider, true);
+	}
+	
+	public void addPersistenceUnit(String persistenceUnitName, EntityManagerProvider provider, boolean isDefault) {
+		JPAConfig config = new JPAConfig(persistenceUnitName, provider);
 		if (isDefault) {
 			defaultConfig = config;
 		}
 		configs.put(persistenceUnitName, config);
+	}
+	
+	public void addPersistenceUnit(String persistenceUnitName, EntityManagerFactory factory, boolean isDefault) {
+		addPersistenceUnit(persistenceUnitName, new EntityManagerProviderImpl(factory), isDefault);
 	}
 	
 	public JPAConfig getConfig(String configName) {

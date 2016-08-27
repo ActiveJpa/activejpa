@@ -7,13 +7,14 @@
 	<parent>
 		<groupId>org.activejpa</groupId>
 		<artifactId>activejpa</artifactId>
-		<version>0.2.4</version>
+		<version>0.2.5</version>
 	</parent>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
+			<version>${testng.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate.javax.persistence</groupId>
@@ -21,13 +22,4 @@
 			<version>1.0.0.Final</version>
 		</dependency>
 	</dependencies>
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.testng</groupId>
-				<artifactId>testng</artifactId>
-				<version>6.9.4</version>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 </project>

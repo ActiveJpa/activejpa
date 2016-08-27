@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.activejpa</groupId>
 	<artifactId>activejpa</artifactId>
-	<version>0.2.4</version>
+	<version>0.2.5</version>
 	<packaging>pom</packaging>
 	<name>ActiveJpa</name>
 	<modules>
@@ -16,6 +16,15 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<github.global.server>github</github.global.server>
+		<hibernate.version>4.3.10.Final</hibernate.version>
+		<guava.version>19.0</guava.version>
+		<mockito.version>1.10.19</mockito.version>
+		<testng.version>6.9.10</testng.version>
+		<slf4j.version>1.7.21</slf4j.version>
+		<commons-beanutils.version>1.9.2</commons-beanutils.version>
+		<commons-lang3.version>3.4</commons-lang3.version>
+		<javassist.version>3.20.0-GA</javassist.version>
+		<hsqldb.version>2.3.4</hsqldb.version>
 	</properties>
 
 	<scm>
@@ -80,8 +89,8 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>2.1</version>
 				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 			<plugin>

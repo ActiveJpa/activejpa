@@ -13,18 +13,18 @@ public class JPAConfig {
 
 	private final String name;
 	
-	private final EntityManagerFactory entityManagerFactory;
+	private final EntityManagerProvider entityManagerProvider;
 	
 	private ThreadLocal<JPAContext> currentContext = new ThreadLocal<JPAContext>();
 	
-	public JPAConfig(String name, EntityManagerFactory factory) {
+	public JPAConfig(String name, EntityManagerProvider provider) {
 		this.name = name;
-		this.entityManagerFactory = factory;
+		this.entityManagerProvider = provider;
 	}
 
 	public void close() {
 		try {
-			entityManagerFactory.close();
+			getEntityManagerFactory().close();
 		} catch (Exception e) {
 			// Suppress exception and log
 		}
@@ -58,6 +58,6 @@ public class JPAConfig {
 	 * @return the entityManagerFactory
 	 */
 	public EntityManagerFactory getEntityManagerFactory() {
-		return entityManagerFactory;
+		return entityManagerProvider.getEntityManagerFactory();
 	}
 }

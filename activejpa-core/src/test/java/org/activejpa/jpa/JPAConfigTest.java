@@ -24,12 +24,15 @@ public class JPAConfigTest {
 	
 	private JPAConfig config;
 	
+	private EntityManagerProvider emp;
+	
 	private EntityManagerFactory emf;
 
 	@BeforeMethod
 	public void setup() {
 		emf = mock(EntityManagerFactory.class);
-		config = new JPAConfig("test", emf);
+		emp = new EntityManagerProviderImpl(emf);
+		config = new JPAConfig("test", emp);
 	}
 	
 	@Test

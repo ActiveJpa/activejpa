@@ -6,31 +6,32 @@
 	<parent>
 		<groupId>org.activejpa</groupId>
 		<artifactId>activejpa</artifactId>
-		<version>0.2.4</version>
+		<version>0.2.5</version>
 	</parent>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.activejpa</groupId>
 			<artifactId>activejpa-core</artifactId>
-			<version>0.2.4</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.testng</groupId>
 			<artifactId>testng</artifactId>
-			<version>6.9.4</version>
+			<version>${testng.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.activejpa</groupId>
 			<artifactId>activejpa-test</artifactId>
-			<version>0.2.4</version>
+			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
-			<version>2.3.2</version>
+			<version>${hsqldb.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -41,7 +42,7 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>4.3.10.Final</version>
+			<version>${hibernate.version}</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
