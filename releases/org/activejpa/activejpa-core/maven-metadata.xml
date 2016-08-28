@@ -3,10 +3,11 @@
   <groupId>org.activejpa</groupId>
   <artifactId>activejpa-core</artifactId>
   <versioning>
-    <release>0.2.5</release>
+    <release>0.3.0</release>
     <versions>
-      <version>0.2.5</version>
+      <version>0.3.0-SNAPSHOT</version>
+      <version>0.3.0</version>
     </versions>
-    <lastUpdated>20160827121002</lastUpdated>
+    <lastUpdated>20160828080113</lastUpdated>
   </versioning>
 </metadata>
