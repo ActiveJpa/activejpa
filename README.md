@@ -74,7 +74,7 @@ ActiveJpa is available as a Maven artifact and should be fairly simpler to integ
      <dependency>
        <groupId>org.activejpa</groupId>
        <artifactId>activejpa-core</artifactId>
-       <version>0.2.3</version>
+       <version>0.3.0</version>
      </dependency>
    </dependencies>
    
@@ -89,15 +89,6 @@ ActiveJpa is available as a Maven artifact and should be fairly simpler to integ
      </repository>
    </repositories>
 ```
-
-If you are on a non-maven project, you will have to include these additional dependencies in addition to activejpa-core,
-
-* Javassist-3.17.1-GA.jar
-* hibernate-jpa-2.1-api.1.0.0-Final.jar
-* commons-beanutils-1.8.3.jar
-* commons-lang3-3.1.jar
-* guava-14.0.1.jar
-* slf4j-api-1.7.5.jar
 
 ### Hooking into your application
 
