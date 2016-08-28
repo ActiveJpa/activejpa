@@ -2,7 +2,6 @@ language: java
 after_success: mvn cobertura:cobertura coveralls:cobertura
 jdk:
   - oraclejdk8
-  - openjdk8
 
 # whitelist
 branches:
