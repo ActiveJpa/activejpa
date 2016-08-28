@@ -5,6 +5,7 @@ package org.activejpa.jpa;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNotEquals;
@@ -64,6 +65,7 @@ public class JPAConfigTest {
 	
 	@Test
 	public void shouldClose() {
+		when(emf.isOpen()).thenReturn(true);
 		config.close();
 		verify(emf).close();
 	}

@@ -32,6 +32,8 @@ public class JPAContextTest {
 	
 	@Mock private EntityManagerFactory emf;
 	
+	private EntityManagerProvider emp;
+	
 	private JPAContext context;
 	
 	@BeforeMethod
@@ -39,7 +41,8 @@ public class JPAContextTest {
 		config = mock(JPAConfig.class);
 		entityManager = mock(EntityManager.class);
 		emf = mock(EntityManagerFactory.class);
-		when(config.getEntityManagerFactory()).thenReturn(emf);
+		emp = new EntityManagerProviderImpl(emf);
+		when(config.getEntityManagerProvider()).thenReturn(emp);
 		when(emf.createEntityManager()).thenReturn(entityManager);
 		context = new JPAContext(config, false);
 	}

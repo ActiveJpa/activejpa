@@ -24,7 +24,7 @@ public class JPAContext {
 
 	public EntityManager getEntityManager() {
 		if (entityManager == null) {
-			entityManager = config.getEntityManagerFactory().createEntityManager();
+			entityManager = config.getEntityManagerProvider().getEntityManager();
 			if (readOnly) {
 				entityManager.setProperty("readOnly", readOnly);
 			}

@@ -4,6 +4,7 @@
 package org.activejpa.jpa;
 
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
@@ -28,12 +29,15 @@ public class JPATest {
 	
 	private EntityManagerFactory emf;
 	
+	private EntityManagerProvider emp;
+	
 	private JPA jpa;
 	
 	@BeforeMethod
 	public void setup() throws Exception {
 		jpa = spy(JPA.instance);
 		emf = mock(EntityManagerFactory.class);
+		emp = new EntityManagerProviderImpl(emf);
 		doReturn(emf).when(jpa).createEntityManagerFactory("test", Collections.<String, String>emptyMap());
 		doReturn(emf).when(jpa).createEntityManagerFactory("test1", Collections.<String, String>emptyMap());
 	}
@@ -89,6 +93,7 @@ public class JPATest {
 	
 	@Test
 	public void shouldClose() {
+		when(emf.isOpen()).thenReturn(true);
 		jpa.addPersistenceUnit("test");
 		jpa.addPersistenceUnit("test1");
 		jpa.close();
@@ -104,6 +109,6 @@ public class JPATest {
 		} else {
 			assertNotEquals(config, jpa.getDefaultConfig());
 		}
-		assertEquals(config.getEntityManagerFactory(), emf);
+		assertEquals(config.getEntityManagerProvider().getEntityManagerFactory(), emf);
 	}
 }
