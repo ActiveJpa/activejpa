@@ -37,7 +37,11 @@ public class ActiveJpaAgentLoader {
         try {
             VirtualMachine vm = VirtualMachine.attach(pid);
             CodeSource codeSource = ActiveJpaAgent.class.getProtectionDomain().getCodeSource();
-            vm.loadAgent(codeSource.getLocation().toURI().getPath(), "");
+            String jarPath = codeSource.getLocation().toURI().getPath();
+            if(system.getProperty("os.name").indexOf("Windows") > -1){
+            	jarPath = jarPath.substring(1);
+            }
+            vm.loadAgent(jarPath, "");
             vm.detach();
         } catch (Exception e) {
             throw new RuntimeException(e);
