@@ -156,6 +156,7 @@ public class JPAContextTest {
 	private EntityTransaction mockTransaction(JPAContext context, boolean active) {
 		EntityManager entityManager = context.getEntityManager();
 		EntityTransaction txn = mock(EntityTransaction.class);
+		when(entityManager.isOpen()).thenReturn(true);
 		when(entityManager.getTransaction()).thenReturn(txn);
 		when(txn.isActive()).thenReturn(active);
 		return txn;

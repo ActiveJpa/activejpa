@@ -34,7 +34,7 @@ public class JPAContext {
 	
 	public void close() {
 		try {
-			if (entityManager.isOpen()) {
+			if (entityManager != null && entityManager.isOpen()) {
 				entityManager.close();
 			}
 		} finally {
@@ -60,7 +60,7 @@ public class JPAContext {
 	}
 	
 	public boolean isTxnOpen() {
-		return entityManager != null && entityManager.getTransaction() != null && entityManager.getTransaction().isActive();
+		return entityManager != null && entityManager.isOpen() && entityManager.getTransaction() != null && entityManager.getTransaction().isActive();
 	}
 
 	/**
