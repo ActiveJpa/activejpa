@@ -3,13 +3,12 @@
  */
 package org.activejpa.enhancer;
 
-import java.lang.management.ManagementFactory;
-import java.security.CodeSource;
+import java.io.File;
+import java.net.URL;
+import java.net.URLClassLoader;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.sun.tools.attach.VirtualMachine;
 
 /**
  * @author ganeshs
@@ -28,19 +27,25 @@ public class ActiveJpaAgentLoader {
 		return loader;
 	}
 
-    public void loadAgent() {
+    public void loadAgent() throws Exception{
         logger.info("dynamically loading javaagent");
-        String nameOfRunningVM = ManagementFactory.getRuntimeMXBean().getName();
-        int p = nameOfRunningVM.indexOf('@');
-        String pid = nameOfRunningVM.substring(0, p);
-        
-        try {
-            VirtualMachine vm = VirtualMachine.attach(pid);
-            CodeSource codeSource = ActiveJpaAgent.class.getProtectionDomain().getCodeSource();
-            vm.loadAgent(codeSource.getLocation().toURI().getPath(), "");
-            vm.detach();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+
+        ClassLoader loader = null;
+		try {
+	    	loader = getClassLoader();
+	    	loader.loadClass("org.activejpa.enhancer.ActiveJpaAgentLoaderImpl").getMethod("loadAgent").invoke(null);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+    }
+    
+    private ClassLoader getClassLoader() throws Exception {
+    	File javaHome = new File(System.getProperty("java.home"));
+        String toolsPath = javaHome.getName().equalsIgnoreCase("jre") ? "../lib/tools.jar" : "lib/tools.jar";
+        URL[] urls = new URL[] {
+    			ActiveJpaAgent.class.getProtectionDomain().getCodeSource().getLocation(),
+    			new File(javaHome, toolsPath).getCanonicalFile().toURI().toURL()
+    	};
+        return new URLClassLoader(urls, null);
     }
 }

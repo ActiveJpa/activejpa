@@ -24,11 +24,9 @@ public class BaseModelTest {
 
 	@ObjectFactory
 	public IObjectFactory getObjectFactory(ITestContext context) throws Exception {
-		Class<?> clazz = Class.forName("org.activejpa.enhancer.ActiveJpaAgentLoader");
-		Method method = clazz.getMethod("instance");
-		Object loader = method.invoke(null);
-		method = clazz.getMethod("loadAgent");
-		method.invoke(loader);
+		Class<?> clazz = Class.forName("org.activejpa.enhancer.ActiveJpaAgentLoaderImpl");
+		Method method = clazz.getMethod("loadAgent");
+		method.invoke(null);
 		return new ObjectFactoryImpl();
 	}
 	
