@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.activejpa</groupId>
 		<artifactId>activejpa-examples</artifactId>
-		<version>0.3.2-SNAPSHOT</version>
+		<version>0.3.3-SNAPSHOT</version>
 	</parent>
 	<artifactId>activejpa-examples-spring</artifactId>
 
@@ -18,7 +18,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<activejpa.version>0.3.2-SNAPSHOT</activejpa.version>
+		<activejpa.version>0.3.3-SNAPSHOT</activejpa.version>
 		<!-- Spring -->
 		<spring-framework.version>4.1.6.RELEASE</spring-framework.version>
 		<spring-data-jpa.version>1.8.0.RELEASE</spring-data-jpa.version>
@@ -326,7 +326,7 @@
 		<dependency>
 			<groupId>org.activejpa</groupId>
 			<artifactId>activejpa-test</artifactId>
-			<version>0.3.2-SNAPSHOT</version>
+			<version>0.3.3-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
