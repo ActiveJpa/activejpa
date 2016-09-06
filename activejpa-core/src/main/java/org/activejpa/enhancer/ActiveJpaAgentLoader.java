@@ -27,7 +27,7 @@ public class ActiveJpaAgentLoader {
 		return loader;
 	}
 
-    public void loadAgent() throws Exception{
+    public void loadAgent() {
         logger.info("dynamically loading javaagent");
 
         ClassLoader loader = null;
