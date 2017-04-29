@@ -234,17 +234,13 @@ public abstract class Model extends BaseObject {
 	}
 	
 	protected static <T extends Model> void deleteAll(final Class<T> clazz, final Filter filter) {
-		execute(new Executor<Void>() {
-			@Override
-			public Void execute(EntityManager manager) {
-				CriteriaBuilder builder = manager.getCriteriaBuilder();
-				CriteriaDelete<T> deleteQuery = builder.createCriteriaDelete(clazz);
-				Root<T> root = deleteQuery.from(clazz);
-				filter.constructQuery(builder, deleteQuery, root);
-				Query query = createQuery(deleteQuery, filter);
-				query.executeUpdate();
-				return null;
-			}
+		execute(manager -> {
+			CriteriaBuilder builder = manager.getCriteriaBuilder();
+			CriteriaDelete<T> deleteQuery = builder.createCriteriaDelete(clazz);
+			Root<T> root = deleteQuery.from(clazz);
+			filter.constructQuery(builder, deleteQuery, root);
+			Query query = createQuery(deleteQuery, filter);
+			return query.executeUpdate();
 		}, false);
 	}
 	
@@ -256,12 +252,9 @@ public abstract class Model extends BaseObject {
 	 * Save this entity to the persistence context
 	 */
 	public void persist() {
-		execute(new Executor<Void>() {
-			@Override
-			public Void execute(EntityManager manager) {
-				manager.persist(Model.this);
-				return null;
-			}
+	    execute(manager -> {
+			manager.persist(Model.this);
+			return null;
 		}, false);
 	}
 	
@@ -269,12 +262,9 @@ public abstract class Model extends BaseObject {
 	 * Delete this entity from the persistence context
 	 */
 	public void delete() {
-		execute(new Executor<Void>() {
-			@Override
-			public Void execute(EntityManager manager) {
-				manager.remove(Model.this);
-				return null;
-			}
+	    execute(manager -> {
+			manager.remove(Model.this);
+			return null;
 		}, false);
 	}
 	
@@ -282,12 +272,8 @@ public abstract class Model extends BaseObject {
 	 * Merge this entity with the one from the persistence context
 	 */
 	public void merge() {
-		execute(new Executor<Void>() {
-			@Override
-			public Void execute(EntityManager manager) {
-				manager.merge(Model.this);
-				return null;
-			}
+	    execute(manager -> {
+			return manager.merge(Model.this);
 		}, false);
 	}
 	
@@ -295,13 +281,7 @@ public abstract class Model extends BaseObject {
 	 * Reload this entity from the persistence context
 	 */
 	public void refresh() {
-		execute(new Executor<Void>() {
-			@Override
-			public Void execute(EntityManager manager) {
-				manager.refresh(Model.this);
-				return null;
-			}
-		}, true);
+	    getEntityManager().refresh(this);
 	}
 	
 	/**
@@ -312,14 +292,12 @@ public abstract class Model extends BaseObject {
 	 */
 	public <T extends Model> EntityCollection<T> collection(String name) {
 		ManagedType<? extends Model> type = getEntityManager().getMetamodel().managedType(getClass());
-		Class<T> elementType = null;
+		EntityCollection<T> collection = null;
 		if (type.getAttribute(name).isCollection()) {
-			elementType = ((PluralAttribute)type.getAttribute(name)).getElementType().getJavaType();
-		} else {
-			// Throw exception
-			return null;
+		    Class<T> elementType = ((PluralAttribute)type.getAttribute(name)).getElementType().getJavaType();
+			collection = new EntityCollection<T>(this, name, elementType);
 		}
-		return new EntityCollection<T>(this, name, elementType);
+		return collection;
 	}
 	
 	protected static <T> T execute(Executor<T> executor, boolean readOnly) {

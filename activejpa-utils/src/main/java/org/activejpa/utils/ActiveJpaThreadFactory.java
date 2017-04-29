@@ -7,6 +7,8 @@ import java.util.concurrent.ThreadFactory;
 
 import org.activejpa.jpa.JPA;
 import org.activejpa.jpa.JPAContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Thread Factory implementation that ensures the jpa context is closed after the thread completes its run. 
@@ -16,11 +18,12 @@ import org.activejpa.jpa.JPAContext;
  * 
  */
 public class ActiveJpaThreadFactory implements ThreadFactory {
+    
+    private static final Logger logger = LoggerFactory.getLogger(ActiveJpaThreadFactory.class); 
 
 	@Override
 	public Thread newThread(Runnable runnable) {
 		return new Thread(runnable) {
-
 			@Override
 			public void run() {
 				JPAContext context = JPA.instance.getDefaultConfig().getContext();
@@ -28,7 +31,7 @@ public class ActiveJpaThreadFactory implements ThreadFactory {
 				try {
 					super.run();
 				} catch(Exception e) {
-					e.printStackTrace();
+					logger.error("Failed while running the thread", e);
 				} finally {
 					if (context.isTxnOpen()) {
 						context.closeTxn(true);
