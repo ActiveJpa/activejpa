@@ -15,10 +15,10 @@
  */
 package org.activejpa.examples.petclinic.model;
 
+import org.testng.annotations.Test;
+
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNull;
-
-import org.testng.annotations.Test;
 
 /**
  * Testng test for the {@link Owner} class.

@@ -3,20 +3,14 @@
  */
 package org.activejpa.entity;
 
+import org.activejpa.entity.Condition.Operator;
+
+import javax.persistence.Query;
+import javax.persistence.criteria.*;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaDelete;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Order;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-
-import org.activejpa.entity.Condition.Operator;
 
 /**
  * @author ganeshs
@@ -35,7 +29,17 @@ public class Filter {
 	private boolean cacheable;
 	
 	private boolean shouldPage;
-	
+
+	private boolean distinct = false;
+
+	public boolean isDistinct() {
+		return distinct;
+	}
+
+	public void setDistinct(boolean distinct) {
+		this.distinct = distinct;
+	}
+
 	public Filter(int perPage, int pageNo, Condition... conditions) {
 		this.pageNo = pageNo > 0 ? pageNo : 1;
 		this.shouldPage = perPage > 0;

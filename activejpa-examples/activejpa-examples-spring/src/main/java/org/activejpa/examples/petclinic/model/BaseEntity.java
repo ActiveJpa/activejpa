@@ -15,12 +15,12 @@
  */
 package org.activejpa.examples.petclinic.model;
 
+import org.activejpa.entity.Model;
+
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-
-import org.activejpa.entity.Model;
 
 /**
  * Simple JavaBean domain object with an id property. Used as a base class for objects needing this property.

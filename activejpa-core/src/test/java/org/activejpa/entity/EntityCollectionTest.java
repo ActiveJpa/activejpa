@@ -3,13 +3,6 @@
  */
 package org.activejpa.entity;
 
-import static org.testng.Assert.assertEquals;
-
-import java.io.Serializable;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.activejpa.entity.testng.BaseModelTest;
 import org.activejpa.jpa.JPA;
 import org.testng.IObjectFactory;
@@ -17,6 +10,11 @@ import org.testng.ITestContext;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.testng.internal.ObjectFactoryImpl;
+
+import java.io.Serializable;
+import java.util.*;
+
+import static org.testng.Assert.assertEquals;
 
 /**
  * @author ganeshs
@@ -31,7 +29,8 @@ public class EntityCollectionTest extends BaseModelTest {
 	private DummyModel child2;
 	
 	private DummyModel child3;
-	
+
+	private DummyModel child4;
 	/**
 	 * HACK. `mvn test` will be run before the package is created. javaagent can be loaded only from a jar. Since the
 	 * jar is not yet created, it will throw agent not found exception. This is a hack to get rid of that exception
@@ -90,7 +89,9 @@ public class EntityCollectionTest extends BaseModelTest {
 	
 	@Test
 	public void shouldSearchUsingFilter() {
-		assertEquals(model.collection("children").where(new Filter(new Condition("children.column1", "testChildColumn0"), new Condition("children.column2", "testChildColumn2"))), Arrays.asList(child1));
+		Filter filter = new Filter(new Condition("children.column1", "testChildColumn0"));
+		List<Model> values = model.collection("children").where(filter);
+		assertEquals(values, Arrays.asList(child1));
 	}
 	
 	@Test
@@ -108,7 +109,21 @@ public class EntityCollectionTest extends BaseModelTest {
 		collection.add(model);
 		assertEquals(parent.models.size(), 1);
 	}
-	
+
+	@Test
+	public void shouldReturnDistinctRows(){
+		Filter filter = new Filter(new Condition("children.column1", "testChildColumn1"));
+		filter.setDistinct(true);
+		List<Model> values = model.collection("children").where(filter);
+		for (int i=0;i<values.size();i++){
+			System.out.println(values.get(i).getId());
+		}
+		List<Model> excepted = new ArrayList<Model>();
+		excepted.add(child2);
+		excepted.add(child3);
+		//System.out.println("Values size = "+values.size());
+		assertEquals(values, excepted);
+	}
 	@Test
 	public void shouldAddItemToCollectionUsingField() {
 		ParentWithField parent = new ParentWithField();
