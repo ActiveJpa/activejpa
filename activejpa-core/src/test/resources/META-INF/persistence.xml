@@ -6,6 +6,7 @@
  
     <persistence-unit name="test" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
+        <class>org.activejpa.entity.DummyModel</class>
  
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.hsqldb.jdbcDriver" />

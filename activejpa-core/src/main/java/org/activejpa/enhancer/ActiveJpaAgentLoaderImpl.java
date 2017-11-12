@@ -14,6 +14,9 @@ import com.sun.tools.attach.VirtualMachine;
  */
 public class ActiveJpaAgentLoaderImpl {
 	
+	/**
+	 * Loads the java agent
+	 */
 	public static void loadAgent() {
 		String nameOfRunningVM = ManagementFactory.getRuntimeMXBean().getName();
         int p = nameOfRunningVM.indexOf('@');

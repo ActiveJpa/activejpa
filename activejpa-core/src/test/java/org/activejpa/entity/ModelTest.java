@@ -18,6 +18,9 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 
+import org.activejpa.entity.Condition;
+import org.activejpa.entity.EntityCollection;
+import org.activejpa.entity.Filter;
 import org.activejpa.entity.testng.BaseModelTest;
 import org.activejpa.entity.testng.DomainClassObjectFactory;
 import org.activejpa.jpa.JPA;

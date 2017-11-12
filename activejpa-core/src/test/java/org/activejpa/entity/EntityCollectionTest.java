@@ -11,12 +11,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.activejpa.entity.testng.BaseModelTest;
+import org.activejpa.entity.testng.DomainClassObjectFactory;
 import org.activejpa.jpa.JPA;
 import org.testng.IObjectFactory;
 import org.testng.ITestContext;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.ObjectFactory;
 import org.testng.annotations.Test;
-import org.testng.internal.ObjectFactoryImpl;
 
 /**
  * @author ganeshs
@@ -36,9 +37,9 @@ public class EntityCollectionTest extends BaseModelTest {
 	 * HACK. `mvn test` will be run before the package is created. javaagent can be loaded only from a jar. Since the
 	 * jar is not yet created, it will throw agent not found exception. This is a hack to get rid of that exception
 	 */
-	@Override
+	@ObjectFactory
 	public IObjectFactory getObjectFactory(ITestContext context) throws Exception {
-		return new ObjectFactoryImpl();
+		return new DomainClassObjectFactory();
 	}
 
 	@BeforeClass

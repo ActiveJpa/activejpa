@@ -5,9 +5,12 @@ package org.activejpa.entity.testng;
 
 import java.lang.reflect.Constructor;
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.testng.IObjectFactory;
+
+import net.bytebuddy.agent.ByteBuddyAgent;
 
 /**
  * @author ganeshs
@@ -19,15 +22,16 @@ public class DomainClassObjectFactory implements IObjectFactory {
 	
 	private ClassLoader loader;
 	
-	public DomainClassObjectFactory(List<String> ingnoredPackages) throws Exception {
-		Class<?> clazz = Class.forName("org.activejpa.enhancer.MyClassLoader");
-		Constructor<?> constructor = clazz.getConstructor(ClassLoader.class, List.class);
-		loader = (ClassLoader) constructor.newInstance(Thread.currentThread().getContextClassLoader(), ingnoredPackages);
+	public DomainClassObjectFactory(Set<String> ignoredPackages) throws Exception {
+	    ByteBuddyAgent.install();
+		Class<?> clazz = Class.forName("org.activejpa.enhancer.ModelClassLoader");
+		Constructor<?> constructor = clazz.getConstructor(ClassLoader.class, Set.class);
+		loader = (ClassLoader) constructor.newInstance(Thread.currentThread().getContextClassLoader(), ignoredPackages);
 		Thread.currentThread().setContextClassLoader(loader);
 	}
 	
 	public DomainClassObjectFactory() throws Exception {
-		this(Arrays.asList("org.xml."));
+		this(new HashSet<>(Arrays.asList("org.xml.")));
 	}
 
 	@SuppressWarnings("rawtypes")
