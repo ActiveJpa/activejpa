@@ -8,7 +8,7 @@
 	<modules>
 		<module>activejpa-core</module>
 		<module>activejpa-test</module>
-		<!--module>activejpa-examples</module-->
+		<module>activejpa-examples</module>
 		<module>activejpa-utils</module>
 	</modules>
 
@@ -16,15 +16,15 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<github.global.server>github</github.global.server>
-		<hibernate.version>4.3.10.Final</hibernate.version>
-		<guava.version>21.0</guava.version>
-		<mockito.version>1.10.19</mockito.version>
-		<testng.version>6.9.10</testng.version>
-		<slf4j.version>1.7.21</slf4j.version>
-		<commons-beanutils.version>1.9.2</commons-beanutils.version>
-		<commons-lang3.version>3.4</commons-lang3.version>
-		<javassist.version>3.20.0-GA</javassist.version>
-		<hsqldb.version>2.3.4</hsqldb.version>
+		<hibernate.version>5.2.12.Final</hibernate.version>
+		<guava.version>23.4-jre</guava.version>
+		<mockito.version>2.12.0</mockito.version>
+		<testng.version>6.11</testng.version>
+		<slf4j.version>1.7.25</slf4j.version>
+		<commons-beanutils.version>1.9.3</commons-beanutils.version>
+		<commons-lang3.version>3.7</commons-lang3.version>
+		<hsqldb.version>2.4.0</hsqldb.version>
+		<bytebuddy.version>1.7.5</bytebuddy.version>
 	</properties>
 
 	<scm>
@@ -63,8 +63,14 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.20.1</version>
 				<configuration>
-          <useSystemClassLoader>false</useSystemClassLoader>
-        </configuration>
+          			<useSystemClassLoader>false</useSystemClassLoader>
+          			<properties>
+		            	<property>
+							<name>objectfactory</name>
+		              		<value>org.activejpa.entity.testng.ActiveJpaAgentObjectFactory</value>
+		            	</property>
+		          	</properties>
+        		</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

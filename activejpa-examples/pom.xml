@@ -13,5 +13,6 @@
 
 	<modules>
 		<module>activejpa-examples-spring</module>
-	</modules>
+		<module>activejpa-examples-vanilla</module>
+  </modules>
 </project>

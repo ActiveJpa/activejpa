@@ -4,34 +4,29 @@
 package org.activejpa.entity.testng;
 
 import java.lang.reflect.Constructor;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
 import org.testng.IObjectFactory;
 
-import net.bytebuddy.agent.ByteBuddyAgent;
-
 /**
+ * Testng object factory 
+ * 
  * @author ganeshs
  *
  */
-public class DomainClassObjectFactory implements IObjectFactory {
+public class ActiveJpaAgentObjectFactory implements IObjectFactory {
 	
 	private static final long serialVersionUID = 1L;
 	
 	private ClassLoader loader;
 	
-	public DomainClassObjectFactory(Set<String> ignoredPackages) throws Exception {
-	    ByteBuddyAgent.install();
+	/**
+	 * @throws Exception
+	 */
+	public ActiveJpaAgentObjectFactory() throws Exception {
 		Class<?> clazz = Class.forName("org.activejpa.enhancer.ModelClassLoader");
-		Constructor<?> constructor = clazz.getConstructor(ClassLoader.class, Set.class);
-		loader = (ClassLoader) constructor.newInstance(Thread.currentThread().getContextClassLoader(), ignoredPackages);
+		Constructor<?> constructor = clazz.getConstructor(ClassLoader.class);
+		loader = (ClassLoader) constructor.newInstance(Thread.currentThread().getContextClassLoader());
 		Thread.currentThread().setContextClassLoader(loader);
-	}
-	
-	public DomainClassObjectFactory() throws Exception {
-		this(new HashSet<>(Arrays.asList("org.xml.")));
 	}
 
 	@SuppressWarnings("rawtypes")

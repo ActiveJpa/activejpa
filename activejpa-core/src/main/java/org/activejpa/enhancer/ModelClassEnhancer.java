@@ -6,6 +6,7 @@ package org.activejpa.enhancer;
 import java.io.Serializable;
 import java.lang.instrument.ClassFileTransformer;
 import java.lang.instrument.Instrumentation;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -17,8 +18,6 @@ import org.activejpa.entity.ModelInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Sets;
-
 import net.bytebuddy.agent.builder.AgentBuilder;
 import net.bytebuddy.description.modifier.Ownership;
 import net.bytebuddy.description.modifier.Visibility;
@@ -26,8 +25,8 @@ import net.bytebuddy.description.type.TypeDefinition;
 import net.bytebuddy.description.type.TypeDescription;
 import net.bytebuddy.description.type.TypeDescription.ForLoadedType;
 import net.bytebuddy.description.type.TypeDescription.Generic.OfParameterizedType.ForGenerifiedErasure;
-import net.bytebuddy.dynamic.TargetType;
 import net.bytebuddy.dynamic.DynamicType.Builder;
+import net.bytebuddy.dynamic.TargetType;
 import net.bytebuddy.implementation.MethodDelegation;
 import net.bytebuddy.matcher.ElementMatchers;
 import net.bytebuddy.utility.JavaModule;
@@ -40,7 +39,7 @@ public class ModelClassEnhancer implements AgentBuilder.Transformer {
     
     private Instrumentation instrumentation;
     
-    private static Set<String> transformedClasses = Sets.newHashSet();
+    private static Set<String> transformedClasses = new HashSet<>();
 	
     private static final Logger logger = LoggerFactory.getLogger(ModelClassEnhancer.class);
     

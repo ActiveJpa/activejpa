@@ -10,12 +10,8 @@ import static org.testng.Assert.assertTrue;
 import java.io.Serializable;
 import java.util.List;
 
-import org.activejpa.entity.Condition;
-import org.activejpa.entity.Filter;
-import org.activejpa.entity.Model;
-import org.activejpa.entity.ModelInterceptor;
 import org.activejpa.entity.testng.BaseModelTest;
-import org.activejpa.entity.testng.DomainClassObjectFactory;
+import org.activejpa.entity.testng.ActiveJpaAgentObjectFactory;
 import org.activejpa.jpa.JPA;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.testng.IObjectFactory;
@@ -23,8 +19,6 @@ import org.testng.ITestContext;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.ObjectFactory;
 import org.testng.annotations.Test;
-
-import com.google.common.collect.Sets;
 
 /**
  * @author ganeshs
@@ -38,7 +32,7 @@ public class ModelInterceptorTest extends BaseModelTest {
      */
     @ObjectFactory
     public IObjectFactory getObjectFactory(ITestContext context) throws Exception {
-        return new DomainClassObjectFactory();
+        return new ActiveJpaAgentObjectFactory();
     }
     
     @BeforeClass

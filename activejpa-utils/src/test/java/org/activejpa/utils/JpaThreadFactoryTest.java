@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.activejpa.entity.testng.BaseModelTest;
-import org.activejpa.entity.testng.DomainClassObjectFactory;
+import org.activejpa.entity.testng.ActiveJpaAgentObjectFactory;
 import org.activejpa.jpa.JPA;
 import org.testng.IObjectFactory;
 import org.testng.ITestContext;
@@ -32,7 +32,7 @@ public class JpaThreadFactoryTest extends BaseModelTest {
 	 */
 	@ObjectFactory
 	public IObjectFactory getObjectFactory(ITestContext context) throws Exception {
-		return new DomainClassObjectFactory();
+		return new ActiveJpaAgentObjectFactory();
 	}
 	
 	@BeforeClass

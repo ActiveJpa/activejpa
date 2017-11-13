@@ -48,7 +48,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
+			<artifactId>mockito-core</artifactId>
 			<scope>test</scope>
 			<version>${mockito.version}</version>
 		</dependency>
@@ -85,6 +85,7 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>${commons-lang3.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
@@ -101,7 +102,7 @@
 		<dependency>
 			<groupId>org.javalite</groupId>
 			<artifactId>javalite-common</artifactId>
-			<version>1.4.12</version>
+			<version>1.4.13</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate.javax.persistence</groupId>
@@ -117,12 +118,12 @@
 		<dependency>
 			<groupId>net.bytebuddy</groupId>
 			<artifactId>byte-buddy-agent</artifactId>
-			<version>1.7.5</version>
+			<version>${bytebuddy.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.bytebuddy</groupId>
 			<artifactId>byte-buddy</artifactId>
-			<version>1.7.5</version>
+			<version>${bytebuddy.version}</version>
 		</dependency>
 	</dependencies>
 </project>
