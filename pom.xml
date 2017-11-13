@@ -68,8 +68,8 @@
 
 	<distributionManagement>
 		<repository>
-			<id>bintray-activejpa-activejpa</id>
-			<name>activejpa-activejpa</name>
+			<id>bintray-activejpa-mvn-repo</id>
+			<name>activejpa-mvn-repo</name>
 			<url>https://api.bintray.com/maven/activejpa/mvn-repo/activejpa/;publish=1</url>
 		</repository>
 	</distributionManagement>
