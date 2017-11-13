@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.activejpa</groupId>
 	<artifactId>activejpa</artifactId>
@@ -8,7 +9,7 @@
 	<modules>
 		<module>activejpa-core</module>
 		<module>activejpa-test</module>
-		<module>activejpa-examples</module>
+		<!-- <module>activejpa-examples</module> -->
 		<module>activejpa-utils</module>
 	</modules>
 
@@ -25,6 +26,23 @@
 		<commons-lang3.version>3.7</commons-lang3.version>
 		<hsqldb.version>2.4.0</hsqldb.version>
 		<bytebuddy.version>1.7.5</bytebuddy.version>
+		
+		<!--maven jacoco plugin version -->
+		<maven.jacoco.plugin.version>0.7.9</maven.jacoco.plugin.version>
+		
+		<!--maven compiler plugin settings -->
+		<maven.compiler.plugin.version>3.7.0</maven.compiler.plugin.version>
+		<java.source.version>1.8</java.source.version>
+		<java.target.version>1.8</java.target.version>
+		<showWarnings>true</showWarnings>
+		<showDeprecation>true</showDeprecation>
+		
+		<!--maven plugin versions -->
+		<maven.jar.plugin.version>3.0.2</maven.jar.plugin.version>
+		<maven.javadoc.plugin.version>2.10.4</maven.javadoc.plugin.version>
+		<maven.source.plugin.version>3.0.1</maven.source.plugin.version>
+		<maven.release.plugin.version>2.5.3</maven.release.plugin.version>
+		<maven.buildnumber.plugin.version>1.4</maven.buildnumber.plugin.version>
 	</properties>
 
 	<scm>
@@ -50,9 +68,9 @@
 
 	<distributionManagement>
 		<repository>
-			<id>internal.repo</id>
-			<name>Temporary Staging Repository</name>
-			<url>file://${project.build.directory}/mvn-repo</url>
+			<id>bintray-activejpa-activejpa</id>
+			<name>activejpa-activejpa</name>
+			<url>https://api.bintray.com/maven/activejpa/mvn-repo/activejpa/;publish=1</url>
 		</repository>
 	</distributionManagement>
 
@@ -73,99 +91,130 @@
         		</configuration>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-source-plugin</artifactId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven.compiler.plugin.version}</version>
+				<configuration>
+					<source>${java.source.version}</source>
+					<target>${java.target.version}</target>
+					<compilerArgument>-Xlint:-path</compilerArgument>
+					<showWarnings>${showWarnings}</showWarnings>
+					<showDeprecation>${showDeprecation}</showDeprecation>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>buildnumber-maven-plugin</artifactId>
+				<version>${maven.buildnumber.plugin.version}</version>
 				<executions>
 					<execution>
-						<id>attach-sources</id>
+						<phase>validate</phase>
 						<goals>
-							<goal>jar</goal>
+							<goal>create</goal>
 						</goals>
 					</execution>
 				</executions>
 			</plugin>
-
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>${maven.jar.plugin.version}</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+							<addClasspath>true</addClasspath>
+						</manifest>
+						<manifestEntries>
+							<Implementation-Build>${buildNumber}/${ciBuildInfo}</Implementation-Build>
+						</manifestEntries>
+					</archive>
+					<classifier>${maven.build.classifier}</classifier>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>${maven.javadoc.plugin.version}</version>
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>
 						<configuration>
-				            <additionalparam>${javadoc.opts}</additionalparam>
-				        </configuration>
+							<additionalparam>${javadoc.opts}</additionalparam>
+						</configuration>
 						<goals>
 							<goal>jar</goal>
 						</goals>
 					</execution>
 				</executions>
 			</plugin>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>2.1</version>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<artifactId>maven-deploy-plugin</artifactId>
-				<version>2.8.1</version>
-				<configuration>
-					<altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo/${profile.deploymentType}</altDeploymentRepository>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>2.4.1</version>
-			</plugin>
-			<plugin>
-				<groupId>com.github.github</groupId>
-				<artifactId>site-maven-plugin</artifactId>
-				<version>0.12</version>
-				<configuration>
-					<message>Maven artifacts for ${project.version}</message>  <!-- git commit message -->
-					<noJekyll>true</noJekyll>                                  <!-- disable webpage processing -->
-					<outputDirectory>${project.build.directory}/mvn-repo</outputDirectory> <!-- matches distribution management repository url above -->
-					<branch>refs/heads/mvn-repo</branch>                       <!-- remote branch name -->
-					<includes>
-						<include>**/*</include>
-					</includes>
-					<repositoryName>activejpa</repositoryName>      <!-- github repo name -->
-					<repositoryOwner>ActiveJpa</repositoryOwner>    <!-- github username -->
-					<merge>true</merge>
-				</configuration>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>${maven.source.plugin.version}</version>
 				<executions>
-					<!-- run site-maven-plugin's 'site' target as part of the build's normal 
-						'deploy' phase -->
 					<execution>
+						<phase>package</phase>
 						<goals>
-							<goal>site</goal>
+							<goal>jar</goal>
 						</goals>
-						<phase>deploy</phase>
 					</execution>
 				</executions>
 			</plugin>
 			<plugin>
-                		<groupId>org.codehaus.mojo</groupId>
-                		<artifactId>cobertura-maven-plugin</artifactId>
-                		<version>2.6</version>
-                		<configuration>
-                    			<formats>
-                    				<format>xml</format>
-                    				<format>html</format>
-                    			</formats>
-                    			<aggregate>true</aggregate>
-                		</configuration>
-            		</plugin>
-            		<plugin>
-                		<groupId>org.eluder.coveralls</groupId>
-                		<artifactId>coveralls-maven-plugin</artifactId>
-                		<version>2.2.0</version>
-            		</plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>${maven.release.plugin.version}</version>
+				<configuration>
+					<autoVersionSubmodules>true</autoVersionSubmodules>
+					<tagNameFormat>@{project.version}</tagNameFormat>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${maven.jacoco.plugin.version}</version>
+				<executions>
+					<execution>
+						<id>prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>post-unit-test</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+						<configuration>
+							<!-- Sets the path to the file which contains the execution data. -->
+							<dataFile>target/jacoco.exec</dataFile>
+							<!-- Sets the output directory for the code coverage report. -->
+							<outputDirectory>target/jacoco-ut</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+				<configuration>
+					<systemPropertyVariables>
+						<jacoco-agent.destfile>target/jacoco.exec</jacoco-agent.destfile>
+					</systemPropertyVariables>
+					<excludes>
+				        <exclude>**/examples/**/*.*</exclude>
+				    </excludes>
+				</configuration>
+			</plugin>
+      		<plugin>
+          		<groupId>org.eluder.coveralls</groupId>
+          		<artifactId>coveralls-maven-plugin</artifactId>
+          		<version>4.3.0</version>
+      		</plugin>
 		</plugins>
 	</build>
 
