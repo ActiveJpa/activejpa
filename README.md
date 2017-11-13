@@ -171,6 +171,8 @@ ActiveJpa provides an abstract model test class for tesng that enables instrumen
 ```
 
 ### Examples
+#### Vanilla application
+Checkout the [vanilla application](https://github.com/ActiveJpa/activejpa/tree/master/activejpa-examples/activejpa-examples-vanilla) using ActiveJpa
 #### Spring integration
 There's a [sample application](https://github.com/ActiveJpa/activejpa/tree/master/activejpa-examples/activejpa-examples-spring) that demonstrates the Spring-ActiveJpa integration
 
