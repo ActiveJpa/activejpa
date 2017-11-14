@@ -16,8 +16,6 @@ public class ActiveJpaAgent {
 
 	private static final Logger logger = LoggerFactory.getLogger(ActiveJpaAgent.class);
 
-    private static Instrumentation instrumentation;
-    
     /**
      * JVM hook to statically load the javaagent at startup.
      * 
@@ -30,8 +28,7 @@ public class ActiveJpaAgent {
      */
     public static void premain(String args, Instrumentation inst) throws Exception {
         logger.trace("premain method invoked with args: {} and inst: {}", args, inst);
-        instrumentation = inst;
-        instrumentation.addTransformer(new DomainClassFileTransformer(), true);
+        inst.addTransformer(new ModelClassEnhancer(inst).getTransformer(), true);
     }
 
     /**
@@ -46,7 +43,6 @@ public class ActiveJpaAgent {
      */
     public static void agentmain(String args, Instrumentation inst) throws Exception {
         logger.trace("agentmain method invoked with args: {} and inst: {}", args, inst);
-        instrumentation = inst;
-        instrumentation.addTransformer(new DomainClassFileTransformer(), true);
+        inst.addTransformer(new ModelClassEnhancer(inst).getTransformer(), true);
     }
 }

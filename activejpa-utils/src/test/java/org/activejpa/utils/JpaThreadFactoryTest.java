@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.activejpa.entity.testng.BaseModelTest;
-import org.activejpa.entity.testng.DomainClassObjectFactory;
+import org.activejpa.entity.testng.ActiveJpaAgentObjectFactory;
 import org.activejpa.jpa.JPA;
 import org.testng.IObjectFactory;
 import org.testng.ITestContext;
@@ -17,6 +17,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.ObjectFactory;
 import org.testng.annotations.Test;
 
+import com.google.common.collect.Sets;
 import com.google.common.util.concurrent.Uninterruptibles;
 
 /**
@@ -31,7 +32,7 @@ public class JpaThreadFactoryTest extends BaseModelTest {
 	 */
 	@ObjectFactory
 	public IObjectFactory getObjectFactory(ITestContext context) throws Exception {
-		return new DomainClassObjectFactory();
+		return new ActiveJpaAgentObjectFactory();
 	}
 	
 	@BeforeClass
