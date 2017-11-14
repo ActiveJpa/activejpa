@@ -18,7 +18,6 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<activejpa.version>${project.version}</activejpa.version>
 		<!-- Spring -->
 		<spring-framework.version>5.0.1.RELEASE</spring-framework.version>
 		<spring-data-jpa.version>1.8.0.RELEASE</spring-data-jpa.version>
@@ -76,7 +75,7 @@
 		<dependency>
 			<groupId>org.activejpa</groupId>
 			<artifactId>activejpa-core</artifactId>
-			<version>${activejpa.version}</version>
+			<version>${project.version}</version>
 			<exclusions>
 				<exclusion>
 					<artifactId>log4j</artifactId>
