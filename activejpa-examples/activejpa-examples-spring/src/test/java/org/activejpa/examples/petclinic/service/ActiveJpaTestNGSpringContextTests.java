@@ -3,11 +3,9 @@
  */
 package org.activejpa.examples.petclinic.service;
 
-import java.util.Arrays;
-
 import javax.persistence.EntityManagerFactory;
 
-import org.activejpa.entity.testng.DomainClassObjectFactory;
+import org.activejpa.entity.testng.ActiveJpaAgentObjectFactory;
 import org.activejpa.jpa.JPA;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.IObjectFactory;
@@ -23,7 +21,7 @@ public class ActiveJpaTestNGSpringContextTests extends AbstractTestNGSpringConte
 
 	@ObjectFactory
 	public IObjectFactory getObjectFactory(ITestContext context) throws Exception {
-		return new DomainClassObjectFactory(Arrays.asList("org.testng.", "org.xml"));
+		return new ActiveJpaAgentObjectFactory();
 	}
 	
 	@BeforeClass

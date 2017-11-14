@@ -18,8 +18,11 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 
+import org.activejpa.entity.Condition;
+import org.activejpa.entity.EntityCollection;
+import org.activejpa.entity.Filter;
 import org.activejpa.entity.testng.BaseModelTest;
-import org.activejpa.entity.testng.DomainClassObjectFactory;
+import org.activejpa.entity.testng.ActiveJpaAgentObjectFactory;
 import org.activejpa.jpa.JPA;
 import org.testng.IObjectFactory;
 import org.testng.ITestContext;
@@ -39,7 +42,7 @@ public class ModelTest extends BaseModelTest {
 	 */
 	@ObjectFactory
 	public IObjectFactory getObjectFactory(ITestContext context) throws Exception {
-		return new DomainClassObjectFactory();
+		return new ActiveJpaAgentObjectFactory();
 	}
 	
 	@BeforeClass

@@ -4,30 +4,29 @@
 package org.activejpa.entity.testng;
 
 import java.lang.reflect.Constructor;
-import java.util.Arrays;
-import java.util.List;
 
 import org.testng.IObjectFactory;
 
 /**
+ * Testng object factory 
+ * 
  * @author ganeshs
  *
  */
-public class DomainClassObjectFactory implements IObjectFactory {
+public class ActiveJpaAgentObjectFactory implements IObjectFactory {
 	
 	private static final long serialVersionUID = 1L;
 	
 	private ClassLoader loader;
 	
-	public DomainClassObjectFactory(List<String> ingnoredPackages) throws Exception {
-		Class<?> clazz = Class.forName("org.activejpa.enhancer.MyClassLoader");
-		Constructor<?> constructor = clazz.getConstructor(ClassLoader.class, List.class);
-		loader = (ClassLoader) constructor.newInstance(Thread.currentThread().getContextClassLoader(), ingnoredPackages);
+	/**
+	 * @throws Exception
+	 */
+	public ActiveJpaAgentObjectFactory() throws Exception {
+		Class<?> clazz = Class.forName("org.activejpa.enhancer.ModelClassLoader");
+		Constructor<?> constructor = clazz.getConstructor(ClassLoader.class);
+		loader = (ClassLoader) constructor.newInstance(Thread.currentThread().getContextClassLoader());
 		Thread.currentThread().setContextClassLoader(loader);
-	}
-	
-	public DomainClassObjectFactory() throws Exception {
-		this(Arrays.asList("org.xml."));
 	}
 
 	@SuppressWarnings("rawtypes")

@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.activejpa</groupId>
 		<artifactId>activejpa</artifactId>
-		<version>0.3.5-SNAPSHOT</version>
+		<version>1.0.1-SNAPSHOT</version>
 	</parent>
 
 	<build>
@@ -48,7 +48,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
-			<artifactId>mockito-all</artifactId>
+			<artifactId>mockito-core</artifactId>
 			<scope>test</scope>
 			<version>${mockito.version}</version>
 		</dependency>
@@ -71,11 +71,6 @@
 			<version>${hsqldb.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.javassist</groupId>
-			<artifactId>javassist</artifactId>
-			<version>${javassist.version}</version>
-		</dependency>
-		<dependency>
 			<groupId>org.activejpa</groupId>
 			<artifactId>activejpa-test</artifactId>
 			<scope>test</scope>
@@ -90,6 +85,7 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>${commons-lang3.version}</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
@@ -106,7 +102,7 @@
 		<dependency>
 			<groupId>org.javalite</groupId>
 			<artifactId>javalite-common</artifactId>
-			<version>1.4.12</version>
+			<version>1.4.13</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate.javax.persistence</groupId>
@@ -118,6 +114,16 @@
 			<artifactId>hibernate-entitymanager</artifactId>
 			<version>${hibernate.version}</version>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.bytebuddy</groupId>
+			<artifactId>byte-buddy-agent</artifactId>
+			<version>${bytebuddy.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.bytebuddy</groupId>
+			<artifactId>byte-buddy</artifactId>
+			<version>${bytebuddy.version}</version>
 		</dependency>
 	</dependencies>
 </project>
