@@ -8,11 +8,24 @@
 	<parent>
 		<artifactId>activejpa</artifactId>
 		<groupId>org.activejpa</groupId>
-		<version>0.3.5-SNAPSHOT</version>
+		<version>1.0.1-SNAPSHOT</version>
 	</parent>
 
 	<modules>
 		<module>activejpa-examples-spring</module>
 		<module>activejpa-examples-vanilla</module>
-  </modules>
+  	</modules>
+  	
+  	<build>
+  		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.8.2</version>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
+  		</plugins>
+  	</build>
 </project>

@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.activejpa</groupId>
 		<artifactId>activejpa-examples</artifactId>
-		<version>0.3.5-SNAPSHOT</version>
+		<version>1.0.1-SNAPSHOT</version>
 	</parent>
 	<artifactId>activejpa-examples-spring</artifactId>
 
@@ -18,7 +18,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-		<activejpa.version>0.3.5-SNAPSHOT</activejpa.version>
+		<activejpa.version>${project.version}</activejpa.version>
 		<!-- Spring -->
 		<spring-framework.version>5.0.1.RELEASE</spring-framework.version>
 		<spring-data-jpa.version>1.8.0.RELEASE</spring-data-jpa.version>
@@ -326,7 +326,7 @@
 		<dependency>
 			<groupId>org.activejpa</groupId>
 			<artifactId>activejpa-test</artifactId>
-			<version>0.3.5-SNAPSHOT</version>
+			<version>${project.version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -473,6 +473,14 @@
 					<server>tomcat-development-server</server>
 					<port>9966</port>
 					<path>/petclinic</path>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<version>2.8.2</version>
+				<configuration>
+					<skip>true</skip>
 				</configuration>
 			</plugin>
 		</plugins>
