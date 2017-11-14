@@ -74,17 +74,16 @@ ActiveJpa is available as a Maven artifact and should be fairly simpler to integ
      <dependency>
        <groupId>org.activejpa</groupId>
        <artifactId>activejpa-core</artifactId>
-       <version>0.3.0</version>
+       <version>1.0.0</version>
      </dependency>
    </dependencies>
    
    <repositories>
      <repository>
-       <id>activejpa-repo</id>
-       <url>https://raw.github.com/ActiveJpa/activejpa/mvn-repo/releases</url>
+       <id>jcenter</id>
+       <url>https://jcenter.bintray.com</url>
        <snapshots>
-         <enabled>true</enabled>
-         <updatePolicy>always</updatePolicy>
+         <enabled>false</enabled>
        </snapshots>
      </repository>
    </repositories>
