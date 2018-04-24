@@ -91,16 +91,19 @@ public class Filter {
 	/**
 	 * @param conditions the conditions to set
 	 */
-	public void setConditions(List<Condition> conditions) {
+	public Filter setConditions(List<Condition> conditions) {
 		this.conditions = conditions;
+		return this;
 	}
 	
-	public void addCondition(String name, Object value) {
+	public Filter addCondition(String name, Object value) {
 		addCondition(name, Operator.eq, value);
+		return this;
 	}
 	
-	public void addCondition(String name, Operator operator, Object value) {
+	public Filter addCondition(String name, Operator operator, Object value) {
 		this.conditions.add(new Condition(name, operator, value));
+		return this;
 	}
 	
 	public String constructQuery() {
@@ -156,19 +159,21 @@ public class Filter {
 		}
 	}
 	
-	public void setParameters(Query query) {
+	public Filter setParameters(Query query) {
 		if (conditions != null && !conditions.isEmpty()) {
 			for (Condition condition : conditions) {
 				condition.setParameters(query, condition.getValue());
 			}
 		}
+		return this;
 	}
 	
-	public void setPage(Query query) {
+	public Filter setPage(Query query) {
 		if (shouldPage()) {
 			query.setFirstResult(getStart());
 			query.setMaxResults(getPerPage());
 		}
+		return this;
 	}
 	
 	/**
@@ -191,8 +196,9 @@ public class Filter {
 	 * @param name
 	 * @param asc
 	 */
-	public void addSortField(String name, boolean asc) {
+	public Filter addSortField(String name, boolean asc) {
 		this.sortFields.add(new SortField(name, asc));
+		return this;
 	}
 	
 	/**
@@ -200,8 +206,9 @@ public class Filter {
 	 * 
 	 * @param sortField
 	 */
-	public void addSortField(SortField sortField) {
+	public Filter addSortField(SortField sortField) {
 		this.sortFields.add(sortField);
+		return this;
 	}
 
 	/**

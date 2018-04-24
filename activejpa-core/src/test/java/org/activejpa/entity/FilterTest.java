@@ -70,9 +70,9 @@ public class FilterTest {
 	
 	@Test
 	public void shouldConstructQuery() {
-		Filter filter = new Filter();
-		filter.addCondition("testKey", Operator.eq, "testValue");
-		filter.addCondition("testKey1", Operator.eq, "testValue1");
+		Filter filter = new Filter()
+				.addCondition("testKey", Operator.eq, "testValue")
+				.addCondition("testKey1", Operator.eq, "testValue1");
 		assertEquals(filter.constructQuery(), "testKey = :testKey and testKey1 = :testKey1");
 	}
 	
@@ -106,9 +106,7 @@ public class FilterTest {
 	
 	@Test
 	public void shouldConstructCriteriaQueryWithSortFields() {
-		Filter filter = new Filter();
-		filter.addSortField(mock(SortField.class));
-		filter.addSortField(mock(SortField.class));
+		Filter filter = new Filter().addSortField(mock(SortField.class)).addSortField(mock(SortField.class));
 		CriteriaBuilder builder = mock(CriteriaBuilder.class);
 		Root root = mock(Root.class);
 		Order order1 = mock(Order.class);
@@ -122,9 +120,9 @@ public class FilterTest {
 	
 	@Test
 	public void shouldSetParameters() {
-		Filter filter = new Filter();
-		filter.addCondition("testKey", Operator.eq, "testValue");
-		filter.addCondition("testKey1", Operator.eq, "testValue1");
+		Filter filter = new Filter()
+				.addCondition("testKey", Operator.eq, "testValue")
+				.addCondition("testKey1", Operator.eq, "testValue1");
 		Path path = mock(Path.class);
 		when(path.getJavaType()).thenReturn(String.class);
 		filter.getConditions().get(0).setPath(path);
