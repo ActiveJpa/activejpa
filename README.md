@@ -15,11 +15,11 @@ AcitveJpa abstracts out some of the most common functionalities you might need i
 	List<Order> orders = Order.where("customer_email", "dummyemail@dummy.com", "status", "shipped");
 	
 	// Get all orders for the product category 'books' and paginate it
-	Filter filter = new Filter();
-	filter.setPageNo(1);
-	filter.setPerPage(25);
-	filter.addCondition(new Condition("orderItems.product.category", Operator.eq, "books");
-	filter.addSortField("status", true);
+	Filter filter = new Filter()
+			.setPageNo(1)
+			.setPerPage(25)
+			.addCondition(new Condition("orderItems.product.category", Operator.eq, "books")
+			.addSortField("status", true);
 	List<Order> orders = Order.where(filter);
 	
 	// Count of orders matching the filter

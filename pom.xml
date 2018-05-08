@@ -16,15 +16,15 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<github.global.server>github</github.global.server>
-		<hibernate.version>5.2.12.Final</hibernate.version>
-		<guava.version>23.4-jre</guava.version>
-		<mockito.version>2.12.0</mockito.version>
-		<testng.version>6.11</testng.version>
+		<hibernate.version>5.2.17.Final</hibernate.version>
+		<guava.version>25.0-jre</guava.version>
+		<mockito.version>2.18.3</mockito.version>
+		<testng.version>6.14.3</testng.version>
 		<slf4j.version>1.7.25</slf4j.version>
 		<commons-beanutils.version>1.9.3</commons-beanutils.version>
 		<commons-lang3.version>3.7</commons-lang3.version>
 		<hsqldb.version>2.4.0</hsqldb.version>
-		<bytebuddy.version>1.7.5</bytebuddy.version>
+		<bytebuddy.version>1.8.11</bytebuddy.version>
 		
 		<!--maven jacoco plugin version -->
 		<maven.jacoco.plugin.version>0.7.9</maven.jacoco.plugin.version>
