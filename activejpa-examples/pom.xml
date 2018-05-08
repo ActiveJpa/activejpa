@@ -8,7 +8,7 @@
 	<parent>
 		<artifactId>activejpa</artifactId>
 		<groupId>org.activejpa</groupId>
-		<version>1.0.2-SNAPSHOT</version>
+		<version>1.0.2</version>
 	</parent>
 
 	<modules>
