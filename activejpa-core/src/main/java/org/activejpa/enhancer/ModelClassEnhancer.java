@@ -87,6 +87,7 @@ public class ModelClassEnhancer implements AgentBuilder.Transformer {
         builder = defineMethod(builder, typeDescription, classLoader, "where", TargetType.resolve(new ForLoadedType(List.class), typeDescription), new ForLoadedType(Filter.class));
         builder = defineMethod(builder, typeDescription, classLoader, "one", ForGenerifiedErasure.of(new ForLoadedType(Model.class)), new ForLoadedType(Object[].class));
         builder = defineMethod(builder, typeDescription, classLoader, "first", ForGenerifiedErasure.of(new ForLoadedType(Model.class)), new ForLoadedType(Object[].class));
+        builder = defineMethod(builder, typeDescription, classLoader, "filter", new ForLoadedType(Filter.class));
         transformedClasses.add(typeDescription.getActualName());
         return builder;
     }

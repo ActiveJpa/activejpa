@@ -123,6 +123,12 @@ public class ModelInterceptorTest extends BaseModelTest {
         createModel(RandomStringUtils.randomAlphabetic(5), RandomStringUtils.randomAlphabetic(5));
         assertEquals(ModelInterceptor.one(DummyModel.class.getMethod("one", Object[].class), new Object[] {"column1", dummyModel1.getColumn1()}), dummyModel1);
     }
+    
+    @Test
+    public void shouldCallFilter() throws Throwable {
+        createModel(RandomStringUtils.randomAlphabetic(5), RandomStringUtils.randomAlphabetic(5));
+        assertEquals(ModelInterceptor.filter(DummyModel.class.getMethod("filter")).getEntityClass(), DummyModel.class);
+    }
 
     private DummyModel createModel(String column1, String column2) {
         DummyModel model = new DummyModel();

@@ -19,6 +19,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.NonUniqueResultException;
 
 import org.activejpa.entity.Condition;
+import org.activejpa.entity.Condition.Operator;
 import org.activejpa.entity.EntityCollection;
 import org.activejpa.entity.Filter;
 import org.activejpa.entity.testng.BaseModelTest;
@@ -224,7 +225,7 @@ public class ModelTest extends BaseModelTest {
 		DummyModel model = createModel("column1", "column2");
 		DummyModel model1 = createModel("column1", "column2");
 		Filter filter = new Filter();
-		filter.addSortField("id", true);
+		filter.sortBy("id", true);
 		List<DummyModel> models = DummyModel.where(filter);
 		assertEquals(models.get(0), model);
 		assertEquals(models.get(1), model1);
@@ -235,7 +236,7 @@ public class ModelTest extends BaseModelTest {
 		DummyModel model = createModel("column1", "column2");
 		DummyModel model1 = createModel("column1", "column2");
 		Filter filter = new Filter();
-		filter.addSortField("id", false);
+		filter.sortBy("id", false);
 		List<DummyModel> models = DummyModel.where(filter);
 		assertEquals(models.get(1), model);
 		assertEquals(models.get(0), model1);
@@ -246,10 +247,31 @@ public class ModelTest extends BaseModelTest {
 		DummyModel model = createModel("column1", "column2");
 		DummyModel model1 = createModel("column1", "column2");
 		Filter filter = new Filter();
-		filter.addSortField("column1", false);
-		filter.addSortField("id", false);
+		filter.sortBy("column1", false);
+		filter.sortBy("id", false);
 		List<DummyModel> models = DummyModel.where(filter);
 		assertEquals(models.get(0), model1);
 		assertEquals(models.get(1), model);
+	}
+	
+	@Test
+	public void shouldFilterByIsNull() {
+		DummyModel model = createModel("column1", "column2");
+		DummyModel model1 = createModel("column1", null);
+		Filter filter = new Filter(new Condition("column2", Operator.is_null));
+		List<DummyModel> models = DummyModel.where(filter);
+		assertEquals(models.size(), 1);
+		assertEquals(models.get(0), model1);
+	}
+	
+	@Test
+	public void shouldFilterByIsNotNull() {
+		DummyModel model = createModel("column1", "column2");
+		DummyModel model1 = createModel("column1", null);
+		Filter filter = new Filter(new Condition("column1", Operator.is_not_null));
+		List<DummyModel> models = DummyModel.where(filter);
+		assertEquals(models.size(), 2);
+		assertEquals(models.get(0), model);
+		assertEquals(models.get(1), model1);
 	}
 }

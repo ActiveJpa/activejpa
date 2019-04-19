@@ -17,10 +17,18 @@ import javax.persistence.criteria.Root;
 
 import org.activejpa.util.ConvertUtil;
 
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @author ganeshs
  *
  */
+@Getter(AccessLevel.PACKAGE)
+@Setter(AccessLevel.NONE)
+@EqualsAndHashCode(callSuper=false, of= {"name","operator"})
 public class Condition extends AbstractConstruct {
 
 	/**
@@ -31,54 +39,54 @@ public class Condition extends AbstractConstruct {
 	public enum Operator {
 		eq("=") {
 			@Override
-			protected Predicate createPredicate(CriteriaBuilder builder, Path path, Expression... parameter) {
+			Predicate createPredicate(CriteriaBuilder builder, Path path, Expression... parameter) {
 				return builder.equal(path, parameter[0]);
 			} 
 		},
 		ne("!=") {
 			@Override
-			protected Predicate createPredicate(CriteriaBuilder builder, Path path, Expression... parameter) {
+			Predicate createPredicate(CriteriaBuilder builder, Path path, Expression... parameter) {
 				return builder.notEqual(path, parameter[0]);
 			}
 		},
 		le("<=") {
 			@Override
-			protected Predicate createPredicate(CriteriaBuilder builder, Path path, Expression... parameter) {
+			Predicate createPredicate(CriteriaBuilder builder, Path path, Expression... parameter) {
 				return builder.lessThanOrEqualTo(path, parameter[0]);
 			}
 		},
 		lt("<") {
 			@Override
-			protected Predicate createPredicate(CriteriaBuilder builder, Path path, Expression... parameter) {
+			Predicate createPredicate(CriteriaBuilder builder, Path path, Expression... parameter) {
 				return builder.lessThan(path, parameter[0]);
 			}
 		},
 		ge(">=") {
 			@Override
-			protected Predicate createPredicate(CriteriaBuilder builder, Path path, Expression... parameter) {
+			Predicate createPredicate(CriteriaBuilder builder, Path path, Expression... parameter) {
 				return builder.greaterThanOrEqualTo(path, parameter[0]);
 			}
 		}, 
 		gt(">") {
 			@Override
-			protected Predicate createPredicate(CriteriaBuilder builder, Path path, Expression... parameter) {
+			Predicate createPredicate(CriteriaBuilder builder, Path path, Expression... parameter) {
 				return builder.greaterThan(path, parameter[0]);
 			}
 		},
 		between("between") {
 			@Override
-			public String constructCondition(String name, Object value) {
+			String constructCondition(String name, Object value) {
 				return name + " between :from" + name + " and :to" + name;
 			}
 			
 			@Override
-			public Predicate constructCondition(CriteriaBuilder builder, Path path, String name) {
+			Predicate constructCondition(CriteriaBuilder builder, Path path, String name) {
 				name = cleanName(name);
 				return createPredicate(builder, path, builder.parameter(path.getJavaType(), "from" + name), builder.parameter(path.getJavaType(), "to" + name));
 			}
 			
 			@Override
-			public void setParameters(Query query, String name, Object value, Class<?> paramType) {
+			void setParameters(Query query, String name, Object value, Class<?> paramType) {
 				name = cleanName(name);
 				Object[] values = null;
 				if (value instanceof Object[]) {
@@ -92,18 +100,18 @@ public class Condition extends AbstractConstruct {
 			}
 			
 			@Override
-			protected Predicate createPredicate(CriteriaBuilder builder, Path path, Expression... parameter) {
+			Predicate createPredicate(CriteriaBuilder builder, Path path, Expression... parameter) {
 				return builder.between(path, parameter[0], parameter[1]);
 			}
 		}, 
 		in("in") {
 			@Override
-			protected Predicate createPredicate(CriteriaBuilder builder, Path path, Expression... parameter) {
+			Predicate createPredicate(CriteriaBuilder builder, Path path, Expression... parameter) {
 				return path.in(parameter[0]);
 			}
 			
 			@Override
-			public void setParameters(Query query, String name, Object value, Class<?> paramType) {
+			void setParameters(Query query, String name, Object value, Class<?> paramType) {
 				name = cleanName(name);
 				if (value instanceof Object[]) {
 					value = Arrays.asList((Object[]) value);
@@ -116,7 +124,7 @@ public class Condition extends AbstractConstruct {
 			}
 			
 			@Override
-			public Predicate constructCondition(CriteriaBuilder builder, Path path, String name) {
+			Predicate constructCondition(CriteriaBuilder builder, Path path, String name) {
 				name = cleanName(name);
 				return createPredicate(builder, path, builder.parameter(Collection.class, name));
 			}
@@ -126,6 +134,30 @@ public class Condition extends AbstractConstruct {
 			protected Predicate createPredicate(CriteriaBuilder builder, Path path, Expression... parameter) {
 				return builder.like(path, parameter[0]);
 			}
+		},
+		not_like("not like") {
+			@Override
+			protected Predicate createPredicate(CriteriaBuilder builder, Path path, Expression... parameter) {
+				return builder.notLike(path, parameter[0]);
+			}
+		},
+		is_null("is null") {
+			@Override
+			protected Predicate createPredicate(CriteriaBuilder builder, Path path, Expression... parameter) {
+				return builder.isNull(path);
+			}
+			@Override
+			void setParameters(Query query, String name, Object value, Class<?> paramType) {
+			}
+		},
+		is_not_null("is not null") {
+			@Override
+			protected Predicate createPredicate(CriteriaBuilder builder, Path path, Expression... parameter) {
+				return builder.isNotNull(path);
+			}
+			@Override
+			void setParameters(Query query, String name, Object value, Class<?> paramType) {
+			}
 		};
 		
 		private String operator;
@@ -134,21 +166,21 @@ public class Condition extends AbstractConstruct {
 			this.operator = operator;
 		}
 		
-		public String constructCondition(String name, Object value) {
+		String constructCondition(String name, Object value) {
 			return name + " " + operator + " :" + name;
 		}
 		
-		public void setParameters(Query query, String name, Object value, Class<?> paramType) {
+		void setParameters(Query query, String name, Object value, Class<?> paramType) {
 			name = cleanName(name);
 			value = ConvertUtil.convert(value, paramType);
 			query.setParameter(name, value);
 		}
 		
-		public Predicate constructCondition(CriteriaBuilder builder, Path path, String name) {
+		Predicate constructCondition(CriteriaBuilder builder, Path path, String name) {
 			return createPredicate(builder, path, builder.parameter(path.getJavaType(), cleanName(name)));
 		}
 		
-		protected abstract Predicate createPredicate(CriteriaBuilder builder, Path path, Expression... parameter);
+		abstract Predicate createPredicate(CriteriaBuilder builder, Path path, Expression... parameter);
 		
 		/**
 		 * Cleans the name to align with the jpa query language constructs
@@ -156,7 +188,7 @@ public class Condition extends AbstractConstruct {
 		 * @param name
 		 * @return
 		 */
-		protected String cleanName(String name) {
+		String cleanName(String name) {
 			return name.replace(".", "0_");
 		}
 	}
@@ -167,12 +199,20 @@ public class Condition extends AbstractConstruct {
 	
 	private Operator operator;
 	
+	@Setter(AccessLevel.PACKAGE)
 	private Path<?> path;
 	
 	/**
 	 * Default constructor
 	 */
 	public Condition() {
+	}
+	
+	public Condition(String name, Operator operator) {
+		this(name, operator, null);
+		if (operator != Operator.is_null && operator != Operator.is_not_null) {
+			throw new IllegalArgumentException("Right hand side value missing for the operator " + operator);
+		}
 	}
 	
 	/**
@@ -193,102 +233,17 @@ public class Condition extends AbstractConstruct {
 	public Condition(String name, Object value) {
 		this(name, Operator.eq, value);
 	}
-	
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-		return name;
-	}
 
-	/**
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	/**
-	 * @return the value
-	 */
-	public Object getValue() {
-		return value;
-	}
-
-	/**
-	 * @param value the value to set
-	 */
-	public void setValue(Object value) {
-		this.value = value;
-	}
-
-	/**
-	 * @return the operator
-	 */
-	public Operator getOperator() {
-		return operator;
-	}
-
-	/**
-	 * @param operator the operator to set
-	 */
-	public void setOperator(Operator operator) {
-		this.operator = operator;
-	}
-
-	public String constructQuery() {
+	String constructQuery() {
 		return operator.constructCondition(name, value);
 	}
 	
-	public <T extends Model> Predicate constructQuery(CriteriaBuilder builder, Root<T> root) {
+	protected <T extends Model> Predicate constructQuery(CriteriaBuilder builder, Root<T> root) {
 		path = getPath(root, name);
 		return operator.constructCondition(builder, path, name);
 	}
 	
-	public void setParameters(Query query, Object value) {
+	protected void setParameters(Query query, Object value) {
 		operator.setParameters(query, name, value, path.getJavaType());
-	}
-
-	/**
-	 * @return the path
-	 */
-	Path<?> getPath() {
-		return path;
-	}
-
-	/**
-	 * @param path the path to set
-	 */
-	void setPath(Path<?> path) {
-		this.path = path;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result
-				+ ((operator == null) ? 0 : operator.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Condition other = (Condition) obj;
-		if (name == null) {
-			if (other.name != null)
-				return false;
-		} else if (!name.equals(other.name))
-			return false;
-		if (operator != other.operator)
-			return false;
-		return true;
 	}
 }

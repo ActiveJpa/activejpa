@@ -18,10 +18,18 @@ import javax.persistence.criteria.Root;
 
 import org.activejpa.entity.Condition.Operator;
 
+import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @author ganeshs
  *
  */
+@Getter(AccessLevel.PACKAGE)
+@Setter(AccessLevel.PUBLIC)
+@EqualsAndHashCode(callSuper=false)
 public class Filter {
 	
 	private List<Condition> conditions = new ArrayList<Condition>();
@@ -34,7 +42,16 @@ public class Filter {
 	
 	private boolean cacheable;
 	
+	@Getter(AccessLevel.NONE)
+	@Setter(AccessLevel.NONE)
 	private boolean shouldPage;
+	
+	@Setter(AccessLevel.NONE)
+	private Class entityClass;
+	
+	Filter(Class<?> clazz) {
+		this.entityClass = clazz;
+	}
 	
 	public Filter(int perPage, int pageNo, Condition... conditions) {
 		this.pageNo = pageNo > 0 ? pageNo : 1;
@@ -52,61 +69,51 @@ public class Filter {
 	public Filter(Condition... conditions) {
 		this(0, 0, conditions);
 	}
-
-	public Integer getPageNo() {
-		return pageNo;
-	}
-
-	public void setPageNo(Integer pageNo) {
-		this.pageNo = pageNo;
-	}
-
-	public Integer getPerPage() {
-		return perPage;
-	}
-
-	public void setPerPage(Integer perPage) {
-		this.perPage = perPage;
+	
+	public Filter condition(String name, Object value) {
+		return condition(name, Operator.eq, value);
 	}
 	
-	public Integer getStart() {
-		return (pageNo - 1) * perPage;
-	}
-	
-	public Integer getLimit() {
-		return perPage;
-	}
-	
-	public boolean shouldPage() {
-		return shouldPage;
-	}
-
-	/**
-	 * @return the conditions
-	 */
-	public List<Condition> getConditions() {
-		return conditions;
-	}
-
-	/**
-	 * @param conditions the conditions to set
-	 */
-	public Filter setConditions(List<Condition> conditions) {
-		this.conditions = conditions;
-		return this;
-	}
-	
-	public Filter addCondition(String name, Object value) {
-		addCondition(name, Operator.eq, value);
-		return this;
-	}
-	
-	public Filter addCondition(String name, Operator operator, Object value) {
+	public Filter condition(String name, Operator operator, Object value) {
 		this.conditions.add(new Condition(name, operator, value));
 		return this;
 	}
 	
-	public String constructQuery() {
+	public Filter sortBy(String name, boolean asc) {
+		return sortBy(new SortField(name, asc));
+	}
+	
+	public Filter sortBy(SortField sortField) {
+		this.sortFields.add(sortField);
+		return this;
+	}
+	
+	public Filter cacheable(boolean cacheable) {
+		setCacheable(cacheable);
+		return this;
+	}
+	
+	@Deprecated
+	public Filter addCondition(String name, Object value) {
+		return condition(name, value);
+	}
+	
+	@Deprecated
+	public Filter addCondition(String name, Operator operator, Object value) {
+		return condition(name, operator, value);
+	}
+	
+	@Deprecated
+	public Filter addSortField(String name, boolean asc) {
+		return sortBy(name, asc);
+	}
+	
+	@Deprecated
+	public Filter addSortField(SortField sortField) {
+		return sortBy(sortField);
+	}
+	
+	String constructQuery() {
 		StringWriter writer = new StringWriter();
 		if (conditions != null || !conditions.isEmpty()) {
 			for (int i = 0; i < conditions.size() - 1; i++) {
@@ -124,7 +131,7 @@ public class Filter {
 	 * @param query
 	 * @param root
 	 */
-	public <T extends Model> void constructQuery(CriteriaBuilder builder, CriteriaQuery<?> query, Root<T> root) {
+	<T extends Model> void constructQuery(CriteriaBuilder builder, CriteriaQuery<?> query, Root<T> root) {
 		if (conditions != null || !conditions.isEmpty()) {
 			List<Predicate> predicates = new ArrayList<Predicate>();
 			for (Condition condition : conditions) {
@@ -149,7 +156,7 @@ public class Filter {
 	 * @param query
 	 * @param root
 	 */
-	public <T extends Model> void constructQuery(CriteriaBuilder builder, CriteriaDelete<?> query, Root<T> root) {
+	protected <T extends Model> void constructQuery(CriteriaBuilder builder, CriteriaDelete<?> query, Root<T> root) {
 		if (conditions != null || !conditions.isEmpty()) {
 			List<Predicate> predicates = new ArrayList<Predicate>();
 			for (Condition condition : conditions) {
@@ -159,7 +166,7 @@ public class Filter {
 		}
 	}
 	
-	public Filter setParameters(Query query) {
+	protected Filter setParameters(Query query) {
 		if (conditions != null && !conditions.isEmpty()) {
 			for (Condition condition : conditions) {
 				condition.setParameters(query, condition.getValue());
@@ -168,99 +175,12 @@ public class Filter {
 		return this;
 	}
 	
-	public Filter setPage(Query query) {
-		if (shouldPage()) {
-			query.setFirstResult(getStart());
+	Filter setPage(Query query) {
+		if (shouldPage) {
+			query.setFirstResult((getPageNo() - 1) * getPerPage());
 			query.setMaxResults(getPerPage());
 		}
 		return this;
-	}
-	
-	/**
-	 * @return the cacheable
-	 */
-	public boolean isCacheable() {
-		return cacheable;
-	}
-
-	/**
-	 * @param cacheable the cacheable to set
-	 */
-	public void setCacheable(boolean cacheable) {
-		this.cacheable = cacheable;
-	}
-	
-	/**
-	 * Adds the sort field
-	 * 
-	 * @param name
-	 * @param asc
-	 */
-	public Filter addSortField(String name, boolean asc) {
-		this.sortFields.add(new SortField(name, asc));
-		return this;
-	}
-	
-	/**
-	 * Adds the sort field
-	 * 
-	 * @param sortField
-	 */
-	public Filter addSortField(SortField sortField) {
-		this.sortFields.add(sortField);
-		return this;
-	}
-
-	/**
-	 * @return the sortFields
-	 */
-	public List<SortField> getSortFields() {
-		return sortFields;
-	}
-
-	/**
-	 * @param sortFields the sortFields to set
-	 */
-	public void setSortFields(List<SortField> sortFields) {
-		this.sortFields = sortFields;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((conditions == null) ? 0 : conditions.hashCode());
-		result = prime * result + ((pageNo == null) ? 0 : pageNo.hashCode());
-		result = prime * result + ((perPage == null) ? 0 : perPage.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Filter other = (Filter) obj;
-		if (conditions == null) {
-			if (other.conditions != null)
-				return false;
-		} else if (!conditions.containsAll(other.conditions))
-			return false;
-		if (pageNo == null) {
-			if (other.pageNo != null)
-				return false;
-		} else if (!pageNo.equals(other.pageNo))
-			return false;
-		if (perPage == null) {
-			if (other.perPage != null)
-				return false;
-		} else if (!perPage.equals(other.perPage))
-			return false;
-		return true;
 	}
 	
 	public Filter clone(boolean paginate) {
@@ -271,5 +191,12 @@ public class Filter {
 			filter.shouldPage = shouldPage;
 		}
 		return filter;
+	}
+	
+	public <T> List<T> getResultList() {
+		if (entityClass == null) {
+			throw new IllegalStateException("Entity class not set");
+		}
+		return Model.createQuery(entityClass, this).getResultList();
 	}
 }

@@ -237,8 +237,25 @@ public class ConditionTest {
 	}
 	
 	@Test
+	public void shouldConstructNotLikeCriteriaQuery() {
+		Condition condition = new Condition("key", Operator.not_like, "value");
+		when(builder.parameter(path.getJavaType(), "key")).thenReturn(expression);
+		when(root.get("key")).thenReturn(path);
+		condition.constructQuery(builder, root);
+		verify(builder).notLike(path, expression);
+	}
+	
+	@Test
 	public void shouldSetParametersForLikeQuery() {
 		Condition condition = new Condition("key", Operator.like, "value");
+		condition.setPath(path);
+		condition.setParameters(query, "value");
+		verify(query).setParameter("key", "value");
+	}
+	
+	@Test
+	public void shouldSetParametersForNotLikeQuery() {
+		Condition condition = new Condition("key", Operator.not_like, "value");
 		condition.setPath(path);
 		condition.setParameters(query, "value");
 		verify(query).setParameter("key", "value");
@@ -267,5 +284,26 @@ public class ConditionTest {
 		condition.setParameters(query, new String[]{"value1", "value2"});
 		verify(query).setParameter("fromkey", "value1");
 		verify(query).setParameter("tokey", "value2");
+	}
+	
+	@Test
+	public void shouldConstructIsNullQuery() {
+		Condition condition = new Condition("key", Operator.is_null);
+		when(root.get("key")).thenReturn(path);
+		condition.constructQuery(builder, root);
+		verify(builder).isNull(path);
+	}
+	
+	@Test
+	public void shouldConstructIsNotNullQuery() {
+		Condition condition = new Condition("key", Operator.is_not_null);
+		when(root.get("key")).thenReturn(path);
+		condition.constructQuery(builder, root);
+		verify(builder).isNotNull(path);
+	}
+	
+	@Test(expectedExceptions=IllegalArgumentException.class)
+	public void shouldThrowIllegalArgumentExceptionIfRHSMissingForNonNullOperators() {
+		new Condition("key", Operator.eq);
 	}
 }

@@ -133,6 +133,10 @@ public abstract class Model extends BaseObject {
 		throw new UnsupportedOperationException(NIE);
 	}
 	
+	public static Filter filter() {
+		throw new UnsupportedOperationException(NIE);
+	}
+	
 	/**
 	 * Returns a list of entities matching the given key value pairs. The key value pairs are supplied as arguments like (key1, value1, key2, value2)
 	 * 
@@ -201,6 +205,10 @@ public abstract class Model extends BaseObject {
 			return list.get(0);
 		}
 		return null;
+	}
+	
+	protected static <T extends Model> Filter filter(Class<T> clazz) {
+		return new Filter(clazz);
 	}
 	
 	protected static <T extends Model> List<T> where(Class<T> clazz, Object... paramValues) {
@@ -294,7 +302,7 @@ public abstract class Model extends BaseObject {
 		ManagedType<? extends Model> type = getEntityManager().getMetamodel().managedType(getClass());
 		EntityCollection<T> collection = null;
 		if (type.getAttribute(name).isCollection()) {
-		    Class<T> elementType = ((PluralAttribute)type.getAttribute(name)).getElementType().getJavaType();
+		    Class<T> elementType = ((PluralAttribute) type.getAttribute(name)).getElementType().getJavaType();
 			collection = new EntityCollection<T>(this, name, elementType);
 		}
 		return collection;

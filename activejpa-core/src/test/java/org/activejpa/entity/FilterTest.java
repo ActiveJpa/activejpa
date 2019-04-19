@@ -3,12 +3,11 @@
  */
 package org.activejpa.entity;
 
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 import java.util.Arrays;
@@ -30,6 +29,7 @@ import org.testng.annotations.Test;
  * @author ganeshs
  *
  */
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class FilterTest {
 
 	@Test
@@ -47,23 +47,23 @@ public class FilterTest {
 	}
 	
 	@Test
-	public void shouldAddConditionsInConstructor() {
+	public void shouldconditionsInConstructor() {
 		Filter filter = new Filter(mock(Condition.class), mock(Condition.class));
 		assertEquals(filter.getConditions().size(), 2);
 	}
 	
 	@Test
-	public void shouldAddConditionUsingNameValue() {
+	public void shouldconditionUsingNameValue() {
 		Filter filter = new Filter();
-		filter.addCondition("testKey", "testValue");
+		filter.condition("testKey", "testValue");
 		assertEquals(filter.getConditions().size(), 1);
 		assertEquals(filter.getConditions().get(0), new Condition("testKey", "testValue"));
 	}
 	
 	@Test
-	public void shouldAddConditionUsingNameValueOperator() {
+	public void shouldconditionUsingNameValueOperator() {
 		Filter filter = new Filter();
-		filter.addCondition("testKey", Operator.eq, "testValue");
+		filter.condition("testKey", Operator.eq, "testValue");
 		assertEquals(filter.getConditions().size(), 1);
 		assertEquals(filter.getConditions().get(0), new Condition("testKey", Operator.eq, "testValue"));
 	}
@@ -71,8 +71,8 @@ public class FilterTest {
 	@Test
 	public void shouldConstructQuery() {
 		Filter filter = new Filter()
-				.addCondition("testKey", Operator.eq, "testValue")
-				.addCondition("testKey1", Operator.eq, "testValue1");
+				.condition("testKey", Operator.eq, "testValue")
+				.condition("testKey1", Operator.eq, "testValue1");
 		assertEquals(filter.constructQuery(), "testKey = :testKey and testKey1 = :testKey1");
 	}
 	
@@ -106,7 +106,7 @@ public class FilterTest {
 	
 	@Test
 	public void shouldConstructCriteriaQueryWithSortFields() {
-		Filter filter = new Filter().addSortField(mock(SortField.class)).addSortField(mock(SortField.class));
+		Filter filter = new Filter().sortBy(mock(SortField.class)).sortBy(mock(SortField.class));
 		CriteriaBuilder builder = mock(CriteriaBuilder.class);
 		Root root = mock(Root.class);
 		Order order1 = mock(Order.class);
@@ -121,8 +121,8 @@ public class FilterTest {
 	@Test
 	public void shouldSetParameters() {
 		Filter filter = new Filter()
-				.addCondition("testKey", Operator.eq, "testValue")
-				.addCondition("testKey1", Operator.eq, "testValue1");
+				.condition("testKey", Operator.eq, "testValue")
+				.condition("testKey1", Operator.eq, "testValue1");
 		Path path = mock(Path.class);
 		when(path.getJavaType()).thenReturn(String.class);
 		filter.getConditions().get(0).setPath(path);
@@ -168,18 +168,6 @@ public class FilterTest {
 		assertEquals(clonedFilter.getConditions().size(), 1);
 		assertEquals(clonedFilter.getPageNo(), Integer.valueOf(1));
 		assertEquals(clonedFilter.getPerPage(), Integer.valueOf(Integer.MAX_VALUE));
-	}
-	
-	@Test
-	public void shouldNotPageIfPerPageIsNotSet() {
-		Filter filter = new Filter(mock(Condition.class));
-		assertFalse(filter.shouldPage());
-	}
-	
-	@Test
-	public void shouldPageIfPerPageIsSet() {
-		Filter filter = new Filter(10, 1, mock(Condition.class));
-		assertTrue(filter.shouldPage());
 	}
 	
 	@Test

@@ -21,29 +21,22 @@ import org.javalite.common.Inflector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import lombok.RequiredArgsConstructor;
+
 /**
  * @author ganeshs
  *
  */
+@RequiredArgsConstructor
 public class EntityCollection<T extends Model> extends BaseObject {
 	
-	private Model parent;
+	private final Model parent;
 	
-	private String name;
+	private final String name;
 	
-	private Class<T> elementType;
+	private final Class<T> elementType;
 	
 	private static final Logger logger = LoggerFactory.getLogger(EntityCollection.class);
-	
-	/**
-	 * @param parent
-	 * @param name
-	 */
-	public EntityCollection(Model parent, String name, Class<T> elementType) {
-		this.parent = parent;
-		this.name = name;
-		this.elementType = elementType;
-	}
 	
 	/**
 	 * Adds the item to the underlying collection
@@ -147,7 +140,7 @@ public class EntityCollection<T extends Model> extends BaseObject {
 	}
 	
 	public long count(Filter filter) {
-		filter.addCondition("id", parent.getId());
+		filter.condition("id", parent.getId());
 		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
 		CriteriaQuery<Long> cQuery = builder.createQuery(Long.class);
 		Root<? extends Model> root = cQuery.from(parent.getClass());
@@ -160,7 +153,7 @@ public class EntityCollection<T extends Model> extends BaseObject {
 	}
 	
 	private TypedQuery<T> createCollectionQuery(Filter filter) {
-		filter.addCondition("id", parent.getId());
+		filter.condition("id", parent.getId());
 		TypedQuery<T> query = createQuery(parent.getClass(), name, elementType, filter);
 		return query;
 	}

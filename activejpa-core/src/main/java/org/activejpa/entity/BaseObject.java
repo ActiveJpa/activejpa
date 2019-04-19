@@ -63,7 +63,7 @@ class BaseObject {
 		Filter filter = new Filter();
 		if (paramValues != null) {
 			for (int i = 0; i < paramValues.length; i += 2) {
-				filter.addCondition(paramValues[i].toString(), paramValues[i + 1]);
+				filter.condition(paramValues[i].toString(), paramValues[i + 1]);
 			}
 		}
 		return filter;

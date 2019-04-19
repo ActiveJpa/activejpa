@@ -127,6 +127,10 @@ public class ModelInterceptor {
         invoke(method, new Class[] {Class.class}, new Object[]{method.getDeclaringClass()});
     }
     
+    public static Filter filter(@Origin Method method) throws Throwable {
+    		return invoke(method, new Class[] {Class.class}, new Object[]{method.getDeclaringClass()});
+    }
+    
     /**
      * @param method
      * @param paramTypes
