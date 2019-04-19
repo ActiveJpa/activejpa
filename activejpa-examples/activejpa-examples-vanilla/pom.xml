@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.activejpa</groupId>
 		<artifactId>activejpa-examples</artifactId>
-		<version>1.0.3</version>
+		<version>1.0.4-SNAPSHOT</version>
 	</parent>
 	<artifactId>activejpa-examples-vanilla</artifactId>
 	<name>activejpa-examples-vanilla</name>
