@@ -18,9 +18,12 @@ AcitveJpa abstracts out some of the most common functionalities you might need i
 	Filter filter = new Filter()
 			.setPageNo(1)
 			.setPerPage(25)
-			.addCondition(new Condition("orderItems.product.category", Operator.eq, "books")
-			.addSortField("status", true);
+			.condition("orderItems.product.category", Operator.eq, "books")
+			.sortBy("status", true);
 	List<Order> orders = Order.where(filter);
+	
+	// Or rather use filter on the model itself
+	List<Order> orders = Order.filter().page(1, 25).condition("orderItems.product.category", Operator.eq, "books").sortBy("status", true);
 	
 	// Count of orders matching the filter
 	Long count = Order.count(filter);
@@ -56,7 +59,8 @@ AcitveJpa abstracts out some of the most common functionalities you might need i
 	order.collections("order_items").findById(123L);
 	
 	// Search order items by filter with an order
-	order.collections("order_items").findById(filter);
+	order.collections("order_items").where(filter);
+	order.collections("order_items").filter().page(1, 25).sortBy("status", "true");
 	
 	....
 	....
@@ -74,7 +78,7 @@ ActiveJpa is available as a Maven artifact and should be fairly simpler to integ
      <dependency>
        <groupId>org.activejpa</groupId>
        <artifactId>activejpa-core</artifactId>
-       <version>1.0.2</version>
+       <version>1.0.4</version>
      </dependency>
    </dependencies>
    
