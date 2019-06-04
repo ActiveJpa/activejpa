@@ -4,10 +4,12 @@
 package org.activejpa.entity;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNull;
 
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.activejpa.entity.testng.BaseModelTest;
@@ -60,6 +62,13 @@ public class EntityCollectionTest extends BaseModelTest {
 	}
 	
 	@Test
+	public void shouldGetAll() {
+		EntityCollection<DummyModel> collection = model.collection("children");
+		List<DummyModel> children = collection.all();
+		assertEquals(children.size(), 3);
+	}
+	
+	@Test
 	public void shouldGetCount() {
 		assertEquals(model.collection("children").count(new Filter()), 3);
 	}
@@ -70,8 +79,13 @@ public class EntityCollectionTest extends BaseModelTest {
 	}
 	
 	@Test
-	public void should1SearchAndReturnFirst() {
+	public void shouldSearchAndReturnFirst() {
 		assertEquals(model.collection("children").first("children.column1", "testChildColumn1"), child2);
+	}
+	
+	@Test
+	public void shouldSearchAndReturnNullIfNoElementExistOnFirst() {
+		assertNull(model.collection("children").first("children.column1", "unknown"));
 	}
 	
 	@Test

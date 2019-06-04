@@ -15,6 +15,9 @@ import org.slf4j.LoggerFactory;
 public class ActiveJpaAgent {
 
 	private static final Logger logger = LoggerFactory.getLogger(ActiveJpaAgent.class);
+	
+	private ActiveJpaAgent() {
+	}
 
     /**
      * JVM hook to statically load the javaagent at startup.

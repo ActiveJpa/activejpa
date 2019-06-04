@@ -3,7 +3,6 @@
  */
 package org.activejpa.entity;
 
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -19,7 +18,6 @@ import javax.persistence.criteria.Root;
 import org.activejpa.entity.Condition.Operator;
 
 import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,36 +26,32 @@ import lombok.Setter;
  *
  */
 @Getter(AccessLevel.PACKAGE)
-@Setter(AccessLevel.PUBLIC)
-@EqualsAndHashCode(callSuper=false)
 public class Filter {
 	
 	private List<Condition> conditions = new ArrayList<Condition>();
 	
 	private List<SortField> sortFields = new ArrayList<SortField>();
 
-	private Integer pageNo;
+	private int pageNo;
 	
-	private Integer perPage;
+	private int perPage;
 	
 	private boolean cacheable;
 	
 	@Getter(AccessLevel.NONE)
-	@Setter(AccessLevel.NONE)
 	private boolean shouldPage;
 	
 	@Setter(AccessLevel.NONE)
 	private Class entityClass;
 	
 	Filter(Class<?> clazz) {
+		this();
 		this.entityClass = clazz;
 	}
 	
 	public Filter(int perPage, int pageNo, Condition... conditions) {
-		this.pageNo = pageNo > 0 ? pageNo : 1;
-		this.shouldPage = perPage > 0;
-		this.perPage = (perPage < 1) ? Integer.MAX_VALUE : perPage;
-		if (conditions != null && conditions.length > 0) {
+		page(pageNo, perPage);
+		if (conditions != null) {
 			this.conditions.addAll(Arrays.asList(conditions));
 		}
 	}
@@ -79,6 +73,12 @@ public class Filter {
 		return this;
 	}
 	
+	public Filter page(int pageNo, int perPage) {
+		this.pageNo = pageNo > 0 ? pageNo : 1;
+		this.perPage = (perPage < 1) ? Integer.MAX_VALUE : perPage;
+		return this;
+	}
+	
 	public Filter sortBy(String name, boolean asc) {
 		return sortBy(new SortField(name, asc));
 	}
@@ -89,39 +89,8 @@ public class Filter {
 	}
 	
 	public Filter cacheable(boolean cacheable) {
-		setCacheable(cacheable);
+		this.cacheable = cacheable;
 		return this;
-	}
-	
-	@Deprecated
-	public Filter addCondition(String name, Object value) {
-		return condition(name, value);
-	}
-	
-	@Deprecated
-	public Filter addCondition(String name, Operator operator, Object value) {
-		return condition(name, operator, value);
-	}
-	
-	@Deprecated
-	public Filter addSortField(String name, boolean asc) {
-		return sortBy(name, asc);
-	}
-	
-	@Deprecated
-	public Filter addSortField(SortField sortField) {
-		return sortBy(sortField);
-	}
-	
-	String constructQuery() {
-		StringWriter writer = new StringWriter();
-		if (conditions != null || !conditions.isEmpty()) {
-			for (int i = 0; i < conditions.size() - 1; i++) {
-				writer.append(conditions.get(i).constructQuery()).append(" and ");
-			}
-			writer.append(conditions.get(conditions.size() - 1).constructQuery());
-		}
-		return writer.toString();
 	}
 	
 	/**
@@ -132,7 +101,7 @@ public class Filter {
 	 * @param root
 	 */
 	<T extends Model> void constructQuery(CriteriaBuilder builder, CriteriaQuery<?> query, Root<T> root) {
-		if (conditions != null || !conditions.isEmpty()) {
+		if (!conditions.isEmpty()) {
 			List<Predicate> predicates = new ArrayList<Predicate>();
 			for (Condition condition : conditions) {
 				predicates.add(condition.constructQuery(builder, root));
@@ -140,7 +109,7 @@ public class Filter {
 			query.where(predicates.toArray(new Predicate[0]));
 		}
 		
-		if (sortFields != null && !sortFields.isEmpty()) {
+		if (!sortFields.isEmpty()) {
 			List<Order> orders = new ArrayList<Order>();
 			for (SortField sortField : sortFields) {
 				orders.add(sortField.getOrder(builder, root));
@@ -156,8 +125,8 @@ public class Filter {
 	 * @param query
 	 * @param root
 	 */
-	protected <T extends Model> void constructQuery(CriteriaBuilder builder, CriteriaDelete<?> query, Root<T> root) {
-		if (conditions != null || !conditions.isEmpty()) {
+	<T extends Model> void constructQuery(CriteriaBuilder builder, CriteriaDelete<?> query, Root<T> root) {
+		if (!conditions.isEmpty()) {
 			List<Predicate> predicates = new ArrayList<Predicate>();
 			for (Condition condition : conditions) {
 				predicates.add(condition.constructQuery(builder, root));
@@ -166,8 +135,8 @@ public class Filter {
 		}
 	}
 	
-	protected Filter setParameters(Query query) {
-		if (conditions != null && !conditions.isEmpty()) {
+	Filter setParameters(Query query) {
+		if (!conditions.isEmpty()) {
 			for (Condition condition : conditions) {
 				condition.setParameters(query, condition.getValue());
 			}
@@ -176,18 +145,17 @@ public class Filter {
 	}
 	
 	Filter setPage(Query query) {
-		if (shouldPage) {
-			query.setFirstResult((getPageNo() - 1) * getPerPage());
-			query.setMaxResults(getPerPage());
-		}
+		query.setFirstResult((getPageNo() - 1) * getPerPage());
+		query.setMaxResults(getPerPage());
 		return this;
 	}
 	
 	public Filter clone(boolean paginate) {
-		Filter filter = new Filter(conditions.toArray(new Condition[0]));
+		Filter filter = new Filter();
+		filter.conditions = conditions;
+		filter.sortFields = sortFields;
 		if (paginate) {
-			filter.perPage = perPage;
-			filter.pageNo = pageNo;
+			filter.page(pageNo, perPage);
 			filter.shouldPage = shouldPage;
 		}
 		return filter;

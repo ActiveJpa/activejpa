@@ -18,7 +18,6 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 @Getter
-@EqualsAndHashCode(callSuper=false)
 public class SortField extends AbstractConstruct {
 
 	private final String name;

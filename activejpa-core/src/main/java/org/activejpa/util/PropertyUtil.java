@@ -11,7 +11,6 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.net.URI;
 import java.net.URL;
-import java.sql.Timestamp;
 import java.util.Collection;
 import java.util.Date;
 import java.util.Locale;
@@ -30,6 +29,8 @@ import com.google.common.reflect.TypeToken;
 public class PropertyUtil {
 	
 	private static final Logger logger = LoggerFactory.getLogger(PropertyUtil.class);
+	
+	private PropertyUtil() {}
 	
 	/**
 	 * Check if the given type represents a "simple" property:
@@ -60,7 +61,7 @@ public class PropertyUtil {
 				Date.class.isAssignableFrom(clazz) ||
 				clazz.equals(URI.class) || clazz.equals(URL.class) ||
 				clazz.equals(Locale.class) || clazz.equals(Class.class) || 
-				clazz.equals(Serializable.class) || clazz.equals(Timestamp.class);
+				clazz.equals(Serializable.class);
 	}
 	
 	/**
