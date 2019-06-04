@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.activejpa</groupId>
 	<artifactId>activejpa</artifactId>
@@ -26,17 +27,17 @@
 		<hsqldb.version>2.4.0</hsqldb.version>
 		<bytebuddy.version>1.8.11</bytebuddy.version>
 		<lombok.version>1.18.6</lombok.version>
-		
+
 		<!--maven jacoco plugin version -->
 		<maven.jacoco.plugin.version>0.8.4</maven.jacoco.plugin.version>
-		
+
 		<!--maven compiler plugin settings -->
 		<maven.compiler.plugin.version>3.8.1</maven.compiler.plugin.version>
 		<java.source.version>1.8</java.source.version>
 		<java.target.version>1.8</java.target.version>
 		<showWarnings>true</showWarnings>
 		<showDeprecation>true</showDeprecation>
-		
+
 		<!--maven plugin versions -->
 		<maven.jar.plugin.version>3.1.2</maven.jar.plugin.version>
 		<maven.javadoc.plugin.version>3.1.0</maven.javadoc.plugin.version>
@@ -83,14 +84,14 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>${maven.surefire.plugin.version}</version>
 				<configuration>
-          			<useSystemClassLoader>false</useSystemClassLoader>
-          			<properties>
-		            	<property>
+					<useSystemClassLoader>false</useSystemClassLoader>
+					<properties>
+						<property>
 							<name>objectfactory</name>
-		              		<value>org.activejpa.entity.testng.ActiveJpaAgentObjectFactory</value>
-		            	</property>
-		          	</properties>
-        		</configuration>
+							<value>org.activejpa.entity.testng.ActiveJpaAgentObjectFactory</value>
+						</property>
+					</properties>
+				</configuration>
 			</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -208,15 +209,18 @@
 						<jacoco-agent.destfile>target/jacoco.exec</jacoco-agent.destfile>
 					</systemPropertyVariables>
 					<excludes>
-				        <exclude>**/examples/**/*.*</exclude>
-				    </excludes>
+						<exclude>**/examples/**/*.*</exclude>
+					</excludes>
 				</configuration>
 			</plugin>
-      		<plugin>
-          		<groupId>org.eluder.coveralls</groupId>
-          		<artifactId>coveralls-maven-plugin</artifactId>
-          		<version>${coveralls.maven.plugin.version}</version>
-      		</plugin>
+			<plugin>
+				<groupId>org.eluder.coveralls</groupId>
+				<artifactId>coveralls-maven-plugin</artifactId>
+				<version>${coveralls.maven.plugin.version}</version>
+				<configuration>
+					<timestampFormat>EpochMillis</timestampFormat>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 
