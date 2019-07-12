@@ -21,7 +21,6 @@ import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.ManagedType;
 import javax.persistence.metamodel.PluralAttribute;
 
-import org.activejpa.ActiveJpaException;
 import org.activejpa.jpa.JPA;
 import org.activejpa.jpa.JPAContext;
 import org.activejpa.util.BeanUtil;
@@ -54,12 +53,8 @@ public abstract class Model extends BaseObject {
 	 * @param attributes
 	 */
 	public void updateAttributes(Map<String, Object> attributes) {
-		try {
-			BeanUtil.load(this, attributes);
-			persist();
-		} catch (Exception e) {
-			throw new ActiveJpaException("Failed while updating the attributes", e);
-		}
+		BeanUtil.load(this, attributes);
+		persist();
 	}
 	
 	/**
@@ -201,7 +196,7 @@ public abstract class Model extends BaseObject {
 	
 	protected static <T extends Model> T first(Class<T> clazz, Object... paramValues) {
 		List<T> list = where(clazz, paramValues);
-		if (list != null && ! list.isEmpty()) {
+		if (! list.isEmpty()) {
 			return list.get(0);
 		}
 		return null;

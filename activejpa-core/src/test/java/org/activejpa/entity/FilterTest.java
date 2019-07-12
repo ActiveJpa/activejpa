@@ -5,12 +5,15 @@ package org.activejpa.entity;
 
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
 import java.util.Arrays;
+import java.util.List;
 
 import javax.persistence.Parameter;
 import javax.persistence.Query;
@@ -23,6 +26,13 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.activejpa.entity.Condition.Operator;
+import org.activejpa.entity.testng.ActiveJpaAgentObjectFactory;
+import org.activejpa.entity.testng.BaseModelTest;
+import org.activejpa.jpa.JPA;
+import org.testng.IObjectFactory;
+import org.testng.ITestContext;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.ObjectFactory;
 import org.testng.annotations.Test;
 
 /**
@@ -30,50 +40,99 @@ import org.testng.annotations.Test;
  *
  */
 @SuppressWarnings({"unchecked", "rawtypes"})
-public class FilterTest {
+public class FilterTest extends BaseModelTest {
+	
+	/**
+	 * HACK. `mvn test` will be run before the package is created. javaagent can be loaded only from a jar. Since the
+	 * jar is not yet created, it will throw agent not found exception. This is a hack to get rid of that exception
+	 */
+	@ObjectFactory
+	public IObjectFactory getObjectFactory(ITestContext context) throws Exception {
+		return new ActiveJpaAgentObjectFactory();
+	}
+	
+	@BeforeClass
+	public void beforeClass() {
+		JPA.instance.addPersistenceUnit("test");
+	}
 
 	@Test
 	public void shouldSetDefaultValuesWhenInitialized() {
 		Filter filter = new Filter();
-		assertEquals(filter.getPageNo(), (Integer)1);
-		assertEquals(filter.getPerPage(), (Integer)Integer.MAX_VALUE);
+		assertEquals(filter.getPageNo(), 1);
+		assertEquals(filter.getPerPage(), Integer.MAX_VALUE);
 	}
 	
 	@Test
 	public void shouldSetActualValuesWhenInitialized() {
 		Filter filter = new Filter(10, 2);
-		assertEquals(filter.getPageNo(), (Integer)2);
-		assertEquals(filter.getPerPage(), (Integer)10);
+		assertEquals(filter.getPageNo(), 2);
+		assertEquals(filter.getPerPage(), 10);
 	}
 	
 	@Test
-	public void shouldconditionsInConstructor() {
+	public void shouldSetPage() {
+		Filter filter = new Filter();
+		filter.page(2, 20);
+		assertEquals(filter.getPageNo(), 2);
+		assertEquals(filter.getPerPage(), 20);
+	}
+	
+	@Test
+	public void shouldFixPageIfOutOfBounds() {
+		Filter filter = new Filter();
+		filter.page(0, 0);
+		assertEquals(filter.getPageNo(), 1);
+		assertEquals(filter.getPerPage(), Integer.MAX_VALUE);
+	}
+	
+	@Test
+	public void shouldAddConditionsInConstructor() {
 		Filter filter = new Filter(mock(Condition.class), mock(Condition.class));
 		assertEquals(filter.getConditions().size(), 2);
 	}
 	
 	@Test
-	public void shouldconditionUsingNameValue() {
+	public void shouldNotAddNullConditionsInConstructor() {
+		Filter filter = new Filter(0, 0, (Condition[]) null);
+		assertTrue(filter.getConditions().isEmpty());
+	}
+	
+	@Test
+	public void shouldAddConditionUsingNameValue() {
 		Filter filter = new Filter();
 		filter.condition("testKey", "testValue");
 		assertEquals(filter.getConditions().size(), 1);
-		assertEquals(filter.getConditions().get(0), new Condition("testKey", "testValue"));
+		assertEquals(filter.getConditions().get(0).getName(), "testKey");
+		assertEquals(filter.getConditions().get(0).getValue(), "testValue");
 	}
 	
 	@Test
-	public void shouldconditionUsingNameValueOperator() {
+	public void shouldAddConditionUsingNameValueOperator() {
 		Filter filter = new Filter();
 		filter.condition("testKey", Operator.eq, "testValue");
 		assertEquals(filter.getConditions().size(), 1);
-		assertEquals(filter.getConditions().get(0), new Condition("testKey", Operator.eq, "testValue"));
+		assertEquals(filter.getConditions().get(0).getName(), "testKey");
+		assertEquals(filter.getConditions().get(0).getOperator(), Operator.eq);
+		assertEquals(filter.getConditions().get(0).getValue(), "testValue");
 	}
 	
 	@Test
-	public void shouldConstructQuery() {
-		Filter filter = new Filter()
-				.condition("testKey", Operator.eq, "testValue")
-				.condition("testKey1", Operator.eq, "testValue1");
-		assertEquals(filter.constructQuery(), "testKey = :testKey and testKey1 = :testKey1");
+	public void shouldAddSortFieldsByNameAndOrder() {
+		Filter filter = new Filter();
+		filter.sortBy("column1", false);
+		assertEquals(filter.getSortFields().size(), 1);
+		assertEquals(filter.getSortFields().get(0).getName(), "column1");
+		assertEquals(filter.getSortFields().get(0).isAsc(), false);
+	}
+	
+	@Test
+	public void shouldAddSortFieldsByObject() {
+		Filter filter = new Filter();
+		filter.sortBy(new SortField("column1", false));
+		assertEquals(filter.getSortFields().size(), 1);
+		assertEquals(filter.getSortFields().get(0).getName(), "column1");
+		assertEquals(filter.getSortFields().get(0).isAsc(), false);
 	}
 	
 	@Test
@@ -137,12 +196,31 @@ public class FilterTest {
 	}
 	
 	@Test
+	public void shouldNotSetParametersIfConditionsIsEmpty() {
+		Filter filter = new Filter();
+		Path path = mock(Path.class);
+		when(path.getJavaType()).thenReturn(String.class);
+		Query query = mock(Query.class);
+		filter.setParameters(query);
+		verify(query, never()).setParameter(anyString(), anyString());
+	}
+	
+	@Test
+	public void shouldSetPageInQuery() {
+		Filter filter = new Filter(6, 1);
+		Query query = mock(Query.class);
+		filter.setPage(query);
+		verify(query).setFirstResult(0);
+		verify(query).setMaxResults(6);
+	}
+	
+	@Test
 	public void shouldCloneFilter() {
 		Filter filter = new Filter();
 		Filter clonedFilter = filter.clone(false);
 		assertTrue(clonedFilter.getConditions().isEmpty());
-		assertEquals(clonedFilter.getPageNo(), Integer.valueOf(1));
-		assertEquals(clonedFilter.getPerPage(), Integer.valueOf(Integer.MAX_VALUE));
+		assertEquals(clonedFilter.getPageNo(), 1);
+		assertEquals(clonedFilter.getPerPage(), Integer.MAX_VALUE);
 	}
 	
 	@Test
@@ -157,8 +235,8 @@ public class FilterTest {
 		Filter filter = new Filter(2, 20, mock(Condition.class));
 		Filter clonedFilter = filter.clone(true);
 		assertEquals(clonedFilter.getConditions().size(), 1);
-		assertEquals(clonedFilter.getPageNo(), Integer.valueOf(20));
-		assertEquals(clonedFilter.getPerPage(), Integer.valueOf(2));
+		assertEquals(clonedFilter.getPageNo(), 20);
+		assertEquals(clonedFilter.getPerPage(), 2);
 	}
 	
 	@Test
@@ -166,12 +244,71 @@ public class FilterTest {
 		Filter filter = new Filter(2, 20, mock(Condition.class));
 		Filter clonedFilter = filter.clone(false);
 		assertEquals(clonedFilter.getConditions().size(), 1);
-		assertEquals(clonedFilter.getPageNo(), Integer.valueOf(1));
-		assertEquals(clonedFilter.getPerPage(), Integer.valueOf(Integer.MAX_VALUE));
+		assertEquals(clonedFilter.getPageNo(), 1);
+		assertEquals(clonedFilter.getPerPage(), Integer.MAX_VALUE);
+	}
+	
+	@Test(expectedExceptions=IllegalStateException.class)
+	public void shouldThrowExceptionOnListIfEntityClassIsNotSet() {
+		Filter filter = new Filter();
+		filter.condition("column1", "column1");
+		filter.list();
 	}
 	
 	@Test
-	public void shouldOrderByPrimaryTableField() {
-		
+	public void shouldList() {
+		createModel("column1", "column2");
+		Filter filter = new Filter(DummyModel.class);
+		filter.condition("column1", "column1");
+		List<DummyModel> models = filter.list();
+		assertEquals(models.size(), 1);
+	}
+	
+	@Test(expectedExceptions=IllegalStateException.class)
+	public void shouldThrowExceptionOnCountIfEntityClassIsNotSet() {
+		Filter filter = new Filter();
+		filter.condition("column1", "column1");
+		filter.count();
+	}
+	
+	@Test
+	public void shouldCount() {
+		createModel("column1", "column2");
+		Filter filter = new Filter(DummyModel.class);
+		filter.condition("column1", "column1");
+		assertEquals(filter.count(), 1L);
+	}
+	
+	@Test(expectedExceptions=IllegalStateException.class)
+	public void shouldThrowExceptionOnDeleteIfEntityClassIsNotSet() {
+		Filter filter = new Filter();
+		filter.condition("column1", "column1");
+		filter.delete();
+	}
+	
+	@Test
+	public void shouldDelete() {
+		createModel("column1", "column2");
+		Filter filter = new Filter(DummyModel.class);
+		filter.condition("column1", "column1");
+		filter.delete();
+		assertEquals(filter.count(), 0L);
+	}
+	
+	@Test
+	public void shouldSetCacheable() {
+		Filter filter = new Filter(2, 20);
+		filter.cacheable(true);
+		assertTrue(filter.isCacheable());
+		filter.cacheable(false);
+		assertFalse(filter.isCacheable());
+	}
+	
+	private DummyModel createModel(String column1, String column2) {
+		DummyModel model = new DummyModel();
+		model.setColumn1(column1);
+		model.setColumn2(column2);
+		model.persist();
+		return model;
 	}
 }

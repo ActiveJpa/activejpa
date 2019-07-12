@@ -105,7 +105,7 @@ public class EntityCollection<T extends Model> extends BaseObject {
 			}
 			return item;
 		} catch (Exception e) {
-			logger.error("Failed to {} the item {} to the collection of the parent", add ? "add" : "remove", item, parent);
+			logger.error("Failed to {} the item {} to the collection of the parent {}", add ? "add" : "remove", item, parent, e);
 			throw new ActiveJpaException("Failed while adding/removing the item to the collection - " + name, e);
 		}
 	}
@@ -120,7 +120,7 @@ public class EntityCollection<T extends Model> extends BaseObject {
 	
 	public T first(Object... paramValues) {
 		List<T> list = where(createFilter(paramValues));
-		if (list == null || list.isEmpty()) {
+		if (list.isEmpty()) {
 			return null;
 		}
 		return list.get(0);
@@ -144,7 +144,7 @@ public class EntityCollection<T extends Model> extends BaseObject {
 		CriteriaBuilder builder = getEntityManager().getCriteriaBuilder();
 		CriteriaQuery<Long> cQuery = builder.createQuery(Long.class);
 		Root<? extends Model> root = cQuery.from(parent.getClass());
-		Join join = root.join(name);
+		Join<?,?> join = root.join(name);
 		cQuery.select(builder.count(join));
 		filter.constructQuery(builder, cQuery, root);
 		

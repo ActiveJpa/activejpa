@@ -3,7 +3,7 @@
  */
 package org.activejpa.entity;
 
-import static org.mockito.Matchers.anyString;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -17,6 +17,7 @@ import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.ParameterExpression;
 import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 import org.activejpa.entity.Condition.Operator;
@@ -60,12 +61,6 @@ public class ConditionTest {
 	}
 	
 	@Test
-	public void shouldConstructEqQuery() {
-		Condition condition = new Condition("key", Operator.eq, "value");
-		assertEquals(condition.constructQuery(), "key = :key");
-	}
-	
-	@Test
 	public void shouldConstructEqCriteriaQuery() {
 		Condition condition = new Condition("key", Operator.eq, "value");
 		when(builder.parameter(path.getJavaType(), "key")).thenReturn(expression);
@@ -80,12 +75,6 @@ public class ConditionTest {
 		condition.setPath(path);
 		condition.setParameters(query, "value");
 		verify(query).setParameter("key", "value");
-	}
-	
-	@Test
-	public void shouldConstructNeQuery() {
-		Condition condition = new Condition("key", Operator.ne, "value");
-		assertEquals(condition.constructQuery(), "key != :key");
 	}
 	
 	@Test
@@ -106,12 +95,6 @@ public class ConditionTest {
 	}
 	
 	@Test
-	public void shouldConstructLtQuery() {
-		Condition condition = new Condition("key", Operator.lt, "value");
-		assertEquals(condition.constructQuery(), "key < :key");
-	}
-	
-	@Test
 	public void shouldConstructLtCriteriaQuery() {
 		Condition condition = new Condition("key", Operator.lt, "value");
 		when(builder.parameter(path.getJavaType(), "key")).thenReturn(expression);
@@ -126,12 +109,6 @@ public class ConditionTest {
 		condition.setPath(path);
 		condition.setParameters(query, "value");
 		verify(query).setParameter("key", "value");
-	}
-	
-	@Test
-	public void shouldConstructGtQuery() {
-		Condition condition = new Condition("key", Operator.gt, "value");
-		assertEquals(condition.constructQuery(), "key > :key");
 	}
 	
 	@Test
@@ -152,12 +129,6 @@ public class ConditionTest {
 	}
 	
 	@Test
-	public void shouldConstructLeQuery() {
-		Condition condition = new Condition("key", Operator.le, "value");
-		assertEquals(condition.constructQuery(), "key <= :key");
-	}
-	
-	@Test
 	public void shouldConstructLeCriteriaQuery() {
 		Condition condition = new Condition("key", Operator.le, "value");
 		when(builder.parameter(path.getJavaType(), "key")).thenReturn(expression);
@@ -175,12 +146,6 @@ public class ConditionTest {
 	}
 	
 	@Test
-	public void shouldConstructGeQuery() {
-		Condition condition = new Condition("key", Operator.ge, "value");
-		assertEquals(condition.constructQuery(), "key >= :key");
-	}
-	
-	@Test
 	public void shouldConstructGeCriteriaQuery() {
 		Condition condition = new Condition("key", Operator.ge, "value");
 		when(builder.parameter(path.getJavaType(), "key")).thenReturn(expression);
@@ -195,12 +160,6 @@ public class ConditionTest {
 		condition.setPath(path);
 		condition.setParameters(query, "value");
 		verify(query).setParameter("key", "value");
-	}
-	
-	@Test
-	public void shouldConstructInQuery() {
-		Condition condition = new Condition("key", Operator.in, Arrays.asList("value"));
-		assertEquals(condition.constructQuery(), "key in :key");
 	}
 	
 	@Test
@@ -222,9 +181,42 @@ public class ConditionTest {
 	}
 	
 	@Test
-	public void shouldConstructLikeQuery() {
-		Condition condition = new Condition("key", Operator.like, "value");
-		assertEquals(condition.constructQuery(), "key like :key");
+	public void shouldSetParametersForInQueryUsingArray() {
+		Object[] value = new Object[] {"value"};
+		Condition condition = new Condition("key", Operator.in, value);
+		condition.setPath(path);
+		condition.setParameters(query, value);
+		verify(query).setParameter("key", Arrays.asList(value));
+	}
+	
+	@Test
+	public void shouldConstructNotInCriteriaQuery() {
+		Condition condition = new Condition("key", Operator.not_in, Arrays.asList("value"));
+		when(builder.parameter(Collection.class, "key")).thenReturn(expression);
+		when(root.get("key")).thenReturn(path);
+		Predicate predicate = mock(Predicate.class);
+		when(path.in(expression)).thenReturn(predicate);
+		condition.constructQuery(builder, root);
+		verify(path).in(expression);
+		verify(predicate).not();
+	}
+	
+	@Test
+	public void shouldSetParametersForNotInQuery() {
+		Object value = Arrays.asList("value");
+		Condition condition = new Condition("key", Operator.not_in, value);
+		condition.setPath(path);
+		condition.setParameters(query, value);
+		verify(query).setParameter("key", value);
+	}
+	
+	@Test
+	public void shouldSetParametersForNotInQueryUsingArray() {
+		Object[] value = new Object[] {"value"};
+		Condition condition = new Condition("key", Operator.not_in, value);
+		condition.setPath(path);
+		condition.setParameters(query, value);
+		verify(query).setParameter("key", Arrays.asList(value));
 	}
 	
 	@Test
@@ -262,12 +254,6 @@ public class ConditionTest {
 	}
 	
 	@Test
-	public void shouldConstructBetweenQuery() {
-		Condition condition = new Condition("key", Operator.between, new Object[]{"value1", "value2"});
-		assertEquals(condition.constructQuery(), "key between :fromkey and :tokey");
-	}
-	
-	@Test
 	public void shouldConstructBetweenCriteriaQuery() {
 		Condition condition = new Condition("key", Operator.between, new String[]{"value", "value2"});
 		when(builder.parameter(path.getJavaType(), "fromkey")).thenReturn(expression);
@@ -284,6 +270,20 @@ public class ConditionTest {
 		condition.setParameters(query, new String[]{"value1", "value2"});
 		verify(query).setParameter("fromkey", "value1");
 		verify(query).setParameter("tokey", "value2");
+	}
+	
+	@Test(expectedExceptions=IllegalArgumentException.class, expectedExceptionsMessageRegExp="Value -.*should be an array of size 2")
+	public void shouldThrowExceptionOnSetParametersForBetweenQueryWithInvalidValueType() {
+		Condition condition = new Condition("key", Operator.between, new Object[]{"value1", "value2"});
+		condition.setPath(path);
+		condition.setParameters(query, "value1");
+	}
+	
+	@Test(expectedExceptions=IllegalArgumentException.class, expectedExceptionsMessageRegExp="Value -.*should be an array of size 2")
+	public void shouldThrowExceptionOnSetParametersForBetweenQueryWithInvalidLength() {
+		Condition condition = new Condition("key", Operator.between, new Object[]{"value1", "value2"});
+		condition.setPath(path);
+		condition.setParameters(query, new Object[]{"value1"});
 	}
 	
 	@Test

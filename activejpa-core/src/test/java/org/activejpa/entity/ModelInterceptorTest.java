@@ -10,8 +10,8 @@ import static org.testng.Assert.assertTrue;
 import java.io.Serializable;
 import java.util.List;
 
-import org.activejpa.entity.testng.BaseModelTest;
 import org.activejpa.entity.testng.ActiveJpaAgentObjectFactory;
+import org.activejpa.entity.testng.BaseModelTest;
 import org.activejpa.jpa.JPA;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.testng.IObjectFactory;

@@ -3,9 +3,9 @@
  */
 package org.activejpa.entity;
 
-import static org.testng.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.testng.Assert.assertEquals;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.Order;
@@ -27,7 +27,7 @@ public class SortFieldTest {
 	
 	private Path path1;
 	
-	private Order order1, order2, order3, order4;
+	private Order order1, order2;
 	
 	@BeforeMethod
 	public void setup() {

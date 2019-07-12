@@ -22,6 +22,8 @@ public class ModelInterceptor {
     
     private static final Logger logger = LoggerFactory.getLogger(ModelInterceptor.class);
     
+    private ModelInterceptor() {}
+    
     /**
      * @param method
      * @param id
@@ -128,7 +130,7 @@ public class ModelInterceptor {
     }
     
     public static Filter filter(@Origin Method method) throws Throwable {
-    		return invoke(method, new Class[] {Class.class}, new Object[]{method.getDeclaringClass()});
+        return invoke(method, new Class[] {Class.class}, new Object[]{method.getDeclaringClass()});
     }
     
     /**
@@ -151,7 +153,7 @@ public class ModelInterceptor {
         } catch (InvocationTargetException e) {
             logger.debug("Failed while invoking the method - {} in the class - {}", method.getName(), method.getDeclaringClass(), e);
             throw e.getCause();
-        } catch (IllegalAccessException | IllegalArgumentException | NoSuchMethodException | SecurityException e) {
+        } catch (Exception e) {
             logger.error("Failed while invoking the method - {} in the class - {}", method.getName(), method.getDeclaringClass(), e);
         }
         return null;

@@ -8,7 +8,6 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -18,7 +17,6 @@ import lombok.RequiredArgsConstructor;
  */
 @RequiredArgsConstructor
 @Getter
-@EqualsAndHashCode(callSuper=false)
 public class SortField extends AbstractConstruct {
 
 	private final String name;

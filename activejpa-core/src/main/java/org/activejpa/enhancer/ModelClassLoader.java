@@ -5,8 +5,8 @@ package org.activejpa.enhancer;
 
 import java.util.HashMap;
 
-import net.bytebuddy.dynamic.loading.ByteArrayClassLoader.ChildFirst;
 import net.bytebuddy.agent.ByteBuddyAgent;
+import net.bytebuddy.dynamic.loading.ByteArrayClassLoader.ChildFirst;
 import net.bytebuddy.dynamic.loading.ClassLoadingStrategy;
 import net.bytebuddy.dynamic.loading.PackageDefinitionStrategy;
 
