@@ -159,6 +159,7 @@
 				<version>${maven.source.plugin.version}</version>
 				<executions>
 					<execution>
+						<id>attach-sources</id>
 						<phase>package</phase>
 						<goals>
 							<goal>jar</goal>
