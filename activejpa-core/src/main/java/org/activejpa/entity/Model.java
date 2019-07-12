@@ -21,7 +21,6 @@ import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.ManagedType;
 import javax.persistence.metamodel.PluralAttribute;
 
-import org.activejpa.ActiveJpaException;
 import org.activejpa.jpa.JPA;
 import org.activejpa.jpa.JPAContext;
 import org.activejpa.util.BeanUtil;

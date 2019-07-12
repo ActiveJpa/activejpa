@@ -12,8 +12,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.activejpa.entity.testng.BaseModelTest;
 import org.activejpa.entity.testng.ActiveJpaAgentObjectFactory;
+import org.activejpa.entity.testng.BaseModelTest;
 import org.activejpa.jpa.JPA;
 import org.testng.IObjectFactory;
 import org.testng.ITestContext;

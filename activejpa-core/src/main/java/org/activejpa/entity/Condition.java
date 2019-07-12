@@ -18,7 +18,6 @@ import javax.persistence.criteria.Root;
 import org.activejpa.util.ConvertUtil;
 
 import lombok.AccessLevel;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 

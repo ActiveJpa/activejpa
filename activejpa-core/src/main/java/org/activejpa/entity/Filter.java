@@ -38,9 +38,6 @@ public class Filter {
 	
 	private boolean cacheable;
 	
-	@Getter(AccessLevel.NONE)
-	private boolean shouldPage;
-	
 	@Setter(AccessLevel.NONE)
 	private Class entityClass;
 	
@@ -156,7 +153,6 @@ public class Filter {
 		filter.sortFields = sortFields;
 		if (paginate) {
 			filter.page(pageNo, perPage);
-			filter.shouldPage = shouldPage;
 		}
 		return filter;
 	}
