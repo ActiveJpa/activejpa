@@ -161,10 +161,24 @@ public class Filter {
 		return filter;
 	}
 	
-	public <T> List<T> getResultList() {
+	public <T> List<T> list() {
 		if (entityClass == null) {
 			throw new IllegalStateException("Entity class not set");
 		}
-		return Model.createQuery(entityClass, this).getResultList();
+		return Model.where(entityClass, this);
+	}
+	
+	public long count() {
+		if (entityClass == null) {
+			throw new IllegalStateException("Entity class not set");
+		}
+		return Model.count(entityClass, this);
+	}
+	
+	public void delete() {
+		if (entityClass == null) {
+			throw new IllegalStateException("Entity class not set");
+		}
+		Model.deleteAll(entityClass, this);
 	}
 }

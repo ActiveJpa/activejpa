@@ -27,6 +27,7 @@ import javax.persistence.criteria.Root;
 
 import org.activejpa.entity.Condition.Operator;
 import org.activejpa.entity.testng.ActiveJpaAgentObjectFactory;
+import org.activejpa.entity.testng.BaseModelTest;
 import org.activejpa.jpa.JPA;
 import org.testng.IObjectFactory;
 import org.testng.ITestContext;
@@ -39,7 +40,7 @@ import org.testng.annotations.Test;
  *
  */
 @SuppressWarnings({"unchecked", "rawtypes"})
-public class FilterTest {
+public class FilterTest extends BaseModelTest {
 	
 	/**
 	 * HACK. `mvn test` will be run before the package is created. javaagent can be loaded only from a jar. Since the
@@ -248,19 +249,50 @@ public class FilterTest {
 	}
 	
 	@Test(expectedExceptions=IllegalStateException.class)
-	public void shouldThrowExceptionOnGetResultListIfEntityClassIsNotSet() {
+	public void shouldThrowExceptionOnListIfEntityClassIsNotSet() {
 		Filter filter = new Filter();
 		filter.condition("column1", "column1");
-		filter.getResultList();
+		filter.list();
 	}
 	
 	@Test
-	public void shouldGetResultList() {
+	public void shouldList() {
 		createModel("column1", "column2");
 		Filter filter = new Filter(DummyModel.class);
 		filter.condition("column1", "column1");
-		List<DummyModel> models = filter.getResultList();
+		List<DummyModel> models = filter.list();
 		assertEquals(models.size(), 1);
+	}
+	
+	@Test(expectedExceptions=IllegalStateException.class)
+	public void shouldThrowExceptionOnCountIfEntityClassIsNotSet() {
+		Filter filter = new Filter();
+		filter.condition("column1", "column1");
+		filter.count();
+	}
+	
+	@Test
+	public void shouldCount() {
+		createModel("column1", "column2");
+		Filter filter = new Filter(DummyModel.class);
+		filter.condition("column1", "column1");
+		assertEquals(filter.count(), 1L);
+	}
+	
+	@Test(expectedExceptions=IllegalStateException.class)
+	public void shouldThrowExceptionOnDeleteIfEntityClassIsNotSet() {
+		Filter filter = new Filter();
+		filter.condition("column1", "column1");
+		filter.delete();
+	}
+	
+	@Test
+	public void shouldDelete() {
+		createModel("column1", "column2");
+		Filter filter = new Filter(DummyModel.class);
+		filter.condition("column1", "column1");
+		filter.delete();
+		assertEquals(filter.count(), 0L);
 	}
 	
 	@Test
