@@ -161,9 +161,6 @@
 					<execution>
 						<id>attach-sources</id>
 						<phase>package</phase>
-						<goals>
-							<goal>jar</goal>
-						</goals>
 					</execution>
 				</executions>
 			</plugin>
