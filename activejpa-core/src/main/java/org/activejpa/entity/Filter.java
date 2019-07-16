@@ -149,8 +149,8 @@ public class Filter {
 	
 	public Filter clone(boolean paginate) {
 		Filter filter = new Filter();
-		filter.conditions = conditions;
-		filter.sortFields = sortFields;
+		filter.conditions = new ArrayList<>(conditions);
+		filter.sortFields = new ArrayList<>(sortFields);
 		if (paginate) {
 			filter.page(pageNo, perPage);
 		}

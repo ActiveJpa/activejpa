@@ -247,6 +247,29 @@ public class FilterTest extends BaseModelTest {
 		assertEquals(clonedFilter.getPageNo(), 1);
 		assertEquals(clonedFilter.getPerPage(), Integer.MAX_VALUE);
 	}
+
+	@Test
+	public void shouldCloneFilterWithCopiedConditions() {
+		Filter filter = new Filter(mock(Condition.class));
+		Filter clonedFilter = filter.clone(false);
+		clonedFilter.condition("testKey", Operator.ne, "testValue");
+		assertEquals(filter.getConditions().size(), 1);
+		assertEquals(clonedFilter.getConditions().size(), 2);
+		assertEquals(clonedFilter.getConditions().get(1).getName(), "testKey");
+		assertEquals(clonedFilter.getConditions().get(1).getOperator(), Operator.ne);
+		assertEquals(clonedFilter.getConditions().get(1).getValue(), "testValue");
+	}
+
+	@Test
+	public void shouldCloneFilterWithCopiedSortFields() {
+		Filter filter = new Filter(mock(Condition.class));
+		Filter clonedFilter = filter.clone(false);
+		clonedFilter.sortBy("column1", false);
+		assertEquals(filter.getSortFields().size(), 0);
+		assertEquals(clonedFilter.getSortFields().size(), 1);
+		assertEquals(clonedFilter.getSortFields().get(0).getName(), "column1");
+		assertEquals(clonedFilter.getSortFields().get(0).isAsc(), false);
+	}
 	
 	@Test(expectedExceptions=IllegalStateException.class)
 	public void shouldThrowExceptionOnListIfEntityClassIsNotSet() {
