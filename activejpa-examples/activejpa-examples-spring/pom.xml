@@ -33,7 +33,7 @@
 		<hibernate.version>4.3.10.Final</hibernate.version>
 
 		<!-- Bean validation -->
-		<hibernate-validator.version>5.1.3.Final</hibernate-validator.version>
+		<hibernate-validator.version>5.3.5.Final</hibernate-validator.version>
 
 		<!-- Database access -->
 		<tomcat-jdbc.version>7.0.42</tomcat-jdbc.version>
