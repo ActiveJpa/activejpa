@@ -20,7 +20,7 @@ import org.joda.time.DateTime;
 public class PetclinicApplication {
 
     public static void main(String[] args) {
-    		// Ensure we load the Activejpa agent and initialize persistence unit 
+        // Ensure we load the Activejpa agent and initialize persistence unit
         ActiveJpaAgentLoader.instance().loadAgent();
         JPA.instance.addPersistenceUnit("petclinic");
 
